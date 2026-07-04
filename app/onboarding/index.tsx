@@ -30,6 +30,10 @@ import { YearPicker } from "@/features/onboarding/YearPicker";
 import { PremiumPaywall } from "@/features/premium/PremiumPaywall";
 import { upsertProfile } from "@/repositories/profileRepo";
 import { set as setSetting } from "@/repositories/settingsRepo";
+import {
+	enableNotificationsFromOnboarding,
+	setNotificationPrefs,
+} from "@/services/notificationService";
 import { useTheme } from "@/theme";
 
 const TOTAL = 16;
@@ -179,9 +183,14 @@ export default function OnboardingScreen() {
 
 	const answerNotifications = useCallback(
 		(wanted: boolean) => {
-			setSetting(NOTIF_OPT_IN_KEY, wanted).catch(() => undefined);
-			// L'implémentation de la demande système + planification vit dans
-			// notificationService (Phase 7) : ici on capte l'intention opt-in.
+			// On capte l'intention (§4.12) puis on demande la permission système
+			// AVANT d'activer les rappels (§7) — « Plus tard » n'active rien.
+			void setSetting(NOTIF_OPT_IN_KEY, wanted);
+			if (wanted) {
+				void enableNotificationsFromOnboarding();
+			} else {
+				void setNotificationPrefs({ master: false });
+			}
 			goNext();
 		},
 		[goNext],

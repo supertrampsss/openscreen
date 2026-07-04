@@ -71,6 +71,49 @@
 		"longest_one": "Plus longue série : {{count}} jour",
 		"longest_other": "Plus longue série : {{count}} jours"
 	},
+	"notifications": {
+		"sectionTitle": "Notifications",
+		"master": "Activer les rappels",
+		"masterHint": "Deux au maximum par jour. Tout est opt-in.",
+		"evening": "Rappel du soir",
+		"eveningHint": "Un mot doux si votre journée est vide.",
+		"weekly": "Bilan hebdomadaire",
+		"weeklyHint": "Votre semaine, le dimanche soir.",
+		"time": "Heure du rappel",
+		"unsupported": "Les rappels ne sont pas disponibles sur le web."
+	},
+	"notifCopy": {
+		"evening": {
+			"default": {
+				"title": "Un instant pour aujourd'hui ?",
+				"body": "10 secondes pour compléter votre journée."
+			},
+			"forget": {
+				"title": "Petit rappel",
+				"body": "10 secondes pour compléter votre journée ?"
+			},
+			"too_long": {
+				"title": "Une seule chose",
+				"body": "Un tap suffit : notez juste l'essentiel."
+			},
+			"anxious": {
+				"title": "À votre rythme",
+				"body": "Si le cœur vous en dit, un mot sur votre journée. Sinon, tout va bien."
+			},
+			"doctor": {
+				"title": "Pour votre prochain rendez-vous",
+				"body": "Quelques secondes aujourd'hui enrichissent votre dossier."
+			}
+		},
+		"weekly": {
+			"title": "Votre semaine est prête",
+			"body": "Votre bilan vous attend dans Tendances."
+		},
+		"treatment": {
+			"title": "Traitement",
+			"body": "C'est le moment de votre biothérapie. Injection faite ?"
+		}
+	},
 	"settings": {
 		"title": "Réglages",
 		"dataSection": "Vos données",

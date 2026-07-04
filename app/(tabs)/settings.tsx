@@ -9,6 +9,7 @@ import { useSnackbar } from "@/components/ui/Snackbar";
 import { BackupError } from "@/domain/backup";
 import { useFlare } from "@/features/flare/FlareContext";
 import { FlareToggle } from "@/features/flare/FlareToggle";
+import { NotificationsSettings } from "@/features/notifications/NotificationsSettings";
 import { useOnboarding } from "@/features/onboarding/OnboardingGate";
 import { exportBackup, importBackup } from "@/services/backupService";
 import { devToggleMockPremium, useEntitlements } from "@/services/entitlements";
@@ -141,6 +142,8 @@ export default function SettingsScreen() {
 						<Text style={[theme.typography.heading, { color: theme.colors.textFaint }]}>›</Text>
 					</Card>
 				</Pressable>
+
+				<NotificationsSettings />
 
 				<View style={{ gap: theme.spacing.sm }}>
 					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>

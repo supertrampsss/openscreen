@@ -71,6 +71,49 @@
 		"longest_one": "Longest streak: {{count}} day",
 		"longest_other": "Longest streak: {{count}} days"
 	},
+	"notifications": {
+		"sectionTitle": "Notifications",
+		"master": "Turn on reminders",
+		"masterHint": "Two per day at most. Everything is opt-in.",
+		"evening": "Evening reminder",
+		"eveningHint": "A gentle nudge if your day is empty.",
+		"weekly": "Weekly recap",
+		"weeklyHint": "Your week, on Sunday evening.",
+		"time": "Reminder time",
+		"unsupported": "Reminders are not available on the web."
+	},
+	"notifCopy": {
+		"evening": {
+			"default": {
+				"title": "A moment for today?",
+				"body": "10 seconds to complete your day."
+			},
+			"forget": {
+				"title": "Quick reminder",
+				"body": "10 seconds to complete your day?"
+			},
+			"too_long": {
+				"title": "Just one thing",
+				"body": "One tap is enough: note only the essential."
+			},
+			"anxious": {
+				"title": "At your own pace",
+				"body": "If you feel like it, a word about your day. Otherwise, all good."
+			},
+			"doctor": {
+				"title": "For your next appointment",
+				"body": "A few seconds today enrich your record."
+			}
+		},
+		"weekly": {
+			"title": "Your week is ready",
+			"body": "Your recap is waiting in Trends."
+		},
+		"treatment": {
+			"title": "Treatment",
+			"body": "Time for your biologic. Injection done?"
+		}
+	},
 	"settings": {
 		"title": "Settings",
 		"dataSection": "Your data",

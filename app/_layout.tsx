@@ -12,6 +12,7 @@ import { seedFoods } from "@/db/seedFoods";
 import { FlareProvider } from "@/features/flare/FlareContext";
 import { OnboardingGate } from "@/features/onboarding/OnboardingGate";
 import { initI18n } from "@/i18n";
+import { initNotifications } from "@/services/notificationService";
 import { ThemeProvider, useTheme } from "@/theme";
 import migrations from "../drizzle/migrations";
 
@@ -41,6 +42,9 @@ function Migrator() {
 	useEffect(() => {
 		if (success) {
 			seedFoods().catch(() => undefined);
+			// Notifications locales (§7) : init une fois les migrations passées.
+			// No-op propre sur web (module natif chargé dynamiquement).
+			initNotifications().catch(() => undefined);
 		}
 	}, [success]);
 

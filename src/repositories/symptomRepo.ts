@@ -9,6 +9,7 @@ import { and, desc, eq, gte, isNull } from "drizzle-orm";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import { type NewSymptomEntry, type SymptomEntry, symptomEntries } from "@/db/schema";
+import { emitLogCommitted } from "@/services/logHooks";
 
 export type SymptomKind = "stool" | "symptom";
 
@@ -76,6 +77,8 @@ export async function commitDraft(id: string): Promise<void> {
 		.update(symptomEntries)
 		.set({ isDraft: 0, updatedAt: Date.now() })
 		.where(eq(symptomEntries.id, id));
+	// Signale le log (§7 : annule le rappel du soir du jour même).
+	emitLogCommitted();
 }
 
 /** Entrées d'un jour (non supprimées), plus récentes d'abord. */

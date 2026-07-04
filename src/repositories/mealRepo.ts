@@ -13,6 +13,7 @@ import {
 	neutralTriggers,
 	normalizeFoodName,
 } from "@/domain/foods";
+import { emitLogCommitted } from "@/services/logHooks";
 
 export interface MealDraftInput extends Partial<NewMeal> {
 	id: string;
@@ -66,6 +67,8 @@ export async function upsertDraft(entry: MealDraftInput): Promise<Meal> {
 
 export async function commitDraft(id: string): Promise<void> {
 	await db.update(meals).set({ isDraft: 0, updatedAt: Date.now() }).where(eq(meals.id, id));
+	// Signale le log (§7 : annule le rappel du soir du jour même).
+	emitLogCommitted();
 }
 
 export function listDay(localDate: string): Promise<Meal[]> {
