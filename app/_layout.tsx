@@ -63,6 +63,8 @@ function Migrator() {
 					<Stack.Screen name="(tabs)" />
 					{/* Export médecin : écran poussé plein écran (modal). */}
 					<Stack.Screen name="export" options={{ presentation: "modal" }} />
+					{/* Premium (§8) : paywall éthique en modal. */}
+					<Stack.Screen name="premium" options={{ presentation: "modal" }} />
 				</Stack>
 			</SnackbarProvider>
 		</FlareProvider>

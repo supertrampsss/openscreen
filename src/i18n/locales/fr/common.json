@@ -84,6 +84,7 @@
 		"restoreError": "Fichier invalide ou illisible.",
 		"privacyTitle": "Vos données restent chez vous",
 		"privacyBody": "Tout est stocké sur votre appareil. Vos données et leur export resteront gratuits pour toujours.",
-		"disclaimer": "Crohnicle est un outil de suivi personnel, pas un dispositif médical."
+		"disclaimer": "Crohnicle est un outil de suivi personnel, pas un dispositif médical.",
+		"version": "Version {{version}}"
 	}
 }

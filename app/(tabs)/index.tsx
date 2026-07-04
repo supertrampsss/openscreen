@@ -60,6 +60,7 @@ import {
 } from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import { listCommittedSince, listRecent } from "@/repositories/symptomRepo";
+import { currentEntitlementToken } from "@/services/entitlements";
 import {
 	analyzeMeal,
 	persistPhoto,
@@ -280,7 +281,14 @@ export default function HomeScreen() {
 		async (meal: Meal, userNote?: string) => {
 			setScanStates((s) => ({ ...s, [meal.id]: { status: "analyzing" } }));
 			try {
-				const response = await analyzeMeal({ uri: meal.photoUri ?? "", userNote });
+				// Jeton d'entitlement (Premium) joint quand présent : le proxy débloque
+				// alors l'analyse illimitée au lieu de décompter le quota d'essai (§6, §8).
+				const entitlementToken = (await currentEntitlementToken()) ?? undefined;
+				const response = await analyzeMeal({
+					uri: meal.photoUri ?? "",
+					userNote,
+					entitlementToken,
+				});
 				setScanStates((s) => {
 					const next = { ...s };
 					delete next[meal.id];

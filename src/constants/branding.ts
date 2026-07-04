@@ -10,6 +10,12 @@ import { Platform } from "react-native";
 /** Nom de travail affiché (aussi dans app.json + i18n `common.appName`). */
 export const APP_NAME = "Crohnicle";
 
+/**
+ * Adresse de support / remboursement humain (§8) — PLACEHOLDER de marque.
+ * Affichée dans le paywall : le remboursement passe par un humain, jamais un bot.
+ */
+export const SUPPORT_EMAIL = "support@crohnicle.app";
+
 /** Fiches stores (placeholders — à remplacer au lancement réel). */
 export const STORE_URLS = {
 	ios: "https://apps.apple.com/app/crohnicle/id000000000",
