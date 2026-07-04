@@ -1,0 +1,90 @@
+{
+	"title": "Traitements",
+	"subtitle": "Vos rappels de biothérapie et votre observance.",
+	"empty": "Aucun traitement pour l'instant.",
+	"add": "Ajouter un traitement",
+	"close": "Fermer",
+	"kinds": {
+		"biologic_injection": "Biothérapie injectable",
+		"infusion": "Biothérapie en perfusion",
+		"immunosuppressant": "Immunosuppresseur",
+		"corticosteroid": "Corticoïdes",
+		"five_asa": "5-ASA",
+		"other": "Autre"
+	},
+	"cadence": {
+		"none": "Ponctuel",
+		"everyWeeks_one": "Toutes les {{count}} semaine",
+		"everyWeeks_other": "Toutes les {{count}} semaines"
+	},
+	"nextDue": {
+		"today": "Échéance aujourd'hui",
+		"inDays_one": "Dans {{count}} jour",
+		"inDays_other": "Dans {{count}} jours",
+		"overdue_one": "En retard de {{count}} jour",
+		"overdue_other": "En retard de {{count}} jours",
+		"none": "Pas d'échéance programmée"
+	},
+	"adherence": {
+		"label": "Observance 90 j",
+		"value": "{{taken}}/{{expected}} prises",
+		"none": "—"
+	},
+	"markTaken": "Fait ✓",
+	"takenToday": "Fait aujourd'hui",
+	"takenToast": "Prise enregistrée",
+	"undo": "Annuler",
+	"sideEffect": {
+		"button": "Effet secondaire",
+		"title": "Un effet secondaire ?",
+		"subtitle": "Sélectionnez, ajoutez une note si besoin.",
+		"chips": {
+			"nausea": "Nausée",
+			"headache": "Maux de tête",
+			"fatigue": "Fatigue",
+			"rash": "Éruption cutanée",
+			"injection_site": "Réaction au point d'injection",
+			"infection": "Infection",
+			"joint_pain": "Douleurs articulaires",
+			"other": "Autre"
+		},
+		"notePlaceholder": "Note (optionnel)",
+		"save": "Enregistrer",
+		"saved": "Effet secondaire noté"
+	},
+	"form": {
+		"addTitle": "Nouveau traitement",
+		"editTitle": "Modifier le traitement",
+		"namePlaceholder": "Nom (ex. Adalimumab)",
+		"kindLabel": "Type",
+		"cadenceLabel": "Cadence (semaines)",
+		"cadenceHint": "Pour les injectables et perfusions.",
+		"save": "Enregistrer",
+		"delete": "Supprimer",
+		"deleteConfirmTitle": "Supprimer ce traitement ?",
+		"deleteConfirmBody": "L'historique est conservé mais le traitement disparaît de la liste."
+	},
+	"history": {
+		"show": "Voir l'historique",
+		"hide": "Masquer l'historique",
+		"empty": "Aucun événement.",
+		"taken": "Prise",
+		"skipped": "Sauté",
+		"side_effect": "Effet secondaire"
+	},
+	"seed": {
+		"title": "Créer vos traitements ?",
+		"body": "Nous avons noté vos traitements à l'inscription. On les crée pré-remplis ?",
+		"confirm": "Créer",
+		"dismiss": "Plus tard"
+	},
+	"settingsCard": {
+		"title": "Traitements",
+		"body": "Rappels de biothérapie, observance, effets secondaires."
+	},
+	"homeCard": {
+		"dueToday": "{{name}} : échéance aujourd'hui",
+		"dueInDays_one": "{{name}} dans {{count}} jour",
+		"dueInDays_other": "{{name}} dans {{count}} jours"
+	}
+}

@@ -52,90 +52,42 @@ body:
       required: false
 
   - type: dropdown
-    id: os-type
+    id: platform
     attributes:
-      label: OS
-      description: Operating system
+      label: Platform
+      description: Where did the bug occur?
       options:
-        - Windows
-        - macOS
-        - Linux
         - iOS
         - Android
+        - Web
         - Other
     validations:
       required: false
 
   - type: input
-    id: os-version
+    id: platform-version
     attributes:
-      label: OS Version
-      description: Please specify your OS version
-      placeholder: e.g., Windows 11, macOS Sonoma, Ubuntu 22.04
+      label: OS / Platform Version
+      description: Please specify your OS or platform version
+      placeholder: e.g., iOS 18.2, Android 15, Chrome 120
     validations:
       required: false
 
   - type: input
-    id: os-other
+    id: device
     attributes:
-      label: Other OS
-      description: If you selected "Other" for OS, please specify your operating system
-      placeholder: e.g., FreeBSD, Solaris
-    validations:
-      required: false
-
-  - type: dropdown
-    id: browser
-    attributes:
-      label: Browser
-      description: What browser are you using?
-      options:
-        - Chrome
-        - Firefox
-        - Safari
-        - Edge
-        - Other
+      label: Device
+      description: Which device are you using?
+      placeholder: e.g., iPhone 15 Pro, Pixel 8, Desktop browser
     validations:
       required: false
 
   - type: input
-    id: browser-version
+    id: app-version
     attributes:
-      label: Browser Version
-      description: Please specify your browser version
-      placeholder: e.g., 120.0, 121.0.1
-    validations:
-      required: false
-
-  - type: input
-    id: browser-other
-    attributes:
-      label: Other Browser
-      description: If you selected "Other" for Browser, please specify your browser
-      placeholder: e.g., Brave, Vivaldi, Opera
-    validations:
-      required: false
-
-  - type: dropdown
-    id: device-type
-    attributes:
-      label: Device Type
-      description: Device category
-      options:
-        - Desktop
-        - Laptop
-        - Tablet
-        - Mobile
-        - Other
-    validations:
-      required: false
-
-  - type: input
-    id: device-other
-    attributes:
-      label: Other Device
-      description: If you selected "Other" for Device Type, please specify your device
-      placeholder: e.g., Smart TV, IoT device
+      label: App Version
+      description: Which version of Crohnicle are you running?
+      placeholder: e.g., 1.0.0
     validations:
       required: false
 

@@ -7,10 +7,29 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-dist
-dist-electron
-dist-ssr
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native builds
+android/
+ios/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# Local env
 *.local
 
 # Editor directories and files
@@ -23,10 +42,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-release/**
 *.kiro/
-# npx electron-builder --mac --win
 
-# Playwright
-test-results
+# Playwright / tests
+test-results/
 playwright-report/

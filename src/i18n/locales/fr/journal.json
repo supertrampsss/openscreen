@@ -1,0 +1,27 @@
+{
+	"title": "Journal",
+	"empty": "Votre journal est encore vide.",
+	"emptyHint": "Chaque entrée construit votre dossier. Commencez quand vous voulez.",
+	"today": "Aujourd'hui",
+	"yesterday": "Hier",
+	"kinds": {
+		"stool": "Selle",
+		"symptom": "Symptômes",
+		"meal": "Repas"
+	},
+	"badges": {
+		"stools_one": "{{count}} selle",
+		"stools_other": "{{count}} selles",
+		"pain": "Douleur {{level}}",
+		"meals_one": "{{count}} repas",
+		"meals_other": "{{count}} repas"
+	},
+	"entry": {
+		"bristol": "Type {{value}}",
+		"blood": "Sang",
+		"urgency": "Urgence",
+		"draft": "brouillon"
+	},
+	"deleted": "Entrée supprimée",
+	"undo": "Annuler"
+}

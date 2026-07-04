@@ -1,0 +1,107 @@
+{
+	"title": "Export médecin",
+	"subtitle": "Préparez votre consultation. Gratuit à vie.",
+	"freeForever": "Cet export restera gratuit pour toujours.",
+	"period": {
+		"heading": "Période",
+		"1": "1 mois",
+		"3": "3 mois",
+		"6": "6 mois"
+	},
+	"identity": {
+		"heading": "Identité (facultatif)",
+		"placeholder": "Nom et prénom",
+		"hint": "N'apparaît que sur le PDF. Rien n'est obligatoire.",
+		"saved": "Identité enregistrée."
+	},
+	"preview": {
+		"heading": "Aperçu",
+		"consultTitle": "3 points à aborder avec votre gastro",
+		"lastWeekTitle": "Votre dernière semaine",
+		"pdfNote": "Le PDF contient les courbes complètes et le détail semaine par semaine.",
+		"empty": "Ajoutez quelques entrées pour préparer un rapport."
+	},
+	"generate": "Générer le PDF",
+	"generating": "Préparation du PDF…",
+	"error": {
+		"message": "Génération impossible. Réessayez.",
+		"retry": "Réessayer"
+	},
+	"milestone": "Premier rapport généré. Votre dossier est prêt pour votre gastro.",
+	"review": {
+		"title": "Ce rapport vous est utile ?",
+		"body": "Un avis nous aide à faire connaître Crohnicle aux autres patients.",
+		"rate": "Donner mon avis",
+		"later": "Plus tard"
+	},
+	"card": {
+		"settingsTitle": "Export médecin",
+		"settingsBody": "Un PDF clair pour votre consultation. Gratuit à vie.",
+		"trendsTitle": "Préparer ma consultation",
+		"trendsBody": "Générez un rapport à montrer à votre gastro.",
+		"open": "Ouvrir l'export"
+	},
+	"report": {
+		"title": "Rapport de suivi",
+		"periodMonths_one": "Période : {{count}} mois",
+		"periodMonths_other": "Période : {{count}} mois",
+		"generatedOn": "Généré le {{date}}",
+		"profileHeading": "Profil",
+		"diagnosisLabel": "Diagnostic",
+		"diagnosis": {
+			"crohn": "Maladie de Crohn",
+			"uc": "Rectocolite hémorragique (RCH)",
+			"ibd_u": "MICI indéterminée",
+			"undiagnosed": ""
+		},
+		"diagnosisYearLabel": "Année du diagnostic",
+		"identityLabel": "Patient",
+		"scoreHeadingHbi": "HBI estimé",
+		"scoreHeadingSccai": "SCCAI estimé",
+		"scoreCaption": "Estimé par auto-évaluation — ne remplace pas un avis médical.",
+		"scoreEmpty": "Pas encore assez de données pour tracer la courbe.",
+		"bands": {
+			"remission": "Rémission",
+			"mild": "Légère",
+			"moderate": "Modérée",
+			"severe": "Sévère"
+		},
+		"weeklyHeading": "Semaine par semaine",
+		"weeklyEmpty": "Aucune donnée sur la période.",
+		"weekWord": "Semaine",
+		"col": {
+			"week": "Semaine",
+			"stools": "Selles",
+			"bloodDays": "Jours avec sang (traces incluses)",
+			"worstPain": "Pire douleur",
+			"weight": "Poids"
+		},
+		"consultHeading": "3 points à aborder avec votre gastro",
+		"associationsHeading": "Vos associations alimentaires",
+		"associationsReady": "Voir la section associations dans l'application.",
+		"associationsCountdown_one": "Disponible après encore {{count}} jour de données.",
+		"associationsCountdown_other": "Disponible après encore {{count}} jours de données.",
+		"associationLine_one": "{{name}} associé à {{signal}} · observé sur {{count}} exposition.",
+		"associationLine_other": "{{name}} associé à {{signal}} · observé sur {{count}} expositions.",
+		"associationSignals": {
+			"pain": "douleur",
+			"bristol": "selles liquides",
+			"blood": "sang",
+			"urgency": "urgence"
+		},
+		"na": "—",
+		"disclaimer": "Document d'auto-évaluation généré par Crohnicle — ne constitue pas un avis médical ni un dispositif médical.",
+		"observanceHeading": "Observance du traitement",
+		"observanceText": "{{taken}}/{{expected}} prises sur la période"
+	},
+	"points": {
+		"visibleBlood_one": "Sang visible rapporté {{days}} jour sur {{total}}.",
+		"visibleBlood_other": "Sang visible rapporté {{days}} jours sur {{total}}.",
+		"scoreAboveBaseline": "Score {{score}} au-dessus de votre plage habituelle depuis le {{since}}.",
+		"highFatigue_one": "Fatigue élevée (≥2) rapportée {{days}} jour.",
+		"highFatigue_other": "Fatigue élevée (≥2) rapportée {{days}} jours.",
+		"nocturnalStools_one": "{{count}} selle nocturne sur la période.",
+		"nocturnalStools_other": "{{count}} selles nocturnes sur la période.",
+		"allClear": "Aucun signal particulier sur la période — votre suivi est complet."
+	}
+}

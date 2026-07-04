@@ -1,0 +1,123 @@
+{
+	"showMore": "More details",
+	"saveError": "Couldn't save — your data is kept as a draft, try again.",
+	"addMenu": {
+		"title": "What would you like to log?",
+		"stool": "Quick stool",
+		"symptoms": "Symptoms",
+		"mealManual": "Manual meal",
+		"photo": "Meal photo",
+		"voice": "Voice note",
+		"soon": "soon",
+		"pr4": "PR 4",
+		"pr5": "PR 5"
+	},
+	"meal": {
+		"title": "Meal",
+		"recents": "Recent",
+		"searchLabel": "Add a food",
+		"searchPlaceholder": "Rice, chicken, coffee…",
+		"createCustom": "Create “{{name}}”",
+		"items": "Meal items",
+		"noItems": "Search for a food or re-log a recent meal.",
+		"nameLabel": "Meal name",
+		"namePlaceholder": "Meal name",
+		"time": "Time",
+		"save": "Save",
+		"saved": "Meal saved.",
+		"cyclePortion": "Portion: {{size}}",
+		"remove": "Remove {{name}}",
+		"moreTriggers": "+{{count}}",
+		"portion": {
+			"small": "S",
+			"medium": "M",
+			"large": "L"
+		},
+		"names": {
+			"breakfast": "Breakfast",
+			"lunch": "Lunch",
+			"snack": "Snack",
+			"dinner": "Dinner"
+		}
+	},
+	"triggers": {
+		"fodmap": "FODMAP",
+		"lactose": "Lactose",
+		"gluten": "Gluten",
+		"fried": "Fried",
+		"spicy": "Spicy",
+		"insoluble_fiber": "Fiber",
+		"alcohol": "Alcohol",
+		"caffeine": "Caffeine",
+		"additives": "Additives"
+	},
+	"stool": {
+		"title": "Quick stool",
+		"bristol": "Stool type",
+		"bristolType": "Bristol type {{n}}",
+		"urgency": "Urgency",
+		"blood": "Blood",
+		"pain": "Pain at the time",
+		"time": "Time",
+		"save": "Save",
+		"saved": "Stool saved.",
+		"urgencyLevels": {
+			"0": "None",
+			"1": "Mild",
+			"2": "Moderate",
+			"3": "Strong"
+		},
+		"bloodLevels": {
+			"0": "No",
+			"1": "Traces",
+			"2": "Visible"
+		},
+		"painLevels": {
+			"0": "None",
+			"1": "Mild",
+			"2": "Moderate",
+			"3": "Strong"
+		}
+	},
+	"symptom": {
+		"title": "Symptoms",
+		"pain": "Pain",
+		"painZone": "Location",
+		"fatigue": "Fatigue",
+		"wellbeing": "General wellbeing",
+		"extraIntestinal": "Associated signs",
+		"notes": "Notes",
+		"notesPlaceholder": "A word about your day (optional)",
+		"addNote": "Add a note",
+		"save": "Save",
+		"saved": "Symptoms saved.",
+		"levels": {
+			"0": "None",
+			"1": "Mild",
+			"2": "Moderate",
+			"3": "Strong"
+		},
+		"wellbeingLevels": {
+			"0": "Very well",
+			"1": "Slightly below par",
+			"2": "Poor",
+			"3": "Very poor",
+			"4": "Terrible"
+		},
+		"zones": {
+			"lower_right": "Right side",
+			"lower_left": "Left side",
+			"lower_center": "Lower abdomen",
+			"diffuse": "Diffuse"
+		},
+		"complications": {
+			"arthralgia": "Joint pain",
+			"uveitis": "Uveitis",
+			"erythema_nodosum": "Erythema nodosum",
+			"aphthae": "Mouth ulcers",
+			"fissure": "Fissure",
+			"fistula": "Fistula",
+			"abscess": "Abscess"
+		}
+	}
+}

@@ -1,0 +1,48 @@
+{
+	"hero": {
+		"title": "Crohnicle Premium",
+		"subtitle": "Soutenez le développement et débloquez l'analyse photo illimitée."
+	},
+	"commitment": "Vos données et leur export resteront gratuits pour toujours.",
+	"features": {
+		"title": "Inclus dans Premium",
+		"unlimited": "Analyses photo de repas illimitées",
+		"voice": "Note vocale",
+		"insight": "Insight IA hebdomadaire",
+		"multiphoto": "Plusieurs photos par repas",
+		"soon": "bientôt"
+	},
+	"trial": "10 analyses photo offertes pour essayer — sans carte bancaire.",
+	"plans": {
+		"title": "Choisissez votre formule",
+		"monthlyLabel": "Mensuel",
+		"monthlyPer": "par mois",
+		"annualLabel": "Annuel",
+		"annualPer": "par an",
+		"annualBadge": "−50 %",
+		"annualEquivalent": "soit {{price}} / mois"
+	},
+	"noCommitment": "Sans engagement — annulez en 2 taps.",
+	"continue": "Continuer",
+	"restore": "Restaurer mes achats",
+	"refund": "Un remboursement, une question ? Écrivez à un humain : {{email}}",
+	"status": {
+		"free": "Gratuit",
+		"premium": "Premium ✓"
+	},
+	"onboarding": {
+		"continueFree": "Continuer gratuitement",
+		"tryPremium": "Essayer Premium"
+	},
+	"settingsRow": "Crohnicle Premium",
+	"toasts": {
+		"purchased": "Premium activé. Merci de votre soutien !",
+		"restored": "Achats restaurés.",
+		"restoreNone": "Aucun achat à restaurer.",
+		"error": "Achat impossible pour l'instant. Réessayez.",
+		"cancelled": "Achat annulé.",
+		"mockOn": "Premium simulé activé (dev).",
+		"mockOff": "Premium simulé désactivé (dev)."
+	},
+	"close": "Fermer"
+}

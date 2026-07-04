@@ -1,0 +1,19 @@
+{
+	"name": "crohnicle-ai-proxy",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Cloudflare Worker: Crohnicle AI meal-analysis proxy (haiku vision + structured output, trial quota, entitlement check).",
+	"type": "module",
+	"main": "src/index.ts",
+	"scripts": {
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit",
+		"deploy": "wrangler deploy"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240208.0",
+		"typescript": "~6.0.3",
+		"vitest": "^4.0.16",
+		"wrangler": "^3.0.0"
+	}
+}

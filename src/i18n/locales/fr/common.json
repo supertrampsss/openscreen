@@ -1,0 +1,143 @@
+{
+	"appName": "Crohnicle",
+	"loading": "Préparation de votre journal…",
+	"tabs": {
+		"home": "Accueil",
+		"journal": "Journal",
+		"trends": "Tendances",
+		"settings": "Réglages",
+		"urgence": "Urgence"
+	},
+	"actions": {
+		"save": "Enregistrer",
+		"cancel": "Annuler",
+		"close": "Fermer",
+		"confirm": "Confirmer",
+		"delete": "Supprimer",
+		"undo": "Annuler"
+	},
+	"time": {
+		"now": "Maintenant",
+		"minus15": "−15 min",
+		"minus1h": "−1 h",
+		"other": "Autre"
+	},
+	"draft": "brouillon",
+	"quickActions": {
+		"stool": "Selle rapide",
+		"photo": "Photo repas",
+		"urgence": "Carte urgence"
+	},
+	"flare": {
+		"banner": "Mode poussée — on allège. Votre série est protégée.",
+		"toggleOn": "Activer le mode poussée",
+		"toggleOff": "Désactiver le mode poussée",
+		"sectionTitle": "Mode poussée",
+		"sectionBody": "Pendant une poussée, l'app allège la saisie et protège votre série. Activez-le quand vous en avez besoin.",
+		"since": "Actif depuis le {{date}}"
+	},
+	"home": {
+		"greeting": "Bonjour",
+		"ringTitle": "Aujourd'hui",
+		"stoolsUnit_one": "selle",
+		"stoolsUnit_other": "selles",
+		"ringDone": "Journée documentée",
+		"ringEmpty": "Rien pour l'instant",
+		"normalRange": "votre normale : {{range}}",
+		"withinNormal": "Journée dans votre normale",
+		"busier": "Journée plus chargée que d'habitude",
+		"noNormalYet": "Continuez à documenter pour établir votre normale",
+		"scoreHbi": "HBI estimé (7 j)",
+		"scoreSccai": "SCCAI estimé (7 j)",
+		"scoreEmpty": "Pas encore assez de données pour la courbe",
+		"bloodPill": "Sang",
+		"urgencyPill": "Urgence",
+		"bloodLevels": {
+			"0": "Non",
+			"1": "Traces",
+			"2": "Visible"
+		},
+		"miniPain": "Douleur",
+		"miniEnergy": "Énergie",
+		"miniMeals": "Repas",
+		"recentTitle": "Récemment loggé",
+		"recentEmpty": "Vos premières entrées apparaîtront ici. Un tap sur « + » pour commencer.",
+		"addButton": "Ajouter une entrée"
+	},
+	"streak": {
+		"flameLabel": "Série de {{count}} jours documentés",
+		"sheetTitle": "Votre série",
+		"count_one": "{{count}} jour documenté",
+		"count_other": "{{count}} jours documentés",
+		"body": "Votre dossier s'enrichit à chaque jour noté. Un seul geste suffit.",
+		"zero": "Notez une entrée aujourd'hui pour démarrer votre série.",
+		"frozen": "Votre série est protégée pendant votre poussée. ❄️",
+		"graceAvailable": "Un oubli d'un jour cette semaine ne cassera pas votre série.",
+		"graceUsed": "Vous avez déjà rattrapé un jour cette semaine.",
+		"longest_one": "Plus longue série : {{count}} jour",
+		"longest_other": "Plus longue série : {{count}} jours"
+	},
+	"notifications": {
+		"sectionTitle": "Notifications",
+		"master": "Activer les rappels",
+		"masterHint": "Deux au maximum par jour. Tout est opt-in.",
+		"evening": "Rappel du soir",
+		"eveningHint": "Un mot doux si votre journée est vide.",
+		"weekly": "Bilan hebdomadaire",
+		"weeklyHint": "Votre semaine, le dimanche soir.",
+		"time": "Heure du rappel",
+		"unsupported": "Les rappels ne sont pas disponibles sur le web.",
+		"treatment": "Rappels de traitement",
+		"treatmentHint": "La veille et le jour de l'échéance."
+	},
+	"notifCopy": {
+		"evening": {
+			"default": {
+				"title": "Un instant pour aujourd'hui ?",
+				"body": "10 secondes pour compléter votre journée."
+			},
+			"forget": {
+				"title": "Petit rappel",
+				"body": "10 secondes pour compléter votre journée ?"
+			},
+			"too_long": {
+				"title": "Une seule chose",
+				"body": "Un tap suffit : notez juste l'essentiel."
+			},
+			"anxious": {
+				"title": "À votre rythme",
+				"body": "Si le cœur vous en dit, un mot sur votre journée. Sinon, tout va bien."
+			},
+			"doctor": {
+				"title": "Pour votre prochain rendez-vous",
+				"body": "Quelques secondes aujourd'hui enrichissent votre dossier."
+			}
+		},
+		"weekly": {
+			"title": "Votre semaine est prête",
+			"body": "Votre bilan vous attend dans Tendances."
+		},
+		"treatment": {
+			"title": "Traitement",
+			"body": "C'est le moment de votre biothérapie. Injection faite ?",
+			"bodyNamed": "C'est le moment de votre {{name}}. Injection faite ?"
+		}
+	},
+	"settings": {
+		"title": "Réglages",
+		"dataSection": "Vos données",
+		"backup": "Exporter une sauvegarde",
+		"restore": "Restaurer une sauvegarde",
+		"backupDone": "Sauvegarde exportée.",
+		"backupError": "Export impossible. Réessayez.",
+		"restoreConfirmTitle": "Restaurer cette sauvegarde ?",
+		"restoreConfirmBody": "Vos données actuelles seront remplacées par celles du fichier. Cette action est définitive.",
+		"restoreDone": "Sauvegarde restaurée.",
+		"restoreError": "Fichier invalide ou illisible.",
+		"privacyTitle": "Vos données restent chez vous",
+		"privacyBody": "Vos entrées restent sur votre appareil. Seules les photos et notes que vous choisissez d'analyser sont envoyées, le temps de l'analyse, à notre service d'IA — qui ne les stocke pas. Vos données et leur export resteront gratuits pour toujours.",
+		"disclaimer": "Crohnicle est un outil de suivi personnel, pas un dispositif médical.",
+		"replayOnboarding": "Revoir l'introduction",
+		"version": "Version {{version}}"
+	}
+}

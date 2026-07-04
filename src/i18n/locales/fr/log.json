@@ -1,0 +1,123 @@
+{
+	"showMore": "Plus de détails",
+	"saveError": "Enregistrement impossible — vos données sont en brouillon, réessayez.",
+	"addMenu": {
+		"title": "Que voulez-vous noter ?",
+		"stool": "Selle rapide",
+		"symptoms": "Symptômes",
+		"mealManual": "Repas manuel",
+		"photo": "Photo repas",
+		"voice": "Note vocale",
+		"soon": "bientôt",
+		"pr4": "PR 4",
+		"pr5": "PR 5"
+	},
+	"meal": {
+		"title": "Repas",
+		"recents": "Récents",
+		"searchLabel": "Ajouter un aliment",
+		"searchPlaceholder": "Riz, poulet, café…",
+		"createCustom": "Créer « {{name}} »",
+		"items": "Aliments du repas",
+		"noItems": "Recherchez un aliment ou reprenez un repas récent.",
+		"nameLabel": "Nom du repas",
+		"namePlaceholder": "Nom du repas",
+		"time": "Heure",
+		"save": "Enregistrer",
+		"saved": "Repas enregistré.",
+		"cyclePortion": "Portion : {{size}}",
+		"remove": "Retirer {{name}}",
+		"moreTriggers": "+{{count}}",
+		"portion": {
+			"small": "S",
+			"medium": "M",
+			"large": "L"
+		},
+		"names": {
+			"breakfast": "Petit-déjeuner",
+			"lunch": "Déjeuner",
+			"snack": "Collation",
+			"dinner": "Dîner"
+		}
+	},
+	"triggers": {
+		"fodmap": "FODMAP",
+		"lactose": "Lactose",
+		"gluten": "Gluten",
+		"fried": "Friture",
+		"spicy": "Épicé",
+		"insoluble_fiber": "Fibres",
+		"alcohol": "Alcool",
+		"caffeine": "Caféine",
+		"additives": "Additifs"
+	},
+	"stool": {
+		"title": "Selle rapide",
+		"bristol": "Type de selle",
+		"bristolType": "Bristol type {{n}}",
+		"urgency": "Urgence",
+		"blood": "Sang",
+		"pain": "Douleur au moment",
+		"time": "Heure",
+		"save": "Enregistrer",
+		"saved": "Selle enregistrée.",
+		"urgencyLevels": {
+			"0": "Aucune",
+			"1": "Légère",
+			"2": "Modérée",
+			"3": "Forte"
+		},
+		"bloodLevels": {
+			"0": "Non",
+			"1": "Traces",
+			"2": "Visible"
+		},
+		"painLevels": {
+			"0": "Aucune",
+			"1": "Légère",
+			"2": "Modérée",
+			"3": "Forte"
+		}
+	},
+	"symptom": {
+		"title": "Symptômes",
+		"pain": "Douleur",
+		"painZone": "Localisation",
+		"fatigue": "Fatigue",
+		"wellbeing": "Forme générale",
+		"extraIntestinal": "Manifestations associées",
+		"notes": "Notes",
+		"notesPlaceholder": "Un mot sur votre journée (optionnel)",
+		"addNote": "Ajouter une note",
+		"save": "Enregistrer",
+		"saved": "Symptômes enregistrés.",
+		"levels": {
+			"0": "Aucune",
+			"1": "Légère",
+			"2": "Modérée",
+			"3": "Forte"
+		},
+		"wellbeingLevels": {
+			"0": "Très bien",
+			"1": "Un peu moins bien",
+			"2": "Mal",
+			"3": "Très mal",
+			"4": "Terrible"
+		},
+		"zones": {
+			"lower_right": "Ventre droit",
+			"lower_left": "Ventre gauche",
+			"lower_center": "Bas-ventre",
+			"diffuse": "Diffus"
+		},
+		"complications": {
+			"arthralgia": "Arthralgies",
+			"uveitis": "Uvéite",
+			"erythema_nodosum": "Érythème noueux",
+			"aphthae": "Aphtes",
+			"fissure": "Fissure",
+			"fistula": "Fistule",
+			"abscess": "Abcès"
+		}
+	}
+}

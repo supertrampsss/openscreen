@@ -1,0 +1,31 @@
+{
+	"tabTitle": "Emergency",
+	"card": {
+		"openButton": "EMERGENCY CARD",
+		"openHint": "Show it for urgent toilet access.",
+		"back": "Back",
+		"hint": "Show this screen to ask for toilet access."
+	},
+	"toilets": {
+		"title": "Nearby toilets",
+		"enable": "Find nearby toilets",
+		"privacy": "Your location is only used to query OpenStreetMap, anonymously. Nothing is stored or tracked.",
+		"loading": "Searching for nearby toilets…",
+		"empty": "No toilets found within 1.5 km.",
+		"denied": "Location denied. Enable it to see nearby toilets — the emergency card stays available above.",
+		"offline": "Could not reach the service. Check your connection.",
+		"retry": "Retry",
+		"cachedAt": "Last result {{minutes}} min ago",
+		"justNow": "Result just now",
+		"wheelchair": "Accessible",
+		"fee": "Paid",
+		"unnamed": "Public toilets"
+	},
+	"france": {
+		"title": "In France",
+		"afa": "afa Toilet Emergency Card",
+		"afaBody": "The official card recognised by many businesses.",
+		"iciToilettes": "Ici Toilettes",
+		"ouSontLesToilettes": "Où sont les toilettes"
+	}
+}

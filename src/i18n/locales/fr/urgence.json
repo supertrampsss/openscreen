@@ -1,0 +1,31 @@
+{
+	"tabTitle": "Urgence",
+	"card": {
+		"openButton": "CARTE D'URGENCE",
+		"openHint": "À montrer pour un accès urgent aux toilettes.",
+		"back": "Retour",
+		"hint": "Montrez cet écran pour demander un accès aux toilettes."
+	},
+	"toilets": {
+		"title": "Toilettes à proximité",
+		"enable": "Trouver les toilettes proches",
+		"privacy": "Votre position ne sert qu'à interroger OpenStreetMap, de façon anonyme. Rien n'est stocké ni suivi.",
+		"loading": "Recherche des toilettes proches…",
+		"empty": "Aucune toilette trouvée dans un rayon de 1,5 km.",
+		"denied": "Localisation refusée. Activez-la pour voir les toilettes proches — la carte d'urgence reste accessible ci-dessus.",
+		"offline": "Impossible de contacter le service. Vérifiez votre connexion.",
+		"retry": "Réessayer",
+		"cachedAt": "Dernier résultat il y a {{minutes}} min",
+		"justNow": "Résultat à l'instant",
+		"wheelchair": "Accessible",
+		"fee": "Payant",
+		"unnamed": "Toilettes publiques"
+	},
+	"france": {
+		"title": "En France",
+		"afa": "Carte Urgence Toilettes de l'afa",
+		"afaBody": "La carte officielle reconnue par de nombreux commerces.",
+		"iciToilettes": "Ici Toilettes",
+		"ouSontLesToilettes": "Où sont les toilettes"
+	}
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Validates that all locale translation files have identical key structures.
- * Compares zh-CN and es against the en baseline for every namespace.
+ * Compares en against the fr baseline for every namespace.
  *
  * Usage: node scripts/i18n-check.mjs
  */
@@ -10,8 +10,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const LOCALES_DIR = path.resolve("src/i18n/locales");
-const BASE_LOCALE = "en";
-const COMPARE_LOCALES = ["zh-CN", "es"];
+const BASE_LOCALE = "fr";
+const COMPARE_LOCALES = ["en"];
 
 function getKeys(obj, prefix = "") {
 	const keys = [];

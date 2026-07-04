@@ -1,0 +1,48 @@
+{
+	"hero": {
+		"title": "Crohnicle Premium",
+		"subtitle": "Support development and unlock unlimited photo analysis."
+	},
+	"commitment": "Your data and its export will stay free forever.",
+	"features": {
+		"title": "Included in Premium",
+		"unlimited": "Unlimited meal photo analyses",
+		"voice": "Voice note",
+		"insight": "Weekly AI insight",
+		"multiphoto": "Multiple photos per meal",
+		"soon": "soon"
+	},
+	"trial": "10 free photo analyses to try — no credit card.",
+	"plans": {
+		"title": "Choose your plan",
+		"monthlyLabel": "Monthly",
+		"monthlyPer": "per month",
+		"annualLabel": "Annual",
+		"annualPer": "per year",
+		"annualBadge": "−50%",
+		"annualEquivalent": "that's {{price}} / month"
+	},
+	"noCommitment": "No commitment — cancel in 2 taps.",
+	"continue": "Continue",
+	"restore": "Restore my purchases",
+	"refund": "A refund or a question? Write to a human: {{email}}",
+	"status": {
+		"free": "Free",
+		"premium": "Premium ✓"
+	},
+	"onboarding": {
+		"continueFree": "Continue for free",
+		"tryPremium": "Try Premium"
+	},
+	"settingsRow": "Crohnicle Premium",
+	"toasts": {
+		"purchased": "Premium activated. Thank you for your support!",
+		"restored": "Purchases restored.",
+		"restoreNone": "No purchase to restore.",
+		"error": "Purchase failed for now. Please try again.",
+		"cancelled": "Purchase cancelled.",
+		"mockOn": "Mock Premium enabled (dev).",
+		"mockOff": "Mock Premium disabled (dev)."
+	},
+	"close": "Close"
+}

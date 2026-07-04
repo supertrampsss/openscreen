@@ -1,29 +1,143 @@
 {
+	"appName": "Crohnicle",
+	"loading": "Preparing your journal…",
+	"tabs": {
+		"home": "Home",
+		"journal": "Journal",
+		"trends": "Trends",
+		"settings": "Settings",
+		"urgence": "Emergency"
+	},
 	"actions": {
-		"cancel": "Cancel",
 		"save": "Save",
-		"delete": "Delete",
+		"cancel": "Cancel",
 		"close": "Close",
-		"share": "Share",
-		"done": "Done",
-		"open": "Open",
-		"upload": "Upload",
-		"export": "Export",
-		"file": "File",
-		"edit": "Edit",
-		"view": "View",
-		"window": "Window",
-		"quit": "Quit",
-		"stopRecording": "Stop Recording"
+		"confirm": "Confirm",
+		"delete": "Delete",
+		"undo": "Undo"
 	},
-	"playback": {
-		"play": "Play",
-		"pause": "Pause",
-		"fullscreen": "Fullscreen",
-		"exitFullscreen": "Exit Fullscreen"
+	"time": {
+		"now": "Now",
+		"minus15": "−15 min",
+		"minus1h": "−1 h",
+		"other": "Other"
 	},
-	"locale": {
-		"name": "English",
-		"short": "EN"
+	"draft": "draft",
+	"quickActions": {
+		"stool": "Quick stool",
+		"photo": "Meal photo",
+		"urgence": "Emergency card"
+	},
+	"flare": {
+		"banner": "Flare mode — we're keeping it light. Your streak is protected.",
+		"toggleOn": "Turn on flare mode",
+		"toggleOff": "Turn off flare mode",
+		"sectionTitle": "Flare mode",
+		"sectionBody": "During a flare, the app lightens logging and protects your streak. Turn it on whenever you need it.",
+		"since": "Active since {{date}}"
+	},
+	"home": {
+		"greeting": "Hello",
+		"ringTitle": "Today",
+		"stoolsUnit_one": "stool",
+		"stoolsUnit_other": "stools",
+		"ringDone": "Day documented",
+		"ringEmpty": "Nothing yet",
+		"normalRange": "your normal: {{range}}",
+		"withinNormal": "A day within your normal",
+		"busier": "A busier day than usual",
+		"noNormalYet": "Keep documenting to establish your normal",
+		"scoreHbi": "Estimated HBI (7d)",
+		"scoreSccai": "Estimated SCCAI (7d)",
+		"scoreEmpty": "Not enough data yet for the chart",
+		"bloodPill": "Blood",
+		"urgencyPill": "Urgency",
+		"bloodLevels": {
+			"0": "No",
+			"1": "Traces",
+			"2": "Visible"
+		},
+		"miniPain": "Pain",
+		"miniEnergy": "Energy",
+		"miniMeals": "Meals",
+		"recentTitle": "Recently logged",
+		"recentEmpty": "Your first entries will show up here. Tap “+” to start.",
+		"addButton": "Add an entry"
+	},
+	"streak": {
+		"flameLabel": "Streak of {{count}} documented days",
+		"sheetTitle": "Your streak",
+		"count_one": "{{count}} documented day",
+		"count_other": "{{count}} documented days",
+		"body": "Your record grows with every day you note. A single action is enough.",
+		"zero": "Log an entry today to start your streak.",
+		"frozen": "Your streak is protected during your flare. ❄️",
+		"graceAvailable": "Missing one day this week won't break your streak.",
+		"graceUsed": "You've already caught up one day this week.",
+		"longest_one": "Longest streak: {{count}} day",
+		"longest_other": "Longest streak: {{count}} days"
+	},
+	"notifications": {
+		"sectionTitle": "Notifications",
+		"master": "Turn on reminders",
+		"masterHint": "Two per day at most. Everything is opt-in.",
+		"evening": "Evening reminder",
+		"eveningHint": "A gentle nudge if your day is empty.",
+		"weekly": "Weekly recap",
+		"weeklyHint": "Your week, on Sunday evening.",
+		"time": "Reminder time",
+		"unsupported": "Reminders are not available on the web.",
+		"treatment": "Treatment reminders",
+		"treatmentHint": "The day before and the day of the due date."
+	},
+	"notifCopy": {
+		"evening": {
+			"default": {
+				"title": "A moment for today?",
+				"body": "10 seconds to complete your day."
+			},
+			"forget": {
+				"title": "Quick reminder",
+				"body": "10 seconds to complete your day?"
+			},
+			"too_long": {
+				"title": "Just one thing",
+				"body": "One tap is enough: note only the essential."
+			},
+			"anxious": {
+				"title": "At your own pace",
+				"body": "If you feel like it, a word about your day. Otherwise, all good."
+			},
+			"doctor": {
+				"title": "For your next appointment",
+				"body": "A few seconds today enrich your record."
+			}
+		},
+		"weekly": {
+			"title": "Your week is ready",
+			"body": "Your recap is waiting in Trends."
+		},
+		"treatment": {
+			"title": "Treatment",
+			"body": "Time for your biologic. Injection done?",
+			"bodyNamed": "Time for your {{name}}. Dose taken?"
+		}
+	},
+	"settings": {
+		"title": "Settings",
+		"dataSection": "Your data",
+		"backup": "Export a backup",
+		"restore": "Restore a backup",
+		"backupDone": "Backup exported.",
+		"backupError": "Export failed. Please try again.",
+		"restoreConfirmTitle": "Restore this backup?",
+		"restoreConfirmBody": "Your current data will be replaced by the file's contents. This cannot be undone.",
+		"restoreDone": "Backup restored.",
+		"restoreError": "Invalid or unreadable file.",
+		"privacyTitle": "Your data stays with you",
+		"privacyBody": "Your entries stay on your device. Only the photos and notes you choose to analyze are sent, for the duration of the analysis, to our AI service — which does not store them. Your data and its export will stay free forever.",
+		"disclaimer": "Crohnicle is a personal tracking tool, not a medical device.",
+		"replayOnboarding": "Replay the intro",
+		"version": "Version {{version}}"
 	}
 }

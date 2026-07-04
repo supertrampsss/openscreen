@@ -1,0 +1,47 @@
+{
+	"draftName": "Analyzing…",
+	"card": {
+		"analyzing": "Analyzing…",
+		"failed": "Analysis failed",
+		"retry": "Retry",
+		"manual": "Enter manually",
+		"reanalyze": "Re-analyze"
+	},
+	"result": {
+		"title": "Analysis result",
+		"demoBanner": "Demo mode — AI proxy not configured",
+		"ingredients": "Detected ingredients",
+		"noFood": "No food detected in the photo.",
+		"addIngredient": "Add a food",
+		"addPlaceholder": "Rice, chicken, coffee…",
+		"createCustom": "Add “{{name}}”",
+		"correctLabel": "Fix results",
+		"correctPlaceholder": "e.g. it's couscous, not rice",
+		"correctButton": "Re-analyze",
+		"aiDisclosure": "For analysis, your photo is sent to our AI service, which does not keep it.",
+		"confirm": "Looks good",
+		"checkIngredients": "Check the ingredients",
+		"remove": "Remove {{name}}",
+		"cyclePortion": "Portion: {{size}}",
+		"trialRemaining_one": "{{count}} trial analysis left",
+		"trialRemaining_other": "{{count}} trial analyses left",
+		"confidence": {
+			"high": "High confidence",
+			"medium": "Medium confidence",
+			"low": "Low confidence"
+		}
+	},
+	"premium": {
+		"title": "Trial used up",
+		"body": "You've used your 10 free photo analyses. Unlimited analysis is coming with Premium.",
+		"see": "See Premium",
+		"phase": "Phase 6",
+		"manual": "Enter manually"
+	},
+	"errors": {
+		"network": "No connection. Retry or enter manually.",
+		"server": "Analysis unavailable right now. Retry.",
+		"refused": "Can't analyze this photo.",
+		"bad_image": "Unreadable photo. Take another one."
+	}
+}

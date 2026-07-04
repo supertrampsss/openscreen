@@ -1,15 +1,23 @@
-import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
+/**
+ * Vitest — suites du domaine PUR (§9) et des migrations SQL, exécutées sous Node
+ * (aucun mock RN nécessaire). Le futur `server/` (Worker IA, PR5) est déjà inclus.
+ */
 export default defineConfig({
-	test: {
-		globals: true,
-		environment: "node",
-		include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-	},
 	resolve: {
 		alias: {
-			"@": path.resolve(__dirname, "src"),
+			"@": fileURLToPath(new URL("./src", import.meta.url)),
 		},
+	},
+	test: {
+		environment: "node",
+		include: [
+			"src/domain/**/*.test.ts",
+			"src/db/**/*.test.ts",
+			"src/services/**/*.test.ts",
+			"server/**/*.test.ts",
+		],
 	},
 });
