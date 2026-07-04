@@ -1,0 +1,20 @@
+name = "crohnicle-ai-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+# Non-secret vars (tunable without a redeploy of secrets).
+[vars]
+TRIAL_QUOTA = "10"
+DAILY_CAP = "200"
+
+# KV namespace for quota counters + entitlement cache.
+# Create it once, then paste the real id here:
+#   wrangler kv namespace create QUOTA_KV
+[[kv_namespaces]]
+binding = "QUOTA_KV"
+id = "PLACEHOLDER_REPLACE_WITH_REAL_KV_ID"
+
+# Secrets are NOT stored here — set them out of band:
+#   wrangler secret put ANTHROPIC_API_KEY        (required)
+#   wrangler secret put REVENUECAT_API_KEY       (optional — enables entitlement checks)
+# See docs/DEPLOY_WORKER.md for the full walkthrough.
