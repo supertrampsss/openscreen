@@ -45,6 +45,16 @@ export default function TabsLayout() {
 					tabBarIcon: ({ color }) => <TabIcon emoji="📓" color={color} />,
 				}}
 			/>
+			{/* Urgence (§5.10) au CENTRE = accès pouce (ordre final §5.1 :
+			    Accueil · Journal · Urgence · Tendances · Réglages). */}
+			<Tabs.Screen
+				name="toilets"
+				options={{
+					title: t("tabs.urgence"),
+					tabBarButtonTestID: "tab-urgence",
+					tabBarIcon: ({ color }) => <TabIcon emoji="🧻" color={color} />,
+				}}
+			/>
 			<Tabs.Screen
 				name="trends"
 				options={{
@@ -59,15 +69,6 @@ export default function TabsLayout() {
 					title: t("tabs.settings"),
 					tabBarButtonTestID: "tab-settings",
 					tabBarIcon: ({ color }) => <TabIcon emoji="⚙️" color={color} />,
-				}}
-			/>
-			{/* Urgence (§5.10) : nouvel onglet — position finalisée à l'étape suivante. */}
-			<Tabs.Screen
-				name="toilets"
-				options={{
-					title: t("tabs.urgence"),
-					tabBarButtonTestID: "tab-urgence",
-					tabBarIcon: ({ color }) => <TabIcon emoji="🧻" color={color} />,
 				}}
 			/>
 		</Tabs>
