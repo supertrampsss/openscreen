@@ -41,6 +41,8 @@ export interface Env {
 	TRIAL_QUOTA?: string;
 	/** Subscriber anti-abuse daily cap (default 200). */
 	DAILY_CAP?: string;
+	/** Best-effort per-IP requests/minute cap (default 30). See ipRateLimited(). */
+	IP_RATE_LIMIT?: string;
 	/**
 	 * Dev/demo escape hatch: when "true", /parse-voice accepts requests without a
 	 * verified premium entitlement (used for local demos where RevenueCat is not
@@ -70,6 +72,14 @@ const CORS_HEADERS: Record<string, string> = {
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const RC_BASE = "https://api.revenuecat.com/v1/subscribers/";
 const MODEL = "claude-haiku-4-5";
+
+// Request-size ceilings (§6 abuse hardening). A base64 JPEG at our capture
+// resolution is well under 1.5M chars; a note/transcript/aggregate blob far
+// smaller. These reject obviously-abusive payloads before any upstream cost.
+const MAX_IMAGE_CHARS = 1_500_000;
+const MAX_NOTE_CHARS = 500;
+const MAX_TRANSCRIPT_CHARS = 4_000;
+const MAX_AGGREGATES_CHARS = 8_192;
 
 /** JSON response with CORS + structured body. */
 function json(body: unknown, status = 200): Response {
@@ -245,6 +255,13 @@ async function handleAnalyze(request: Request, env: Env): Promise<Response> {
 	if (images.length < 1 || images.length > 2) {
 		return json({ error: "invalid_images", detail: "expected 1 or 2 base64 JPEG images" }, 400);
 	}
+	// Size ceilings (§6): reject abusive payloads before any upstream cost.
+	if (images.some((img) => img.length > MAX_IMAGE_CHARS)) {
+		return json({ error: "payload_too_large" }, 413);
+	}
+	if (typeof body.userNote === "string" && body.userNote.length > MAX_NOTE_CHARS) {
+		return json({ error: "payload_too_large" }, 413);
+	}
 	if (!deviceId) {
 		return json({ error: "missing_device_id" }, 400);
 	}
@@ -306,6 +323,32 @@ function log(route: string, deviceId: string, status: number, started: number): 
 	);
 }
 
+/**
+ * Best-effort per-IP rate limit (§6 abuse hardening). Keyed by
+ * `ip:{cf-connecting-ip}:{minute}` in KV with a 120s TTL; over `IP_RATE_LIMIT`
+ * (default 30/min) → 429 rate_limited.
+ *
+ * BEST-EFFORT ONLY: KV get→put is NOT atomic, so under a concurrent burst the
+ * counter can undercount and a few extra requests slip through. This is a cheap
+ * first line of defence, NOT the real protection — a Cloudflare Rate Limiting
+ * rule per IP on these routes is mandatory in production (see docs/DEPLOY_WORKER.md).
+ * When the cf-connecting-ip header is absent (dev/tests), all traffic shares the
+ * "unknown" bucket and is still limited.
+ */
+async function ipRateLimited(request: Request, env: Env): Promise<Response | null> {
+	const limit = toInt(env.IP_RATE_LIMIT ?? null, 30);
+	const ip = request.headers.get("cf-connecting-ip") || "unknown";
+	const minute = Math.floor(Date.now() / 60_000);
+	const key = `ip:${ip}:${minute}`;
+	const used = toInt(await env.QUOTA_KV.get(key), 0);
+	if (used >= limit) {
+		return json({ error: "rate_limited" }, 429);
+	}
+	// Non-atomic increment (best-effort) — see the doc comment above.
+	await env.QUOTA_KV.put(key, String(used + 1), { expirationTtl: 120 });
+	return null;
+}
+
 // ---------------------------------------------------------------------------
 // /parse-voice (§6.1, §7) — on-device STT text → structured diary entries.
 // PREMIUM ONLY: no trial quota. Text only; audio is NEVER uploaded.
@@ -323,7 +366,12 @@ interface VoiceBody {
  * `DEMO_ALLOW_TRIAL` opens it for local demos where RevenueCat is not configured.
  */
 async function premiumAllowed(env: Env, token: string | undefined): Promise<boolean> {
-	if (env.DEMO_ALLOW_TRIAL === "true") return true;
+	if (env.DEMO_ALLOW_TRIAL === "true") {
+		// Loud on EVERY accepted request: this bypasses the premium check without a
+		// verified entitlement token. Must never be set in production (§8).
+		console.warn("DEMO_ALLOW_TRIAL active — never use in production");
+		return true;
+	}
 	if (env.REVENUECAT_API_KEY && token) return isPremium(env, token);
 	return false;
 }
@@ -346,6 +394,10 @@ async function handleParseVoice(request: Request, env: Env): Promise<Response> {
 
 	if (!transcript) {
 		return json({ error: "empty_transcript" }, 400);
+	}
+	// Size ceiling (§6): reject abusive transcripts before any upstream cost.
+	if (transcript.length > MAX_TRANSCRIPT_CHARS) {
+		return json({ error: "payload_too_large" }, 413);
 	}
 	if (!deviceId) {
 		return json({ error: "missing_device_id" }, 400);
@@ -427,6 +479,10 @@ async function handleWeeklyInsight(request: Request, env: Env): Promise<Response
 	if (!aggregates || typeof aggregates !== "object") {
 		return json({ error: "missing_aggregates" }, 400);
 	}
+	// Size ceiling (§6): reject abusive aggregate blobs before any upstream cost.
+	if (JSON.stringify(aggregates).length > MAX_AGGREGATES_CHARS) {
+		return json({ error: "payload_too_large" }, 413);
+	}
 	if (!deviceId) {
 		return json({ error: "missing_device_id" }, 400);
 	}
@@ -487,6 +543,16 @@ export default {
 			return new Response(null, { status: 204, headers: CORS_HEADERS });
 		}
 		const url = new URL(request.url);
+		const isApiRoute =
+			request.method === "POST" &&
+			(url.pathname === "/analyze-meal" ||
+				url.pathname === "/parse-voice" ||
+				url.pathname === "/weekly-insight");
+		if (isApiRoute) {
+			// Best-effort per-IP rate limit BEFORE any parsing/upstream work.
+			const limited = await ipRateLimited(request, env);
+			if (limited) return limited;
+		}
 		if (request.method === "POST" && url.pathname === "/analyze-meal") {
 			return handleAnalyze(request, env);
 		}

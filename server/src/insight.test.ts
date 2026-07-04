@@ -129,6 +129,20 @@ describe("/weekly-insight", () => {
 		expect(body.messages[0].content[0].text).toContain("French");
 	});
 
+	it("413s payload_too_large when serialized aggregates exceed 8192 chars", async () => {
+		const fetchMock = vi.fn(async () => anthropicResponse("end_turn"));
+		vi.stubGlobal("fetch", fetchMock);
+		const bloated = { ...AGG, junk: "a".repeat(8200) };
+		const r = await worker.fetch(
+			makeReq({ aggregates: bloated, lang: "fr", deviceId: "d" }),
+			makeEnv({ DEMO_ALLOW_TRIAL: "true" }),
+			ctx,
+		);
+		expect(r.status).toBe(413);
+		expect(await r.json()).toEqual({ error: "payload_too_large" });
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+
 	it("rejects a missing aggregates object", async () => {
 		const fetchMock = vi.fn(async () => anthropicResponse("end_turn"));
 		vi.stubGlobal("fetch", fetchMock);

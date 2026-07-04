@@ -165,6 +165,34 @@ describe("/parse-voice access control", () => {
 		expect(fetchMock).not.toHaveBeenCalled();
 	});
 
+	it("413s payload_too_large when the transcript exceeds 4000 chars", async () => {
+		const fetchMock = vi.fn(async () => anthropicResponse("end_turn"));
+		vi.stubGlobal("fetch", fetchMock);
+		const r = await worker.fetch(
+			makeReq({ transcript: "a".repeat(4001), deviceId: "d" }),
+			makeEnv({ DEMO_ALLOW_TRIAL: "true" }),
+			ctx,
+		);
+		expect(r.status).toBe(413);
+		expect(await r.json()).toEqual({ error: "payload_too_large" });
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+
+	it("warns loudly on every demo-hatch acceptance without a token", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async () => anthropicResponse("end_turn")),
+		);
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+		const r = await worker.fetch(
+			makeReq({ transcript: "3 selles ce matin", deviceId: "d" }),
+			makeEnv({ DEMO_ALLOW_TRIAL: "true" }),
+			ctx,
+		);
+		expect(r.status).toBe(200);
+		expect(warn).toHaveBeenCalledWith("DEMO_ALLOW_TRIAL active — never use in production");
+	});
+
 	it("sends the frozen cached voice prompt and text-only content", async () => {
 		const fetchMock = vi.fn<(input: unknown, init: { body: string }) => Promise<Response>>(
 			async () => anthropicResponse("end_turn"),

@@ -190,6 +190,70 @@ describe("/analyze-meal Anthropic handling", () => {
 	});
 });
 
+describe("/analyze-meal size limits", () => {
+	it("413s payload_too_large when an image exceeds the char ceiling", async () => {
+		const fetchMock = vi.fn(async () => anthropicResponse("end_turn"));
+		vi.stubGlobal("fetch", fetchMock);
+		const huge = "a".repeat(1_500_001);
+		const r = await worker.fetch(makeReq({ images: [huge], deviceId: "d" }), makeEnv(), ctx);
+		expect(r.status).toBe(413);
+		expect(await r.json()).toEqual({ error: "payload_too_large" });
+		expect(fetchMock).not.toHaveBeenCalled(); // rejected before any upstream cost
+	});
+
+	it("413s payload_too_large when userNote exceeds 500 chars", async () => {
+		const fetchMock = vi.fn(async () => anthropicResponse("end_turn"));
+		vi.stubGlobal("fetch", fetchMock);
+		const r = await worker.fetch(
+			makeReq({ images: [IMG], deviceId: "d", userNote: "x".repeat(501) }),
+			makeEnv(),
+			ctx,
+		);
+		expect(r.status).toBe(413);
+		expect(await r.json()).toEqual({ error: "payload_too_large" });
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+});
+
+describe("per-IP rate limit (best-effort)", () => {
+	function reqWithIp(ip: string | null): Request {
+		const headers: Record<string, string> = { "Content-Type": "application/json" };
+		if (ip) headers["cf-connecting-ip"] = ip;
+		return new Request("https://proxy.example/analyze-meal", {
+			method: "POST",
+			headers,
+			body: JSON.stringify({ images: [IMG], deviceId: "d" }),
+		});
+	}
+
+	it("429s rate_limited past IP_RATE_LIMIT for a given IP", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async () => anthropicResponse("end_turn")),
+		);
+		const env = makeEnv({ IP_RATE_LIMIT: "2" });
+		expect((await worker.fetch(reqWithIp("1.2.3.4"), env, ctx)).status).toBe(200);
+		expect((await worker.fetch(reqWithIp("1.2.3.4"), env, ctx)).status).toBe(200);
+		const r3 = await worker.fetch(reqWithIp("1.2.3.4"), env, ctx);
+		expect(r3.status).toBe(429);
+		expect(await r3.json()).toEqual({ error: "rate_limited" });
+		// A different IP is unaffected (independent bucket).
+		expect((await worker.fetch(reqWithIp("5.6.7.8"), env, ctx)).status).toBe(200);
+	});
+
+	it("limits the shared 'unknown' bucket when the header is absent (dev/tests)", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async () => anthropicResponse("end_turn")),
+		);
+		const env = makeEnv({ IP_RATE_LIMIT: "1" });
+		expect((await worker.fetch(reqWithIp(null), env, ctx)).status).toBe(200);
+		const r2 = await worker.fetch(reqWithIp(null), env, ctx);
+		expect(r2.status).toBe(429);
+		expect(await r2.json()).toEqual({ error: "rate_limited" });
+	});
+});
+
 describe("/analyze-meal transport", () => {
 	it("handles CORS preflight", async () => {
 		const r = await worker.fetch(

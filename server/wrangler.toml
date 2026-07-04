@@ -6,6 +6,9 @@ compatibility_date = "2024-09-23"
 [vars]
 TRIAL_QUOTA = "10"
 DAILY_CAP = "200"
+# Best-effort per-IP requests/minute (defence-in-depth). The REAL protection is a
+# Cloudflare Rate Limiting rule per IP — see docs/DEPLOY_WORKER.md §5.
+IP_RATE_LIMIT = "30"
 
 # KV namespace for quota counters + entitlement cache.
 # Create it once, then paste the real id here:

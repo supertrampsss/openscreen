@@ -64,10 +64,11 @@ only bounded by `DAILY_CAP` (anti-abuse, 200/day).
 
 The tunables live in `[vars]` of `wrangler.toml` and can be changed without a secret redeploy:
 
-| var           | default | meaning                                   |
-| ------------- | ------- | ----------------------------------------- |
-| `TRIAL_QUOTA` | `10`    | free photos per anonymous device          |
-| `DAILY_CAP`   | `200`   | per-device daily ceiling for subscribers  |
+| var             | default | meaning                                                    |
+| --------------- | ------- | ---------------------------------------------------------- |
+| `TRIAL_QUOTA`   | `10`    | free photos per anonymous device                           |
+| `DAILY_CAP`     | `200`   | per-device daily ceiling for subscribers                   |
+| `IP_RATE_LIMIT` | `30`    | best-effort per-IP requests/minute (see §5 — not the real guard) |
 
 ---
 
@@ -128,11 +129,57 @@ Responses:
 | ------ | --------------------------------------------- | --------------------------------- |
 | `200`  | `{ result, remaining, cached }`               | success (`remaining` = trial left, `null` for subscribers) |
 | `400`  | `{ error: "invalid_images" \| "missing_device_id" \| "invalid_json" }` | bad request |
+| `413`  | `{ error: "payload_too_large" }`              | image > 1.5M chars, `userNote` > 500, `transcript` > 4000, or serialized `aggregates` > 8192 |
 | `422`  | `{ error: "refused" }`                        | model declined (`stop_reason: refusal`) |
 | `429`  | `{ error: "trial_exhausted" \| "daily_cap", remaining: 0 }` | quota hit |
+| `429`  | `{ error: "rate_limited" }`                   | best-effort per-IP cap exceeded (`IP_RATE_LIMIT`/min) |
 | `502`  | `{ error: "upstream_error" \| "parse_error" \| "empty_result" }` | Anthropic call failed |
 
 Images are **never stored**; logs contain only status/duration/truncated deviceId.
+
+---
+
+## 5. Durcissement obligatoire en production
+
+The Worker ships two in-process defences (per-IP `IP_RATE_LIMIT` best-effort
+counter + per-request size ceilings). **The KV rate limit is best-effort only:**
+KV `get`→`put` is not atomic, so a concurrent burst can slip a few extra requests
+through. It is a cheap first line, **not** the real protection. Before exposing the
+Worker publicly, do all three:
+
+### ① Add a Cloudflare Rate Limiting rule per IP (THE real guard)
+
+In the Cloudflare dashboard → your Worker's zone → **Security → WAF → Rate
+limiting rules**, add one rule covering the three API routes:
+
+- **When incoming requests match:** `URI Path` `is in`
+  `/analyze-meal /parse-voice /weekly-insight`
+- **Characteristics (counting key):** `IP`
+- **Rate:** `30` requests per `1 minute` (align with `IP_RATE_LIMIT`)
+- **Then:** `Block` for `1 minute`, response `429`
+
+This edge rule runs before the Worker executes, is atomic, and is what actually
+protects your Anthropic spend. The in-Worker counter is defence-in-depth only.
+
+### ② Verify `DEMO_ALLOW_TRIAL` is NOT set
+
+`DEMO_ALLOW_TRIAL=true` opens the premium-only routes (`/parse-voice`,
+`/weekly-insight`) to **anyone, without a verified entitlement** — it exists only
+for local demos. The Worker logs `DEMO_ALLOW_TRIAL active — never use in
+production` on every accepted request when it is on. Confirm it is unset:
+
+```bash
+cd server
+npx wrangler deployments list       # inspect the active config
+# ensure no [vars] DEMO_ALLOW_TRIAL and no secret of that name
+```
+
+### ③ Set budget alerts in the Anthropic Console
+
+Even with the guards above, cap the blast radius of a leaked key or a determined
+abuser: in the [Anthropic Console](https://console.anthropic.com/) → **Billing /
+Usage limits**, set a monthly spend limit and email alert thresholds so runaway
+usage pages you instead of surprising you on the invoice.
 
 ---
 
