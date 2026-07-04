@@ -11,6 +11,45 @@
 		"pr4": "PR 4",
 		"pr5": "PR 5"
 	},
+	"meal": {
+		"title": "Repas",
+		"recents": "Récents",
+		"searchLabel": "Ajouter un aliment",
+		"searchPlaceholder": "Riz, poulet, café…",
+		"createCustom": "Créer « {{name}} »",
+		"items": "Aliments du repas",
+		"noItems": "Recherchez un aliment ou reprenez un repas récent.",
+		"nameLabel": "Nom du repas",
+		"namePlaceholder": "Nom du repas",
+		"time": "Heure",
+		"save": "Enregistrer",
+		"saved": "Repas enregistré.",
+		"cyclePortion": "Portion : {{size}}",
+		"remove": "Retirer {{name}}",
+		"moreTriggers": "+{{count}}",
+		"portion": {
+			"small": "S",
+			"medium": "M",
+			"large": "L"
+		},
+		"names": {
+			"breakfast": "Petit-déjeuner",
+			"lunch": "Déjeuner",
+			"snack": "Collation",
+			"dinner": "Dîner"
+		}
+	},
+	"triggers": {
+		"fodmap": "FODMAP",
+		"lactose": "Lactose",
+		"gluten": "Gluten",
+		"fried": "Friture",
+		"spicy": "Épicé",
+		"insoluble_fiber": "Fibres",
+		"alcohol": "Alcool",
+		"caffeine": "Caféine",
+		"additives": "Additifs"
+	},
 	"stool": {
 		"title": "Selle rapide",
 		"bristol": "Type de selle",

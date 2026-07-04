@@ -6,7 +6,8 @@
 	"yesterday": "Hier",
 	"kinds": {
 		"stool": "Selle",
-		"symptom": "Symptômes"
+		"symptom": "Symptômes",
+		"meal": "Repas"
 	},
 	"badges": {
 		"stools_one": "{{count}} selle",

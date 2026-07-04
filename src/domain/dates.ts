@@ -94,6 +94,17 @@ export function groupByLocalDate<T extends { localDate: string }>(items: T[]): [
 	return [...map.entries()].sort((a, b) => (a[0] < b[0] ? 1 : a[0] > b[0] ? -1 : 0));
 }
 
+/** Heure locale (0-23) d'un instant dans une timezone (pour les défauts horaires). */
+export function localHourInTz(epochMs: number, tz: string): number {
+	const h = new Intl.DateTimeFormat("en-GB", {
+		timeZone: tz,
+		hour: "2-digit",
+		hour12: false,
+	}).format(new Date(epochMs));
+	// en-GB rend '00'..'23' (parfois '24' à minuit selon l'implémentation → % 24).
+	return Number.parseInt(h, 10) % 24;
+}
+
 /** Heure locale 'HH:MM' d'un instant dans une timezone. */
 export function formatClock(epochMs: number, tz: string): string {
 	return new Intl.DateTimeFormat("fr-FR", {

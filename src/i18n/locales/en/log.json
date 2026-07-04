@@ -11,6 +11,45 @@
 		"pr4": "PR 4",
 		"pr5": "PR 5"
 	},
+	"meal": {
+		"title": "Meal",
+		"recents": "Recent",
+		"searchLabel": "Add a food",
+		"searchPlaceholder": "Rice, chicken, coffee…",
+		"createCustom": "Create “{{name}}”",
+		"items": "Meal items",
+		"noItems": "Search for a food or re-log a recent meal.",
+		"nameLabel": "Meal name",
+		"namePlaceholder": "Meal name",
+		"time": "Time",
+		"save": "Save",
+		"saved": "Meal saved.",
+		"cyclePortion": "Portion: {{size}}",
+		"remove": "Remove {{name}}",
+		"moreTriggers": "+{{count}}",
+		"portion": {
+			"small": "S",
+			"medium": "M",
+			"large": "L"
+		},
+		"names": {
+			"breakfast": "Breakfast",
+			"lunch": "Lunch",
+			"snack": "Snack",
+			"dinner": "Dinner"
+		}
+	},
+	"triggers": {
+		"fodmap": "FODMAP",
+		"lactose": "Lactose",
+		"gluten": "Gluten",
+		"fried": "Fried",
+		"spicy": "Spicy",
+		"insoluble_fiber": "Fiber",
+		"alcohol": "Alcohol",
+		"caffeine": "Caffeine",
+		"additives": "Additives"
+	},
 	"stool": {
 		"title": "Quick stool",
 		"bristol": "Stool type",

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { DraftSheet } from "@/components/ui";
 import { useTheme } from "@/theme";
 
-export type AddAction = "stool" | "symptom";
+export type AddAction = "stool" | "symptom" | "meal";
 
 interface AddSheetProps {
 	visible: boolean;
@@ -21,7 +21,7 @@ interface Row {
 const ROWS: Row[] = [
 	{ emoji: "💩", labelKey: "addMenu.stool", action: "stool" },
 	{ emoji: "🤕", labelKey: "addMenu.symptoms", action: "symptom" },
-	{ emoji: "🍽️", labelKey: "addMenu.mealManual", badgeKey: "addMenu.pr4" },
+	{ emoji: "🍽️", labelKey: "addMenu.mealManual", action: "meal" },
 	{ emoji: "📸", labelKey: "addMenu.photo", badgeKey: "addMenu.pr5" },
 	{ emoji: "🎙️", labelKey: "addMenu.voice", badgeKey: "addMenu.soon" },
 ];

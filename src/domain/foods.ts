@@ -83,6 +83,31 @@ export function normalizeFoodName(input: string): string {
 /** Motif d'un `name_normalized` valide (minuscules, chiffres, espaces simples). */
 export const NORMALIZED_NAME_PATTERN = /^[a-z0-9]+( [a-z0-9]+)*$/;
 
+/**
+ * Coerce une valeur `triggers` stockée (json, potentiellement partielle/nulle)
+ * vers un objet complet en comblant les manques par le défaut neutre.
+ */
+export function coerceTriggers(value: unknown): FoodTriggers {
+	const base = neutralTriggers();
+	if (value && typeof value === "object") {
+		const v = value as Partial<FoodTriggers>;
+		return {
+			fodmap: FODMAP_LEVELS.includes(v.fodmap as FodmapLevel)
+				? (v.fodmap as FodmapLevel)
+				: base.fodmap,
+			lactose: v.lactose ?? base.lactose,
+			gluten: v.gluten ?? base.gluten,
+			fried: v.fried ?? base.fried,
+			spicy: v.spicy ?? base.spicy,
+			insoluble_fiber: v.insoluble_fiber ?? base.insoluble_fiber,
+			alcohol: v.alcohol ?? base.alcohol,
+			caffeine: v.caffeine ?? base.caffeine,
+			additives: v.additives ?? base.additives,
+		};
+	}
+	return base;
+}
+
 /** Vrai si la valeur respecte intégralement le schéma des 9 attributs. */
 export function isValidTriggers(value: unknown): value is FoodTriggers {
 	if (!value || typeof value !== "object") return false;

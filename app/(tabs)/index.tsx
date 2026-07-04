@@ -37,11 +37,17 @@ import {
 } from "@/domain/scoreSeries";
 import { FlareBanner } from "@/features/flare/FlareBanner";
 import { AddSheet } from "@/features/log/AddSheet";
+import { MealSheet } from "@/features/log/MealSheet";
+import { MealTriggerChips } from "@/features/log/MealTriggerChips";
 import { StoolSheet } from "@/features/log/StoolSheet";
 import { SymptomSheet } from "@/features/log/SymptomSheet";
 import { StreakFlame } from "@/features/streak/StreakFlame";
 import { listSince as listExtrasSince } from "@/repositories/dailyExtrasRepo";
-import { listCommittedSince as listMealsSince } from "@/repositories/mealRepo";
+import {
+	listCommittedSince as listMealsSince,
+	listRecentCommittedWithItems,
+	type MealWithItems,
+} from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import { listCommittedSince, listRecent } from "@/repositories/symptomRepo";
 import { useStreak } from "@/services/streakService";
@@ -49,6 +55,7 @@ import { useTheme } from "@/theme";
 
 interface HomeData {
 	recent: SymptomEntry[];
+	recentMeals: MealWithItems[];
 	documentedDates: string[];
 	stoolsToday: number;
 	ringProgress: number;
@@ -65,6 +72,7 @@ interface HomeData {
 
 const EMPTY: HomeData = {
 	recent: [],
+	recentMeals: [],
 	documentedDates: [],
 	stoolsToday: 0,
 	ringProgress: 0,
@@ -91,7 +99,9 @@ export default function HomeScreen() {
 	const [addOpen, setAddOpen] = useState(false);
 	const [stoolOpen, setStoolOpen] = useState(false);
 	const [symptomOpen, setSymptomOpen] = useState(false);
+	const [mealOpen, setMealOpen] = useState(false);
 	const [resume, setResume] = useState<SymptomEntry | null>(null);
+	const [resumeMeal, setResumeMeal] = useState<MealWithItems | null>(null);
 	const [heroPage, setHeroPage] = useState(0);
 
 	const today = nowEntryTimestamp().localDate;
@@ -105,7 +115,8 @@ export default function HomeScreen() {
 			listExtrasSince(since7),
 			getProfile(),
 			listRecent(25),
-		]).then(([committed, meals, extras, profile, recent]) => {
+			listRecentCommittedWithItems(10),
+		]).then(([committed, meals, extras, profile, recent, recentMeals]) => {
 			const last7 = last7LocalDates();
 			const entriesByDate = groupEntriesByDate(committed as ScoreDayEntry[]);
 			const extrasByDate = new Map(extras.map((e) => [e.localDate, e]));
@@ -140,6 +151,7 @@ export default function HomeScreen() {
 
 			setData({
 				recent,
+				recentMeals,
 				documentedDates: [...stoolByDate.keys()],
 				stoolsToday,
 				ringProgress: thirds / 3,
@@ -168,6 +180,25 @@ export default function HomeScreen() {
 		reloadStreak();
 	}, [reload, reloadStreak]);
 
+	// Flux « Récemment loggé » : entrées symptômes + repas fusionnés par heure.
+	type FeedItem =
+		| { kind: "entry"; occurredAt: number; entry: SymptomEntry }
+		| { kind: "meal"; occurredAt: number; meal: MealWithItems };
+	const recentFeed: FeedItem[] = [
+		...data.recent.map((entry) => ({
+			kind: "entry" as const,
+			occurredAt: entry.occurredAt,
+			entry,
+		})),
+		...data.recentMeals.map((meal) => ({
+			kind: "meal" as const,
+			occurredAt: meal.meal.occurredAt,
+			meal,
+		})),
+	]
+		.sort((a, b) => b.occurredAt - a.occurredAt)
+		.slice(0, 15);
+
 	const documentedSet = new Set(data.documentedDates);
 	const weekDays: WeekDay[] = last7LocalDates().map((date) => {
 		const { label, dayNumber } = describeLocalDate(date);
@@ -186,11 +217,20 @@ export default function HomeScreen() {
 		else setSymptomOpen(true);
 	};
 
-	const pickAction = (action: "stool" | "symptom") => {
+	const openMeal = (meal: MealWithItems) => {
+		setResumeMeal(meal);
+		setMealOpen(true);
+	};
+
+	const pickAction = (action: "stool" | "symptom" | "meal") => {
 		setAddOpen(false);
 		setResume(null);
 		if (action === "stool") setStoolOpen(true);
-		else setSymptomOpen(true);
+		else if (action === "symptom") setSymptomOpen(true);
+		else {
+			setResumeMeal(null);
+			setMealOpen(true);
+		}
 	};
 
 	const goToDay = (date: string) => {
@@ -342,7 +382,7 @@ export default function HomeScreen() {
 				<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
 					{t("home.recentTitle")}
 				</Text>
-				{data.recent.length === 0 ? (
+				{recentFeed.length === 0 ? (
 					<Card>
 						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 							{t("home.recentEmpty")}
@@ -350,9 +390,17 @@ export default function HomeScreen() {
 					</Card>
 				) : (
 					<View style={{ gap: theme.spacing.sm }}>
-						{data.recent.map((entry) => (
-							<RecentRow key={entry.id} entry={entry} onPress={() => openFor(entry)} />
-						))}
+						{recentFeed.map((f) =>
+							f.kind === "entry" ? (
+								<RecentRow key={f.entry.id} entry={f.entry} onPress={() => openFor(f.entry)} />
+							) : (
+								<MealRecentRow
+									key={f.meal.meal.id}
+									meal={f.meal}
+									onPress={() => openMeal(f.meal)}
+								/>
+							),
+						)}
 					</View>
 				)}
 			</ScrollView>
@@ -384,7 +432,34 @@ export default function HomeScreen() {
 				onSaved={onLogged}
 				resume={resume?.kind === "symptom" ? resume : null}
 			/>
+			<MealSheet
+				visible={mealOpen}
+				onClose={() => setMealOpen(false)}
+				onSaved={onLogged}
+				resume={resumeMeal}
+			/>
 		</View>
+	);
+}
+
+function MealRecentRow({ meal, onPress }: { meal: MealWithItems; onPress: () => void }) {
+	const { t } = useTranslation(["common", "journal", "log"]);
+	const theme = useTheme();
+	return (
+		<Pressable accessibilityRole="button" onPress={onPress}>
+			<Card padding="md" style={styles.recentCard}>
+				<Text style={styles.recentEmoji}>🍽️</Text>
+				<View style={styles.recentBody}>
+					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+						{meal.meal.name ?? t("journal:kinds.meal")}
+					</Text>
+					<MealTriggerChips items={meal.items} max={3} />
+					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+						{formatClock(meal.meal.occurredAt, meal.meal.tz)}
+					</Text>
+				</View>
+			</Card>
+		</Pressable>
 	);
 }
 

@@ -16,17 +16,31 @@ import {
 } from "@/domain/dates";
 import { FlareBanner } from "@/features/flare/FlareBanner";
 import { FlareToggle } from "@/features/flare/FlareToggle";
+import { MealSheet } from "@/features/log/MealSheet";
+import { MealTriggerChips } from "@/features/log/MealTriggerChips";
 import { StoolSheet } from "@/features/log/StoolSheet";
 import { SymptomSheet } from "@/features/log/SymptomSheet";
+import {
+	listRecentCommittedWithItems,
+	type MealWithItems,
+	restore as restoreMeal,
+	softDelete as softDeleteMeal,
+} from "@/repositories/mealRepo";
 import { listAll, restore, softDelete } from "@/repositories/symptomRepo";
 import { useTheme } from "@/theme";
+
+/** Élément unifié du journal : entrée symptôme/selle OU repas. */
+type JournalItem =
+	| { kind: "entry"; id: string; localDate: string; occurredAt: number; entry: SymptomEntry }
+	| { kind: "meal"; id: string; localDate: string; occurredAt: number; meal: MealWithItems };
 
 interface Section {
 	title: string;
 	localDate: string;
 	stools: number;
 	worstPain: number | null;
-	data: SymptomEntry[];
+	meals: number;
+	data: JournalItem[];
 }
 
 export default function JournalScreen() {
@@ -36,23 +50,45 @@ export default function JournalScreen() {
 	const snackbar = useSnackbar();
 
 	const { date: anchorDate } = useLocalSearchParams<{ date?: string }>();
-	const listRef = useRef<SectionList<SymptomEntry, Section>>(null);
+	const listRef = useRef<SectionList<JournalItem, Section>>(null);
 
 	const [sections, setSections] = useState<Section[]>([]);
 	const [resume, setResume] = useState<SymptomEntry | null>(null);
+	const [resumeMeal, setResumeMeal] = useState<MealWithItems | null>(null);
 	const [stoolOpen, setStoolOpen] = useState(false);
 	const [symptomOpen, setSymptomOpen] = useState(false);
+	const [mealOpen, setMealOpen] = useState(false);
 
 	const today = nowEntryTimestamp().localDate;
 	const yesterday = localDateDaysAgo(1);
 
 	const reload = useCallback(() => {
-		listAll(500).then((entries) => {
-			const grouped = groupByLocalDate(entries);
+		Promise.all([listAll(500), listRecentCommittedWithItems(500)]).then(([entries, meals]) => {
+			const feed: JournalItem[] = [
+				...entries.map((entry) => ({
+					kind: "entry" as const,
+					id: entry.id,
+					localDate: entry.localDate,
+					occurredAt: entry.occurredAt,
+					entry,
+				})),
+				...meals.map((meal) => ({
+					kind: "meal" as const,
+					id: meal.meal.id,
+					localDate: meal.meal.localDate,
+					occurredAt: meal.meal.occurredAt,
+					meal,
+				})),
+			];
+			const grouped = groupByLocalDate(feed);
 			setSections(
-				grouped.map(([localDate, dayEntries]) => {
-					const stools = dayEntries.filter((e) => e.kind === "stool").length;
-					const pains = dayEntries.map((e) => e.pain ?? 0);
+				grouped.map(([localDate, dayItems]) => {
+					const sorted = [...dayItems].sort((a, b) => b.occurredAt - a.occurredAt);
+					const stools = sorted.filter(
+						(i) => i.kind === "entry" && i.entry.kind === "stool",
+					).length;
+					const mealCount = sorted.filter((i) => i.kind === "meal").length;
+					const pains = sorted.map((i) => (i.kind === "entry" ? (i.entry.pain ?? 0) : 0));
 					const worstPain = pains.length > 0 ? Math.max(...pains) : null;
 					const label =
 						localDate === today
@@ -60,7 +96,14 @@ export default function JournalScreen() {
 							: localDate === yesterday
 								? t("yesterday")
 								: formatDate(localDate);
-					return { title: label, localDate, stools, worstPain, data: dayEntries };
+					return {
+						title: label,
+						localDate,
+						stools,
+						worstPain,
+						meals: mealCount,
+						data: sorted,
+					};
 				}),
 			);
 		});
@@ -72,8 +115,6 @@ export default function JournalScreen() {
 		}, [reload]),
 	);
 
-	// Ancrage : quand on arrive depuis la WeekStrip (param `date`), on défile
-	// jusqu'au jour concerné une fois les sections chargées. Best-effort.
 	useEffect(() => {
 		if (!anchorDate || sections.length === 0) return;
 		const index = sections.findIndex((s) => s.localDate === anchorDate);
@@ -93,13 +134,18 @@ export default function JournalScreen() {
 		return () => clearTimeout(id);
 	}, [anchorDate, sections]);
 
-	const openFor = (entry: SymptomEntry) => {
+	const openEntry = (entry: SymptomEntry) => {
 		setResume(entry);
 		if (entry.kind === "stool") setStoolOpen(true);
 		else setSymptomOpen(true);
 	};
 
-	const remove = async (entry: SymptomEntry) => {
+	const openMeal = (meal: MealWithItems) => {
+		setResumeMeal(meal);
+		setMealOpen(true);
+	};
+
+	const removeEntry = async (entry: SymptomEntry) => {
 		await softDelete(entry.id);
 		reload();
 		snackbar.show({
@@ -107,6 +153,19 @@ export default function JournalScreen() {
 			actionLabel: t("undo"),
 			onAction: async () => {
 				await restore(entry.id);
+				reload();
+			},
+		});
+	};
+
+	const removeMeal = async (meal: MealWithItems) => {
+		await softDeleteMeal(meal.meal.id);
+		reload();
+		snackbar.show({
+			message: t("deleted"),
+			actionLabel: t("undo"),
+			onAction: async () => {
+				await restoreMeal(meal.meal.id);
 				reload();
 			},
 		});
@@ -144,30 +203,48 @@ export default function JournalScreen() {
 						</Text>
 					</View>
 				}
-				renderSectionHeader={({ section }) => (
-					<View style={[styles.sectionHeader, { backgroundColor: theme.colors.background }]}>
-						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-							{(section as Section).title}
-						</Text>
-						<View style={styles.badges}>
-							{(section as Section).stools > 0 ? (
-								<Badge
-									text={t("badges.stools", { count: (section as Section).stools })}
-									color={theme.colors.stool}
-								/>
-							) : null}
-							{(section as Section).worstPain && (section as Section).worstPain! > 0 ? (
-								<Badge
-									text={t("badges.pain", { level: (section as Section).worstPain })}
-									color={theme.colors.pain}
-								/>
-							) : null}
+				renderSectionHeader={({ section }) => {
+					const s = section as Section;
+					return (
+						<View style={[styles.sectionHeader, { backgroundColor: theme.colors.background }]}>
+							<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+								{s.title}
+							</Text>
+							<View style={styles.badges}>
+								{s.stools > 0 ? (
+									<Badge
+										text={t("badges.stools", { count: s.stools })}
+										color={theme.colors.stool}
+									/>
+								) : null}
+								{s.meals > 0 ? (
+									<Badge text={t("badges.meals", { count: s.meals })} color={theme.colors.meal} />
+								) : null}
+								{s.worstPain && s.worstPain > 0 ? (
+									<Badge
+										text={t("badges.pain", { level: s.worstPain })}
+										color={theme.colors.pain}
+									/>
+								) : null}
+							</View>
 						</View>
-					</View>
-				)}
-				renderItem={({ item }) => (
-					<JournalRow entry={item} onPress={() => openFor(item)} onDelete={() => remove(item)} />
-				)}
+					);
+				}}
+				renderItem={({ item }) =>
+					item.kind === "entry" ? (
+						<JournalRow
+							entry={item.entry}
+							onPress={() => openEntry(item.entry)}
+							onDelete={() => removeEntry(item.entry)}
+						/>
+					) : (
+						<MealRow
+							meal={item.meal}
+							onPress={() => openMeal(item.meal)}
+							onDelete={() => removeMeal(item.meal)}
+						/>
+					)
+				}
 			/>
 
 			<StoolSheet
@@ -181,6 +258,12 @@ export default function JournalScreen() {
 				onClose={() => setSymptomOpen(false)}
 				onSaved={reload}
 				resume={resume?.kind === "symptom" ? resume : null}
+			/>
+			<MealSheet
+				visible={mealOpen}
+				onClose={() => setMealOpen(false)}
+				onSaved={reload}
+				resume={resumeMeal}
 			/>
 		</View>
 	);
@@ -228,16 +311,55 @@ function JournalRow({
 					</Text>
 				</View>
 			</Pressable>
-			<Pressable
-				accessibilityRole="button"
-				accessibilityLabel={t("common:actions.delete")}
-				onPress={onDelete}
-				hitSlop={8}
-				style={styles.delete}
-			>
-				<Text style={{ color: theme.colors.textFaint, fontSize: 20 }}>✕</Text>
-			</Pressable>
+			<DeleteButton onDelete={onDelete} />
 		</Card>
+	);
+}
+
+function MealRow({
+	meal,
+	onPress,
+	onDelete,
+}: {
+	meal: MealWithItems;
+	onPress: () => void;
+	onDelete: () => void;
+}) {
+	const { t } = useTranslation(["journal", "common"]);
+	const theme = useTheme();
+	return (
+		<Card padding="md" style={styles.row} testID="journal-meal">
+			<Pressable style={styles.rowMain} accessibilityRole="button" onPress={onPress}>
+				<Text style={styles.emoji}>🍽️</Text>
+				<View style={styles.rowBody}>
+					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+						{meal.meal.name ?? t("kinds.meal")}
+					</Text>
+					<MealTriggerChips items={meal.items} max={3} />
+					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+						{formatClock(meal.meal.occurredAt, meal.meal.tz)}
+						{meal.meal.isDraft ? ` · ${t("entry.draft")}` : ""}
+					</Text>
+				</View>
+			</Pressable>
+			<DeleteButton onDelete={onDelete} />
+		</Card>
+	);
+}
+
+function DeleteButton({ onDelete }: { onDelete: () => void }) {
+	const { t } = useTranslation("common");
+	const theme = useTheme();
+	return (
+		<Pressable
+			accessibilityRole="button"
+			accessibilityLabel={t("actions.delete")}
+			onPress={onDelete}
+			hitSlop={8}
+			style={styles.delete}
+		>
+			<Text style={{ color: theme.colors.textFaint, fontSize: 20 }}>✕</Text>
+		</Pressable>
 	);
 }
 
