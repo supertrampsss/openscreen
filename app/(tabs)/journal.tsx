@@ -1,5 +1,5 @@
-import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, SectionList, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -35,6 +35,9 @@ export default function JournalScreen() {
 	const insets = useSafeAreaInsets();
 	const snackbar = useSnackbar();
 
+	const { date: anchorDate } = useLocalSearchParams<{ date?: string }>();
+	const listRef = useRef<SectionList<SymptomEntry, Section>>(null);
+
 	const [sections, setSections] = useState<Section[]>([]);
 	const [resume, setResume] = useState<SymptomEntry | null>(null);
 	const [stoolOpen, setStoolOpen] = useState(false);
@@ -69,6 +72,27 @@ export default function JournalScreen() {
 		}, [reload]),
 	);
 
+	// Ancrage : quand on arrive depuis la WeekStrip (param `date`), on défile
+	// jusqu'au jour concerné une fois les sections chargées. Best-effort.
+	useEffect(() => {
+		if (!anchorDate || sections.length === 0) return;
+		const index = sections.findIndex((s) => s.localDate === anchorDate);
+		if (index < 0) return;
+		const id = setTimeout(() => {
+			try {
+				listRef.current?.scrollToLocation({
+					sectionIndex: index,
+					itemIndex: 0,
+					viewOffset: 24,
+					animated: true,
+				});
+			} catch {
+				// La liste n'est pas encore mesurée : on ignore (pas critique).
+			}
+		}, 150);
+		return () => clearTimeout(id);
+	}, [anchorDate, sections]);
+
 	const openFor = (entry: SymptomEntry) => {
 		setResume(entry);
 		if (entry.kind === "stool") setStoolOpen(true);
@@ -98,8 +122,10 @@ export default function JournalScreen() {
 	return (
 		<View style={[styles.flex, { backgroundColor: theme.colors.background }]}>
 			<SectionList
+				ref={listRef}
 				sections={sections}
 				keyExtractor={(item) => item.id}
+				onScrollToIndexFailed={() => undefined}
 				contentContainerStyle={{
 					padding: theme.spacing.lg,
 					paddingTop: insets.top + theme.spacing.md,

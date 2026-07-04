@@ -5,7 +5,7 @@
  * réécrit le brouillon de façon transactionnelle (INSERT ... ON CONFLICT UPDATE).
  */
 
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, gte, isNull } from "drizzle-orm";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import { type NewSymptomEntry, type SymptomEntry, symptomEntries } from "@/db/schema";
@@ -105,6 +105,24 @@ export function listAll(limit = 500): Promise<SymptomEntry[]> {
 		.where(isNull(symptomEntries.deletedAt))
 		.orderBy(desc(symptomEntries.occurredAt))
 		.limit(limit);
+}
+
+/**
+ * Entrées COMMITÉES (is_draft=0, non supprimées) à partir d'un local_date
+ * inclus — alimente les métriques Home (baseline, courbe 7 j, compteurs du jour).
+ */
+export function listCommittedSince(localDate: string): Promise<SymptomEntry[]> {
+	return db
+		.select()
+		.from(symptomEntries)
+		.where(
+			and(
+				gte(symptomEntries.localDate, localDate),
+				eq(symptomEntries.isDraft, 0),
+				isNull(symptomEntries.deletedAt),
+			),
+		)
+		.orderBy(desc(symptomEntries.occurredAt));
 }
 
 /** Soft delete (§2 loi 2). */

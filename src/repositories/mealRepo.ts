@@ -3,7 +3,7 @@
  * (repas manuel) et le PR 5 (scan photo) : autosave brouillon, soft delete.
  */
 
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, gte, isNull } from "drizzle-orm";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import { type Meal, meals, type NewMeal } from "@/db/schema";
@@ -67,6 +67,15 @@ export function listDay(localDate: string): Promise<Meal[]> {
 		.select()
 		.from(meals)
 		.where(and(eq(meals.localDate, localDate), isNull(meals.deletedAt)))
+		.orderBy(desc(meals.occurredAt));
+}
+
+/** Repas COMMITÉS (is_draft=0, non supprimés) depuis un local_date inclus. */
+export function listCommittedSince(localDate: string): Promise<Meal[]> {
+	return db
+		.select()
+		.from(meals)
+		.where(and(gte(meals.localDate, localDate), eq(meals.isDraft, 0), isNull(meals.deletedAt)))
 		.orderBy(desc(meals.occurredAt));
 }
 

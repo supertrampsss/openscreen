@@ -3,9 +3,14 @@
  * Alimenté par le sheet Symptômes (manifestations extra-intestinales).
  */
 
-import { eq } from "drizzle-orm";
+import { eq, gte } from "drizzle-orm";
 import { db } from "@/db/client";
 import { type DailyExtra, dailyExtras } from "@/db/schema";
+
+/** daily_extras depuis un local_date inclus (complications pour la courbe HBI/SCCAI). */
+export function listSince(localDate: string): Promise<DailyExtra[]> {
+	return db.select().from(dailyExtras).where(gte(dailyExtras.localDate, localDate));
+}
 
 export function getDay(localDate: string): Promise<DailyExtra | undefined> {
 	return db
