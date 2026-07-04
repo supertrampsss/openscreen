@@ -259,6 +259,24 @@ export async function listRecentCommittedWithItems(n = 8): Promise<MealWithItems
 	return rows.map((meal) => ({ meal, items: itemsByMeal.get(meal.id) ?? [] }));
 }
 
+/**
+ * Brouillons photo « actifs » : source photo, non commités, non supprimés (§5.4).
+ * Ce sont les scans en cours / en échec / abandonnés — ils restent visibles dans
+ * « Récemment loggé » avec un shimmer, une carte d'erreur ou un bouton
+ * « Ré-analyser » tant que l'utilisateur n'a pas confirmé (le brouillon survit à
+ * un kill de l'app).
+ */
+export async function listActivePhotoDrafts(n = 10): Promise<MealWithItems[]> {
+	const rows = await db
+		.select()
+		.from(meals)
+		.where(and(eq(meals.source, "photo"), eq(meals.isDraft, 1), isNull(meals.deletedAt)))
+		.orderBy(desc(meals.occurredAt))
+		.limit(n);
+	const itemsByMeal = await itemsForMeals(rows.map((m) => m.id));
+	return rows.map((meal) => ({ meal, items: itemsByMeal.get(meal.id) ?? [] }));
+}
+
 /** Repas COMMITÉS depuis un local_date inclus, avec items (journal, corrélations). */
 export async function listCommittedWithItemsSince(localDate: string): Promise<MealWithItems[]> {
 	const rows = await listCommittedSince(localDate);

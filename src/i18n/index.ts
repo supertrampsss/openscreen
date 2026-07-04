@@ -13,21 +13,37 @@ import commonEn from "./locales/en/common.json";
 import exportEn from "./locales/en/export.json";
 import journalEn from "./locales/en/journal.json";
 import logEn from "./locales/en/log.json";
+import scanEn from "./locales/en/scan.json";
 import trendsEn from "./locales/en/trends.json";
 import commonFr from "./locales/fr/common.json";
 import exportFr from "./locales/fr/export.json";
 import journalFr from "./locales/fr/journal.json";
 import logFr from "./locales/fr/log.json";
+import scanFr from "./locales/fr/scan.json";
 import trendsFr from "./locales/fr/trends.json";
 
 export const defaultNS = "common";
-export const namespaces = ["common", "log", "journal", "trends", "export"] as const;
+export const namespaces = ["common", "log", "journal", "trends", "export", "scan"] as const;
 export const supportedLanguages = ["fr", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export const resources = {
-	fr: { common: commonFr, log: logFr, journal: journalFr, trends: trendsFr, export: exportFr },
-	en: { common: commonEn, log: logEn, journal: journalEn, trends: trendsEn, export: exportEn },
+	fr: {
+		common: commonFr,
+		log: logFr,
+		journal: journalFr,
+		trends: trendsFr,
+		export: exportFr,
+		scan: scanFr,
+	},
+	en: {
+		common: commonEn,
+		log: logEn,
+		journal: journalEn,
+		trends: trendsEn,
+		export: exportEn,
+		scan: scanEn,
+	},
 } as const;
 
 /** Langue du device réduite à une langue supportée (défaut fr). */

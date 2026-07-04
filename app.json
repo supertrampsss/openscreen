@@ -34,6 +34,13 @@
 					"image": "./assets/images/splash-icon.png",
 					"imageWidth": 76
 				}
+			],
+			[
+				"expo-image-picker",
+				{
+					"photosPermission": "Crohnicle utilise vos photos pour analyser vos repas.",
+					"cameraPermission": "Crohnicle utilise l'appareil photo pour analyser vos repas."
+				}
 			]
 		],
 		"experiments": {

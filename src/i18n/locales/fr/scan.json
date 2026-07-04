@@ -1,0 +1,46 @@
+{
+	"draftName": "Analyse…",
+	"card": {
+		"analyzing": "Analyse en cours…",
+		"failed": "Analyse impossible",
+		"retry": "Réessayer",
+		"manual": "Saisir à la main",
+		"reanalyze": "Ré-analyser"
+	},
+	"result": {
+		"title": "Résultat de l'analyse",
+		"demoBanner": "Mode démo — proxy IA non configuré",
+		"ingredients": "Ingrédients détectés",
+		"noFood": "Aucun aliment détecté sur la photo.",
+		"addIngredient": "Ajouter un aliment",
+		"addPlaceholder": "Riz, poulet, café…",
+		"createCustom": "Ajouter « {{name}} »",
+		"correctLabel": "Corriger",
+		"correctPlaceholder": "Ex. c'est du couscous, pas du riz",
+		"correctButton": "Ré-analyser",
+		"confirm": "C'est bon",
+		"checkIngredients": "Vérifiez les ingrédients",
+		"remove": "Retirer {{name}}",
+		"cyclePortion": "Portion : {{size}}",
+		"trialRemaining_one": "{{count}} analyse d'essai restante",
+		"trialRemaining_other": "{{count}} analyses d'essai restantes",
+		"confidence": {
+			"high": "Confiance élevée",
+			"medium": "Confiance moyenne",
+			"low": "Confiance faible"
+		}
+	},
+	"premium": {
+		"title": "Essai épuisé",
+		"body": "Vous avez utilisé vos 10 analyses photo offertes. L'analyse illimitée arrivera avec Premium.",
+		"see": "Voir Premium",
+		"phase": "Phase 6",
+		"manual": "Saisir à la main"
+	},
+	"errors": {
+		"network": "Pas de connexion. Réessayez ou saisissez à la main.",
+		"server": "Analyse indisponible pour l'instant. Réessayez.",
+		"refused": "Analyse impossible sur cette photo.",
+		"bad_image": "Photo illisible. Reprenez une photo."
+	}
+}

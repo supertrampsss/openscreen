@@ -1,9 +1,13 @@
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+	ActivityIndicator,
 	type NativeScrollEvent,
 	type NativeSyntheticEvent,
+	Platform,
 	Pressable,
 	ScrollView,
 	StyleSheet,
@@ -14,7 +18,8 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BristolIcon, type BristolType } from "@/components/BristolIcon";
 import { Card, RingCard, Sparkline, type WeekDay, WeekStrip } from "@/components/ui";
-import type { SymptomEntry } from "@/db/schema";
+import { PillButton } from "@/components/ui/PillButton";
+import type { Meal, SymptomEntry } from "@/db/schema";
 import {
 	classifyDay,
 	parseProfileBaseline,
@@ -36,26 +41,38 @@ import {
 	scoreKindForDiagnosis,
 } from "@/domain/scoreSeries";
 import { FlareBanner } from "@/features/flare/FlareBanner";
-import { AddSheet } from "@/features/log/AddSheet";
+import { type AddAction, AddSheet } from "@/features/log/AddSheet";
+import { MealScanResultSheet } from "@/features/log/MealScanResultSheet";
 import { MealSheet } from "@/features/log/MealSheet";
 import { MealTriggerChips } from "@/features/log/MealTriggerChips";
+import { PremiumTeaserSheet } from "@/features/log/PremiumTeaserSheet";
 import { StoolSheet } from "@/features/log/StoolSheet";
 import { SymptomSheet } from "@/features/log/SymptomSheet";
 import { StreakFlame } from "@/features/streak/StreakFlame";
 import { listSince as listExtrasSince } from "@/repositories/dailyExtrasRepo";
 import {
+	listActivePhotoDrafts,
 	listCommittedSince as listMealsSince,
 	listRecentCommittedWithItems,
 	type MealWithItems,
+	newMealId,
+	upsertDraft,
 } from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import { listCommittedSince, listRecent } from "@/repositories/symptomRepo";
+import {
+	analyzeMeal,
+	persistPhoto,
+	ScanError,
+	type ScanResponse,
+} from "@/services/mealScanService";
 import { useStreak } from "@/services/streakService";
 import { useTheme } from "@/theme";
 
 interface HomeData {
 	recent: SymptomEntry[];
 	recentMeals: MealWithItems[];
+	photoDrafts: MealWithItems[];
 	documentedDates: string[];
 	stoolsToday: number;
 	ringProgress: number;
@@ -73,6 +90,7 @@ interface HomeData {
 const EMPTY: HomeData = {
 	recent: [],
 	recentMeals: [],
+	photoDrafts: [],
 	documentedDates: [],
 	stoolsToday: 0,
 	ringProgress: 0,
@@ -103,6 +121,13 @@ export default function HomeScreen() {
 	const [resume, setResume] = useState<SymptomEntry | null>(null);
 	const [resumeMeal, setResumeMeal] = useState<MealWithItems | null>(null);
 	const [heroPage, setHeroPage] = useState(0);
+	// Scan photo (§5.4) : brouillon en cours, résultat, teaser Premium.
+	const [scanResult, setScanResult] = useState<{ meal: Meal; response: ScanResponse } | null>(null);
+	const [scanStates, setScanStates] = useState<
+		Record<string, { status: "analyzing" | "error"; kind?: string }>
+	>({});
+	const [premiumOpen, setPremiumOpen] = useState(false);
+	const [premiumMeal, setPremiumMeal] = useState<Meal | null>(null);
 
 	const today = nowEntryTimestamp().localDate;
 
@@ -116,7 +141,8 @@ export default function HomeScreen() {
 			getProfile(),
 			listRecent(25),
 			listRecentCommittedWithItems(10),
-		]).then(([committed, meals, extras, profile, recent, recentMeals]) => {
+			listActivePhotoDrafts(10),
+		]).then(([committed, meals, extras, profile, recent, recentMeals, photoDrafts]) => {
 			const last7 = last7LocalDates();
 			const entriesByDate = groupEntriesByDate(committed as ScoreDayEntry[]);
 			const extrasByDate = new Map(extras.map((e) => [e.localDate, e]));
@@ -152,6 +178,7 @@ export default function HomeScreen() {
 			setData({
 				recent,
 				recentMeals,
+				photoDrafts,
 				documentedDates: [...stoolByDate.keys()],
 				stoolsToday,
 				ringProgress: thirds / 3,
@@ -183,7 +210,8 @@ export default function HomeScreen() {
 	// Flux « Récemment loggé » : entrées symptômes + repas fusionnés par heure.
 	type FeedItem =
 		| { kind: "entry"; occurredAt: number; entry: SymptomEntry }
-		| { kind: "meal"; occurredAt: number; meal: MealWithItems };
+		| { kind: "meal"; occurredAt: number; meal: MealWithItems }
+		| { kind: "scan"; occurredAt: number; draft: MealWithItems };
 	const recentFeed: FeedItem[] = [
 		...data.recent.map((entry) => ({
 			kind: "entry" as const,
@@ -194,6 +222,11 @@ export default function HomeScreen() {
 			kind: "meal" as const,
 			occurredAt: meal.meal.occurredAt,
 			meal,
+		})),
+		...data.photoDrafts.map((draft) => ({
+			kind: "scan" as const,
+			occurredAt: draft.meal.occurredAt,
+			draft,
 		})),
 	]
 		.sort((a, b) => b.occurredAt - a.occurredAt)
@@ -222,11 +255,89 @@ export default function HomeScreen() {
 		setMealOpen(true);
 	};
 
-	const pickAction = (action: "stool" | "symptom" | "meal") => {
+	// ---- Scan photo (§5.4) -------------------------------------------------
+	/** Ouvre la caméra (natif) ou la galerie (web), renvoie l'URI ou null. */
+	const pickImage = useCallback(async (): Promise<string | null> => {
+		try {
+			let res: ImagePicker.ImagePickerResult;
+			if (Platform.OS === "web") {
+				res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"], quality: 1 });
+			} else {
+				const perm = await ImagePicker.requestCameraPermissionsAsync();
+				res = perm.granted
+					? await ImagePicker.launchCameraAsync({ mediaTypes: ["images"], quality: 1 })
+					: await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"], quality: 1 });
+			}
+			if (res.canceled || !res.assets?.[0]) return null;
+			return res.assets[0].uri;
+		} catch {
+			return null;
+		}
+	}, []);
+
+	/** Lance l'analyse d'un brouillon photo existant (démarrage ou ré-analyse). */
+	const runAnalysis = useCallback(
+		async (meal: Meal, userNote?: string) => {
+			setScanStates((s) => ({ ...s, [meal.id]: { status: "analyzing" } }));
+			try {
+				const response = await analyzeMeal({ uri: meal.photoUri ?? "", userNote });
+				setScanStates((s) => {
+					const next = { ...s };
+					delete next[meal.id];
+					return next;
+				});
+				setScanResult({ meal, response });
+			} catch (e) {
+				const kind = e instanceof ScanError ? e.kind : "server";
+				setScanStates((s) => {
+					const next = { ...s };
+					if (kind === "trial_exhausted") delete next[meal.id];
+					else next[meal.id] = { status: "error", kind };
+					return next;
+				});
+				if (kind === "trial_exhausted") {
+					setPremiumMeal(meal);
+					setPremiumOpen(true);
+				}
+				reload();
+			}
+		},
+		[reload],
+	);
+
+	/** Prise de photo → brouillon immédiat (Récemment loggé) → analyse en fond. */
+	const startPhotoScan = useCallback(async () => {
+		const uri = await pickImage();
+		if (!uri) return;
+		const local = await persistPhoto(uri);
+		const ts = nowEntryTimestamp();
+		const meal = await upsertDraft({
+			id: newMealId(),
+			occurredAt: ts.epochMs,
+			tz: ts.tz,
+			localDate: ts.localDate,
+			name: t("scan:draftName"),
+			source: "photo",
+			photoUri: local,
+		});
+		reload();
+		runAnalysis(meal);
+	}, [pickImage, runAnalysis, reload, t]);
+
+	/** Bascule vers le repas manuel avec la photo attachée (§5.4.5 fallback). */
+	const scanToManual = useCallback((meal: Meal) => {
+		setScanResult(null);
+		setPremiumOpen(false);
+		setResumeMeal({ meal, items: [] });
+		setMealOpen(true);
+	}, []);
+
+	const pickAction = (action: AddAction) => {
 		setAddOpen(false);
 		setResume(null);
 		if (action === "stool") setStoolOpen(true);
 		else if (action === "symptom") setSymptomOpen(true);
+		else if (action === "photo") startPhotoScan();
 		else {
 			setResumeMeal(null);
 			setMealOpen(true);
@@ -390,17 +501,31 @@ export default function HomeScreen() {
 					</Card>
 				) : (
 					<View style={{ gap: theme.spacing.sm }}>
-						{recentFeed.map((f) =>
-							f.kind === "entry" ? (
-								<RecentRow key={f.entry.id} entry={f.entry} onPress={() => openFor(f.entry)} />
-							) : (
-								<MealRecentRow
-									key={f.meal.meal.id}
-									meal={f.meal}
-									onPress={() => openMeal(f.meal)}
+						{recentFeed.map((f) => {
+							if (f.kind === "entry") {
+								return (
+									<RecentRow key={f.entry.id} entry={f.entry} onPress={() => openFor(f.entry)} />
+								);
+							}
+							if (f.kind === "meal") {
+								return (
+									<MealRecentRow
+										key={f.meal.meal.id}
+										meal={f.meal}
+										onPress={() => openMeal(f.meal)}
+									/>
+								);
+							}
+							return (
+								<ScanRecentCard
+									key={f.draft.meal.id}
+									draft={f.draft}
+									status={scanStates[f.draft.meal.id]?.status}
+									onRetry={() => runAnalysis(f.draft.meal)}
+									onManual={() => scanToManual(f.draft.meal)}
 								/>
-							),
-						)}
+							);
+						})}
 					</View>
 				)}
 			</ScrollView>
@@ -438,7 +563,91 @@ export default function HomeScreen() {
 				onSaved={onLogged}
 				resume={resumeMeal}
 			/>
+			{scanResult ? (
+				<MealScanResultSheet
+					visible={!!scanResult}
+					meal={scanResult.meal}
+					response={scanResult.response}
+					onClose={() => setScanResult(null)}
+					onSaved={onLogged}
+					onManual={() => {
+						if (scanResult) scanToManual(scanResult.meal);
+					}}
+				/>
+			) : null}
+			<PremiumTeaserSheet
+				visible={premiumOpen}
+				onClose={() => setPremiumOpen(false)}
+				onManual={() => {
+					if (premiumMeal) scanToManual(premiumMeal);
+				}}
+			/>
 		</View>
+	);
+}
+
+/** Carte « Récemment loggé » d'un brouillon photo (analyse / échec / ré-analyse). */
+function ScanRecentCard({
+	draft,
+	status,
+	onRetry,
+	onManual,
+}: {
+	draft: MealWithItems;
+	status?: "analyzing" | "error";
+	onRetry: () => void;
+	onManual: () => void;
+}) {
+	const { t } = useTranslation("scan");
+	const theme = useTheme();
+	const analyzing = status === "analyzing";
+
+	return (
+		<Card padding="md" style={styles.recentCard} testID={`scan-card-${draft.meal.id}`}>
+			{draft.meal.photoUri ? (
+				<Image
+					source={{ uri: draft.meal.photoUri }}
+					style={[styles.scanThumb, { borderRadius: theme.radii.sm }]}
+					contentFit="cover"
+				/>
+			) : (
+				<Text style={styles.recentEmoji}>📸</Text>
+			)}
+			<View style={styles.recentBody}>
+				{analyzing ? (
+					<View style={styles.scanRow} testID="scan-shimmer">
+						<ActivityIndicator color={theme.colors.meal} />
+						<Text style={[theme.typography.subheading, { color: theme.colors.textMuted }]}>
+							{t("card.analyzing")}
+						</Text>
+					</View>
+				) : (
+					<>
+						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+							{status === "error" ? t("card.failed") : (draft.meal.name ?? t("draftName"))}
+						</Text>
+						<View style={styles.scanActions}>
+							<PillButton
+								label={status === "error" ? t("card.retry") : t("card.reanalyze")}
+								accessibilityLabel={status === "error" ? t("card.retry") : t("card.reanalyze")}
+								variant="secondary"
+								fullWidth={false}
+								onPress={onRetry}
+								testID={`scan-retry-${draft.meal.id}`}
+							/>
+							<PillButton
+								label={t("card.manual")}
+								accessibilityLabel={t("card.manual")}
+								variant="secondary"
+								fullWidth={false}
+								onPress={onManual}
+								testID={`scan-manual-${draft.meal.id}`}
+							/>
+						</View>
+					</>
+				)}
+			</View>
+		</Card>
 	);
 }
 
@@ -582,4 +791,7 @@ const styles = StyleSheet.create({
 	recentEmoji: { fontSize: 24 },
 	recentBody: { flex: 1, gap: 2 },
 	draftBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
+	scanThumb: { width: 44, height: 44 },
+	scanRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+	scanActions: { flexDirection: "row", gap: 8, marginTop: 6, flexWrap: "wrap" },
 });

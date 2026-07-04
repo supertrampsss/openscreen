@@ -49,6 +49,10 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 	const snackbar = useSnackbar();
 
 	const [mealId, setMealId] = useState(newMealId);
+	// Source / photo préservés quand on reprend un brouillon photo (fallback
+	// « Saisir à la main » du scan : la photo reste attachée pour ré-analyse).
+	const [source, setSource] = useState<"manual" | "photo" | "voice">("manual");
+	const [photoUri, setPhotoUri] = useState<string | null>(null);
 	const [base, setBase] = useState<EntryTimestamp>(nowEntryTimestamp);
 	const [occurred, setOccurred] = useState<EntryTimestamp>(base);
 	const [timeMode, setTimeMode] = useState<TimeMode>("now");
@@ -74,6 +78,8 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 		listRecentCommittedWithItems(8).then(setRecents);
 		if (resume) {
 			setMealId(resume.meal.id);
+			setSource(resume.meal.source);
+			setPhotoUri(resume.meal.photoUri ?? null);
 			const ts: EntryTimestamp = {
 				epochMs: resume.meal.occurredAt,
 				tz: resume.meal.tz,
@@ -87,6 +93,8 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 			return;
 		}
 		setMealId(newMealId());
+		setSource("manual");
+		setPhotoUri(null);
 		setBase(now);
 		setOccurred(now);
 		setTimeMode("now");
@@ -125,14 +133,15 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 				tz: ts.tz,
 				localDate: ts.localDate,
 				name: nextName.trim() || null,
-				source: "manual",
+				source,
+				photoUri,
 			});
 			await replaceItems(
 				mealId,
 				nextItems.map((i) => ({ foodId: i.foodId, portion: i.portion })),
 			);
 		},
-		[mealId],
+		[mealId, source, photoUri],
 	);
 
 	const addFood = (food: { id: string; displayFr: string; triggers: FoodTriggers }) => {
