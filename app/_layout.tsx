@@ -13,6 +13,7 @@ import { FlareProvider } from "@/features/flare/FlareContext";
 import { OnboardingGate } from "@/features/onboarding/OnboardingGate";
 import { initI18n } from "@/i18n";
 import { initNotifications } from "@/services/notificationService";
+import { registerQuickActions } from "@/services/quickActionsService";
 import { ThemeProvider, useTheme } from "@/theme";
 import migrations from "../drizzle/migrations";
 
@@ -45,6 +46,8 @@ function Migrator() {
 			// Notifications locales (§7) : init une fois les migrations passées.
 			// No-op propre sur web (module natif chargé dynamiquement).
 			initNotifications().catch(() => undefined);
+			// Quick actions (§5.12) : enregistre les 3 raccourcis long-press.
+			registerQuickActions().catch(() => undefined);
 		}
 	}, [success]);
 
@@ -73,6 +76,10 @@ function Migrator() {
 						<Stack.Screen name="export" options={{ presentation: "modal" }} />
 						{/* Premium (§8) : paywall éthique en modal. */}
 						<Stack.Screen name="premium" options={{ presentation: "modal" }} />
+						{/* Deep-links / quick actions (§5.12). */}
+						<Stack.Screen name="log/stool" />
+						<Stack.Screen name="log/photo" />
+						<Stack.Screen name="urgence" options={{ presentation: "modal" }} />
 					</Stack>
 				</OnboardingGate>
 			</SnackbarProvider>

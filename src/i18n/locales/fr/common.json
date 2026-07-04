@@ -22,6 +22,17 @@
 		"other": "Autre"
 	},
 	"draft": "brouillon",
+	"quickActions": {
+		"stool": "Selle rapide",
+		"photo": "Photo repas",
+		"urgence": "Carte urgence"
+	},
+	"urgence": {
+		"title": "Carte d'urgence toilettes",
+		"body": "Votre carte d'urgence multilingue et les toilettes proches arrivent très bientôt.",
+		"soon": "Bientôt",
+		"back": "Retour"
+	},
 	"flare": {
 		"banner": "Mode poussée — on allège. Votre série est protégée.",
 		"toggleOn": "Activer le mode poussée",

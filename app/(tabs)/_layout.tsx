@@ -1,3 +1,4 @@
+import { useQuickActionRouting } from "expo-quick-actions/router";
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { type ColorValue, Text } from "react-native";
@@ -10,6 +11,10 @@ function TabIcon({ emoji, color }: { emoji: string; color: ColorValue }) {
 export default function TabsLayout() {
 	const { t } = useTranslation("common");
 	const theme = useTheme();
+
+	// Quick actions (§5.12) : navigue vers le href de l'action tapée. Doit vivre
+	// dans un sous-layout (pas le root) — no-op sur web.
+	useQuickActionRouting();
 
 	return (
 		<Tabs

@@ -41,7 +41,9 @@
 					"photosPermission": "Crohnicle utilise vos photos pour analyser vos repas.",
 					"cameraPermission": "Crohnicle utilise l'appareil photo pour analyser vos repas."
 				}
-			]
+			],
+			"expo-notifications",
+			"expo-quick-actions"
 		],
 		"experiments": {
 			"typedRoutes": true,

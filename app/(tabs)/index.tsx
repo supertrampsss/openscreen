@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
-import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	ActivityIndicator,
@@ -111,6 +111,7 @@ export default function HomeScreen() {
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
 	const router = useRouter();
+	const quickParams = useLocalSearchParams<{ quick?: string }>();
 	const { width } = useWindowDimensions();
 	const { streak, reload: reloadStreak } = useStreak();
 
@@ -351,6 +352,20 @@ export default function HomeScreen() {
 			setMealOpen(true);
 		}
 	};
+
+	// Quick actions / deep-links (§5.12) : `?quick=stool|photo` ouvre directement
+	// le sheet ou le picker, puis on efface le paramètre (une seule fois).
+	useEffect(() => {
+		const q = quickParams.quick;
+		if (!q) return;
+		router.setParams({ quick: undefined });
+		if (q === "stool") {
+			setResume(null);
+			setStoolOpen(true);
+		} else if (q === "photo") {
+			startPhotoScan();
+		}
+	}, [quickParams.quick, router, startPhotoScan]);
 
 	const goToDay = (date: string) => {
 		router.push({ pathname: "/journal", params: { date } });
