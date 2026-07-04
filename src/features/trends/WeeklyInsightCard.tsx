@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { Card } from "@/components/ui";
@@ -39,30 +39,26 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 		[t, agg],
 	);
 
-	const aggRef = useRef(agg);
-	aggRef.current = agg;
-	const demoRef = useRef(demoFallback);
-	demoRef.current = demoFallback;
-
 	const run = useCallback(
 		(force = false) => {
-			if (!status.premium || aggRef.current.documentedDays === 0) {
+			if (!status.premium || agg.documentedDays === 0) {
 				setInsight(null);
 				return;
 			}
 			setLoading(true);
-			getWeeklyInsight({ aggregates: aggRef.current, lang, demoFallback: demoRef.current, force })
+			getWeeklyInsight({ aggregates: agg, lang, demoFallback, force })
 				.then(setInsight)
 				.finally(() => setLoading(false));
 		},
-		[status.premium, lang],
+		[status.premium, agg, lang, demoFallback],
 	);
 
-	// Régénère quand le statut Premium, la langue ou le volume de données change
-	// (les données arrivent après le 1er montage — sinon l'insight resterait vide).
+	// Régénère quand le statut Premium, la langue ou les agrégats changent (les
+	// données arrivent après le 1er montage — sinon l'insight resterait vide). Le
+	// cache par semaine évite toute régénération superflue.
 	useEffect(() => {
 		run();
-	}, [run, agg.documentedDays]);
+	}, [run]);
 
 	// --- Teaser (non-Premium) : une ligne discrète. -------------------------
 	if (!status.premium) {
