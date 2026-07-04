@@ -19,6 +19,29 @@ Tout arbitrage produit, design ou technique se tranche dans cet ordre de priorit
 - **SQLite local-first** (expo-sqlite + drizzle-orm) — données de santé stockées et traitées localement.
 - **Proxy IA** stateless (Cloudflare Worker) pour l'analyse photo des repas — aucune donnée de santé stockée côté serveur.
 
+## Analyse photo IA
+
+Le flow signature (§5.4) : une photo de repas → un brouillon pré-rempli d'ingrédients
+avec leurs attributs déclencheurs MICI (FODMAP, lactose, gluten, friture, épicé, fibres
+insolubles, alcool, caféine, additifs), à confirmer ou corriger en un tap.
+
+- **Architecture proxy.** L'app n'appelle jamais Anthropic directement : elle passe par
+  un petit Cloudflare Worker stateless ([`server/`](./server)) qui garde la clé API
+  côté serveur, applique le quota d'essai (10 photos offertes, sans carte bancaire) et
+  vérifie l'entitlement `premium` (RevenueCat). Le Worker utilise `claude-haiku-4-5`
+  (vision + sorties structurées) ; **les photos ne sont jamais stockées**, les logs ne
+  contiennent aucun contenu.
+- **Mode démo.** Sans `EXPO_PUBLIC_AI_PROXY_URL`, l'app bascule sur une réponse simulée
+  locale (marquée « Mode démo — proxy IA non configuré ») : le parcours reste testable
+  de bout en bout sans backend. Le déploiement du Worker est optionnel.
+- **Échecs jamais silencieux** (§5.4.5) : erreur réseau/serveur → « Réessayer / Saisir à
+  la main » ; quota épuisé → teaser Premium + saisie manuelle ; hors-ligne → bascule
+  manuelle, photo conservée pour ré-analyse.
+
+Déploiement pas-à-pas du Worker (KV, secrets `ANTHROPIC_API_KEY` / `REVENUECAT_API_KEY`,
+`wrangler deploy`, branchement de `EXPO_PUBLIC_AI_PROXY_URL`) :
+voir [`docs/DEPLOY_WORKER.md`](./docs/DEPLOY_WORKER.md).
+
 ## Avertissement médical
 
 **Cette application n'est pas un dispositif médical et ne remplace pas un avis médical.** Les scores et tendances (HBI, SCCAI, associations alimentaires) sont des auto-évaluations à visée informative et de préparation à la consultation. En cas de symptôme préoccupant, consultez un professionnel de santé.
