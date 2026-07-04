@@ -134,6 +134,9 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 			snackbar.show({ message: t("saved", { count: saved }) });
 			onSaved();
 			onClose();
+		} catch {
+			// Échec jamais silencieux : la revue reste ouverte pour réessayer.
+			snackbar.show({ message: t("saveError") });
 		} finally {
 			setBusy(false);
 		}
@@ -184,6 +187,13 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 				<>
 					<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 						{t("intro")}
+					</Text>
+					{/* Transparence IA (privacy) : où va le texte, sobre et discret. */}
+					<Text
+						testID="voice-ai-disclosure"
+						style={[theme.typography.caption, { color: theme.colors.textFaint }]}
+					>
+						{t("aiDisclosure")}
 					</Text>
 					<TextInput
 						accessibilityLabel={t("title")}

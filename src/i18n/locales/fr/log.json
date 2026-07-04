@@ -1,5 +1,6 @@
 {
 	"showMore": "Plus de détails",
+	"saveError": "Enregistrement impossible — vos données sont en brouillon, réessayez.",
 	"addMenu": {
 		"title": "Que voulez-vous noter ?",
 		"stool": "Selle rapide",
@@ -53,6 +54,7 @@
 	"stool": {
 		"title": "Selle rapide",
 		"bristol": "Type de selle",
+		"bristolType": "Bristol type {{n}}",
 		"urgency": "Urgence",
 		"blood": "Sang",
 		"pain": "Douleur au moment",

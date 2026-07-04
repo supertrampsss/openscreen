@@ -1,6 +1,7 @@
 {
 	"title": "Voice note",
 	"intro": "Dictate or type your day. We turn it into entries for you to confirm.",
+	"aiDisclosure": "For analysis, the text is sent to our AI service, which does not keep it.",
 	"placeholder": "e.g. 3 loose stools this morning, pain at 6, I had a raclette last night",
 	"mic": "Dictate",
 	"micStop": "Stop",
@@ -35,6 +36,7 @@
 	},
 	"saved_one": "1 entry saved",
 	"saved_other": "{{count}} entries saved",
+	"saveError": "Couldn't save — your data is kept as a draft, try again.",
 	"premium": {
 		"title": "Voice note — Premium",
 		"body": "Voice notes turn a dictated sentence into ready-to-confirm entries. It is part of Crohnicle Premium.",

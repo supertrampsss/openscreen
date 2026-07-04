@@ -18,6 +18,7 @@
 		"correctLabel": "Fix results",
 		"correctPlaceholder": "e.g. it's couscous, not rice",
 		"correctButton": "Re-analyze",
+		"aiDisclosure": "For analysis, your photo is sent to our AI service, which does not keep it.",
 		"confirm": "Looks good",
 		"checkIngredients": "Check the ingredients",
 		"remove": "Remove {{name}}",

@@ -123,10 +123,16 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 
 	const save = async () => {
 		if (bristol == null) return;
-		await commitDraft(entryId);
-		snackbar.show({ message: t("stool.saved") });
-		onSaved();
-		onClose();
+		try {
+			await commitDraft(entryId);
+			snackbar.show({ message: t("stool.saved") });
+			onSaved();
+			onClose();
+		} catch {
+			// Échec jamais silencieux : le brouillon (autosave) est intact, la sheet
+			// reste ouverte pour réessayer.
+			snackbar.show({ message: t("saveError") });
+		}
 	};
 
 	const levelOptions = (
@@ -167,7 +173,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 								key={type}
 								accessibilityRole="radio"
 								accessibilityState={{ selected }}
-								accessibilityLabel={`Type ${type}`}
+								accessibilityLabel={t("stool.bristolType", { n: type })}
 								testID={`bristol-${type}`}
 								onPress={() => chooseBristol(type)}
 								style={[

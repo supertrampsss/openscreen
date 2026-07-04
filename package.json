@@ -18,6 +18,7 @@
 		"test:e2e": "playwright test",
 		"i18n:check": "node scripts/i18n-check.mjs",
 		"build:web": "expo export --platform web",
+		"build:web:e2e": "EXPO_PUBLIC_E2E=1 expo export --platform web",
 		"postinstall": "patch-package",
 		"prepare": "husky || true"
 	},

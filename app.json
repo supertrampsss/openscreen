@@ -39,8 +39,8 @@
 			[
 				"expo-image-picker",
 				{
-					"photosPermission": "Crohnicle utilise vos photos pour analyser vos repas.",
-					"cameraPermission": "Crohnicle utilise l'appareil photo pour analyser vos repas."
+					"photosPermission": "Crohnicle utilise vos photos pour analyser vos repas : vos photos de repas sont envoyées à notre service d'analyse et ne sont pas conservées.",
+					"cameraPermission": "Crohnicle utilise l'appareil photo pour analyser vos repas : vos photos de repas sont envoyées à notre service d'analyse et ne sont pas conservées."
 				}
 			],
 			"expo-notifications",

@@ -15,6 +15,7 @@ import {
 	searchFoods,
 	upsertDraft,
 } from "@/repositories/mealRepo";
+import { currentEntitlementToken } from "@/services/entitlements";
 import {
 	analyzeMeal,
 	dishName,
@@ -145,7 +146,14 @@ export function MealScanResultSheet({
 		if (!note.trim() || busy) return;
 		setBusy(true);
 		try {
-			const next = await analyzeMeal({ uri: meal.photoUri ?? "", userNote: note });
+			// Jeton d'entitlement joint (comme runAnalysis du Home) : sans lui, un
+			// abonné consommerait son quota d'essai à chaque « Corriger » (§6, §8).
+			const entitlementToken = (await currentEntitlementToken()) ?? undefined;
+			const next = await analyzeMeal({
+				uri: meal.photoUri ?? "",
+				userNote: note,
+				entitlementToken,
+			});
 			load(next);
 			setNote("");
 		} catch (e) {
@@ -182,6 +190,10 @@ export function MealScanResultSheet({
 			snackbar.show({ message: t("log:meal.saved") });
 			onSaved();
 			onClose();
+		} catch {
+			// Échec jamais silencieux (§5.4.5) : le brouillon est déjà persisté, la
+			// sheet reste ouverte pour réessayer.
+			snackbar.show({ message: t("log:saveError") });
 		} finally {
 			setBusy(false);
 		}
@@ -241,6 +253,14 @@ export function MealScanResultSheet({
 					</View>
 				</View>
 			</View>
+
+			{/* Transparence IA (privacy) : où va la photo, sobre et discret. */}
+			<Text
+				testID="scan-ai-disclosure"
+				style={[theme.typography.caption, { color: theme.colors.textFaint }]}
+			>
+				{t("result.aiDisclosure")}
+			</Text>
 
 			{/* Ingrédients détectés. */}
 			<View style={{ gap: theme.spacing.sm }} testID="scan-ingredients">

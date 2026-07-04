@@ -113,13 +113,19 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 
 	const save = async () => {
 		if (!canSave) return;
-		await commitDraft(entryId);
-		if (complications.length > 0) {
-			await setComplications(occurred.localDate, complications);
+		try {
+			await commitDraft(entryId);
+			if (complications.length > 0) {
+				await setComplications(occurred.localDate, complications);
+			}
+			snackbar.show({ message: t("symptom.saved") });
+			onSaved();
+			onClose();
+		} catch {
+			// Échec jamais silencieux : le brouillon (autosave) est intact, la sheet
+			// reste ouverte pour réessayer.
+			snackbar.show({ message: t("saveError") });
 		}
-		snackbar.show({ message: t("symptom.saved") });
-		onSaved();
-		onClose();
 	};
 
 	const levels = (max: number) =>

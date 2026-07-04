@@ -1,5 +1,6 @@
 {
 	"showMore": "More details",
+	"saveError": "Couldn't save — your data is kept as a draft, try again.",
 	"addMenu": {
 		"title": "What would you like to log?",
 		"stool": "Quick stool",
@@ -53,6 +54,7 @@
 	"stool": {
 		"title": "Quick stool",
 		"bristol": "Stool type",
+		"bristolType": "Bristol type {{n}}",
 		"urgency": "Urgency",
 		"blood": "Blood",
 		"pain": "Pain at the time",

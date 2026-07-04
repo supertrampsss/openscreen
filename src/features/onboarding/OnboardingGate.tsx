@@ -32,9 +32,17 @@ const OnboardingContext = createContext<OnboardingApi>({
 	replay: async () => undefined,
 });
 
-/** Détecte le semis E2E (`?e2e=1`) sur web. No-op sur natif. */
+/**
+ * Le semis E2E n'est ACTIF que dans un build explicitement E2E
+ * (`EXPO_PUBLIC_E2E=1`, figé au build via `build:web:e2e`). Un build prod normal
+ * a la constante à false → les paramètres `?e2e=1`/`?premium=1` sont ignorés et
+ * ne peuvent PAS débloquer Premium ni sauter l'onboarding (sécurité M2).
+ */
+const E2E_ENABLED = process.env.EXPO_PUBLIC_E2E === "1";
+
+/** Détecte le semis E2E (`?e2e=1`) — seulement dans un build E2E, sur web. */
 function detectE2ESeed(): boolean {
-	if (Platform.OS !== "web") return false;
+	if (!E2E_ENABLED || Platform.OS !== "web") return false;
 	try {
 		return new URLSearchParams(window.location.search).has("e2e");
 	} catch {
@@ -42,9 +50,9 @@ function detectE2ESeed(): boolean {
 	}
 }
 
-/** Semis E2E Premium (`?premium=1`) — pré-active le flag Premium simulé. */
+/** Semis E2E Premium (`?premium=1`) — seulement dans un build E2E, sur web. */
 function detectE2EPremium(): boolean {
-	if (Platform.OS !== "web") return false;
+	if (!E2E_ENABLED || Platform.OS !== "web") return false;
 	try {
 		return new URLSearchParams(window.location.search).has("premium");
 	} catch {

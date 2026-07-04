@@ -1,6 +1,7 @@
 {
 	"title": "Note vocale",
 	"intro": "Dictez ou tapez votre journée. On la transforme en entrées à valider.",
+	"aiDisclosure": "Pour l'analyse, le texte est envoyé à notre service d'IA, qui ne le conserve pas.",
 	"placeholder": "Ex : 3 selles liquides ce matin, douleur à 6, j'ai mangé une raclette hier soir",
 	"mic": "Dicter",
 	"micStop": "Arrêter",
@@ -35,6 +36,7 @@
 	},
 	"saved_one": "1 entrée enregistrée",
 	"saved_other": "{{count}} entrées enregistrées",
+	"saveError": "Enregistrement impossible — vos données sont en brouillon, réessayez.",
 	"premium": {
 		"title": "Note vocale — Premium",
 		"body": "La note vocale transforme une phrase dictée en entrées prêtes à valider. Elle fait partie de Crohnicle Premium.",
