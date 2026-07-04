@@ -122,10 +122,15 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 		onClose();
 	};
 
-	const levelOptions = (key: "urgencyLevels" | "bloodLevels" | "painLevels", max: number) =>
+	const levelOptions = (
+		key: "urgencyLevels" | "bloodLevels" | "painLevels",
+		max: number,
+		testPrefix: string,
+	) =>
 		Array.from({ length: max + 1 }, (_, i) => ({
 			value: i,
 			label: t(`stool.${key}.${i}`),
+			testID: `${testPrefix}-${i}`,
 		}));
 
 	return (
@@ -137,6 +142,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 			onConfirm={save}
 			confirmDisabled={bristol == null}
 			confirmAccessibilityLabel={t("stool.save")}
+			confirmTestID="stool-save"
 		>
 			<View style={{ gap: theme.spacing.sm }}>
 				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
@@ -155,6 +161,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 								accessibilityRole="radio"
 								accessibilityState={{ selected }}
 								accessibilityLabel={`Type ${type}`}
+								testID={`bristol-${type}`}
 								onPress={() => chooseBristol(type)}
 								style={[
 									styles.bristolCell,
@@ -182,7 +189,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 
 			<TapRow
 				title={t("stool.urgency")}
-				options={levelOptions("urgencyLevels", 3)}
+				options={levelOptions("urgencyLevels", 3, "urgency")}
 				value={urgency}
 				onChange={(v) => {
 					setUrgency(v);
@@ -192,7 +199,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 			/>
 			<TapRow
 				title={t("stool.blood")}
-				options={levelOptions("bloodLevels", 2)}
+				options={levelOptions("bloodLevels", 2, "blood")}
 				value={blood}
 				onChange={(v) => {
 					setBlood(v);
@@ -202,7 +209,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 			/>
 			<TapRow
 				title={t("stool.pain")}
-				options={levelOptions("painLevels", 3)}
+				options={levelOptions("painLevels", 3, "pain")}
 				value={pain}
 				onChange={(v) => {
 					setPain(v);

@@ -42,6 +42,7 @@ export function AddSheet({ visible, onClose, onPick }: AddSheetProps) {
 							accessibilityRole="button"
 							accessibilityState={{ disabled }}
 							accessibilityLabel={t(row.labelKey)}
+							testID={row.action ? `add-action-${row.action}` : undefined}
 							disabled={disabled}
 							onPress={() => {
 								if (row.action) onPick(row.action);

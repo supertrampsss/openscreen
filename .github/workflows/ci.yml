@@ -29,10 +29,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx tsc --noEmit
+      - run: npm run typecheck
 
-  build:
-    name: Build
+  test:
+    name: Unit & Migration Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,10 +41,22 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx vite build
+      - run: npm run test
 
-  e2e:
-    name: E2E Tests
+  i18n:
+    name: i18n Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run i18n:check
+
+  web-e2e:
+    name: Web E2E (persistence)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,11 +66,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      # Install Electron system dependencies not covered by Playwright's chromium deps
-      - run: npx electron . --version || sudo apt-get install -y libgbm-dev
-      - run: npm run build-vite
-      # xvfb provides a virtual display; Electron needs one on Linux even with show:false
-      - run: xvfb-run --auto-servernum npm run test:e2e
+      - run: npm run build:web
+      - run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

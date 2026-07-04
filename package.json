@@ -18,6 +18,7 @@
 		"test:e2e": "playwright test",
 		"i18n:check": "node scripts/i18n-check.mjs",
 		"build:web": "expo export --platform web",
+		"postinstall": "patch-package",
 		"prepare": "husky || true"
 	},
 	"dependencies": {
@@ -67,6 +68,7 @@
 		"fast-check": "^4.5.2",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.3.2",
+		"patch-package": "^8.0.1",
 		"typescript": "~6.0.3",
 		"vitest": "^4.0.16"
 	},

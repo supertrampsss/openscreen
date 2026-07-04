@@ -12,6 +12,8 @@ interface PillButtonProps {
 	loading?: boolean;
 	fullWidth?: boolean;
 	style?: ViewStyle | ViewStyle[];
+	/** testID → data-testid sur react-native-web (E2E). */
+	testID?: string;
 }
 
 /** CTA principal : pilule noire, texte blanc, cible ≥48 px (§3). */
@@ -24,6 +26,7 @@ export function PillButton({
 	loading = false,
 	fullWidth = true,
 	style,
+	testID,
 }: PillButtonProps) {
 	const theme = useTheme();
 	const isPrimary = variant === "primary";
@@ -37,6 +40,7 @@ export function PillButton({
 			accessibilityRole="button"
 			accessibilityLabel={accessibilityLabel}
 			accessibilityState={{ disabled: isDisabled, busy: loading }}
+			testID={testID}
 			disabled={isDisabled}
 			onPress={onPress}
 			style={({ pressed }) => [

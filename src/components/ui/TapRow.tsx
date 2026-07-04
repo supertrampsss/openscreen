@@ -8,6 +8,8 @@ export interface TapOption<T> {
 	label: string;
 	/** Libellé long pour l'accessibilité (sinon `label`). */
 	accessibilityLabel?: string;
+	/** testID → data-testid sur react-native-web (E2E). */
+	testID?: string;
 }
 
 interface TapRowProps<T> {
@@ -61,6 +63,7 @@ export function TapRow<T extends string | number>({
 							accessibilityRole="radio"
 							accessibilityState={{ selected }}
 							accessibilityLabel={opt.accessibilityLabel ?? opt.label}
+							testID={opt.testID}
 							onPress={() => onChange(opt.value)}
 							style={({ pressed }) => [
 								styles.cell,

@@ -24,6 +24,8 @@ interface DraftSheetProps {
 	onConfirm?: () => void;
 	confirmDisabled?: boolean;
 	confirmAccessibilityLabel?: string;
+	/** testID du bouton de confirmation (E2E). */
+	confirmTestID?: string;
 }
 
 /**
@@ -39,6 +41,7 @@ export function DraftSheet({
 	onConfirm,
 	confirmDisabled = false,
 	confirmAccessibilityLabel,
+	confirmTestID,
 }: DraftSheetProps) {
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
@@ -109,6 +112,7 @@ export function DraftSheet({
 								onPress={onConfirm}
 								disabled={confirmDisabled}
 								accessibilityLabel={confirmAccessibilityLabel ?? confirmLabel}
+								testID={confirmTestID}
 							/>
 						</View>
 					) : null}

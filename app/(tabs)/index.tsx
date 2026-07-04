@@ -116,6 +116,7 @@ export default function HomeScreen() {
 			<Pressable
 				accessibilityRole="button"
 				accessibilityLabel={t("home.addButton")}
+				testID="fab-add"
 				onPress={() => setAddOpen(true)}
 				style={[
 					styles.fab,

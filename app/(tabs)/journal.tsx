@@ -176,7 +176,7 @@ function JournalRow({
 	const isStool = entry.kind === "stool";
 
 	return (
-		<Card padding="md" style={styles.row}>
+		<Card padding="md" style={styles.row} testID="journal-entry">
 			<Pressable style={styles.rowMain} accessibilityRole="button" onPress={onPress}>
 				{isStool && entry.bristol ? (
 					<BristolIcon type={entry.bristol as BristolType} selected size={28} />

@@ -28,6 +28,7 @@ export default function TabsLayout() {
 				name="index"
 				options={{
 					title: t("tabs.home"),
+					tabBarButtonTestID: "tab-home",
 					tabBarIcon: ({ color }) => <TabIcon emoji="🏠" color={color} />,
 				}}
 			/>
@@ -35,6 +36,7 @@ export default function TabsLayout() {
 				name="journal"
 				options={{
 					title: t("tabs.journal"),
+					tabBarButtonTestID: "tab-journal",
 					tabBarIcon: ({ color }) => <TabIcon emoji="📓" color={color} />,
 				}}
 			/>

@@ -1,12 +1,13 @@
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SnackbarProvider } from "@/components/ui/Snackbar";
-import { db } from "@/db/client";
+import { db, warmupDb } from "@/db/client";
 import { initI18n } from "@/i18n";
 import { ThemeProvider, useTheme } from "@/theme";
 import migrations from "../drizzle/migrations";
@@ -26,7 +27,8 @@ function LoadingScreen({ message, error }: { message: string; error?: boolean })
 	);
 }
 
-function Root() {
+/** Exécute les migrations puis rend l'app. Monté SEULEMENT une fois la DB chaude. */
+function Migrator() {
 	const { t } = useTranslation("common");
 	const theme = useTheme();
 	const { success, error } = useMigrations(db, migrations);
@@ -49,6 +51,36 @@ function Root() {
 			/>
 		</SnackbarProvider>
 	);
+}
+
+function Root() {
+	const { t } = useTranslation("common");
+	// Préchauffe le worker SQLite web AVANT toute requête sync (migrations incluses),
+	// sinon le 1er appel sync « timeout » et fait planter l'app. No-op sur natif.
+	const [warm, setWarm] = useState(false);
+	const [warmError, setWarmError] = useState(false);
+	useEffect(() => {
+		let alive = true;
+		warmupDb().then(
+			() => {
+				if (alive) setWarm(true);
+			},
+			() => {
+				if (alive) setWarmError(true);
+			},
+		);
+		return () => {
+			alive = false;
+		};
+	}, []);
+
+	if (warmError) {
+		return <LoadingScreen error message="Redémarrez l'application. Vos données sont intactes." />;
+	}
+	if (!warm) {
+		return <LoadingScreen message={t("loading")} />;
+	}
+	return <Migrator />;
 }
 
 export default function RootLayout() {

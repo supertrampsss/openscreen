@@ -39,31 +39,34 @@ export async function upsertDraft(entry: DraftInput): Promise<SymptomEntry> {
 		...entry,
 	};
 
-	const rows = await db.transaction(async (tx) => {
-		return tx
-			.insert(symptomEntries)
-			.values(values)
-			.onConflictDoUpdate({
-				target: symptomEntries.id,
-				set: {
-					occurredAt: values.occurredAt,
-					tz: values.tz,
-					localDate: values.localDate,
-					kind: values.kind,
-					bristol: values.bristol ?? null,
-					urgency: values.urgency ?? null,
-					blood: values.blood ?? null,
-					pain: values.pain ?? null,
-					painZone: values.painZone ?? null,
-					fatigue: values.fatigue ?? null,
-					wellbeing: values.wellbeing ?? null,
-					extraIntestinal: values.extraIntestinal ?? null,
-					notes: values.notes ?? null,
-					updatedAt: now,
-				},
-			})
-			.returning();
-	});
+	// Upsert atomique en UNE instruction (INSERT ... ON CONFLICT) : pas besoin de
+	// transaction explicite — et surtout, `db.transaction(async …)` est un piège
+	// sur le driver expo-sqlite SYNChrone (le `commit` part avant l'exécution du
+	// builder, laissant l'INSERT hors transaction et désynchronisant le worker WASM
+	// web → corruption de lecture). Cf. src/db/client.ts.
+	const rows = await db
+		.insert(symptomEntries)
+		.values(values)
+		.onConflictDoUpdate({
+			target: symptomEntries.id,
+			set: {
+				occurredAt: values.occurredAt,
+				tz: values.tz,
+				localDate: values.localDate,
+				kind: values.kind,
+				bristol: values.bristol ?? null,
+				urgency: values.urgency ?? null,
+				blood: values.blood ?? null,
+				pain: values.pain ?? null,
+				painZone: values.painZone ?? null,
+				fatigue: values.fatigue ?? null,
+				wellbeing: values.wellbeing ?? null,
+				extraIntestinal: values.extraIntestinal ?? null,
+				notes: values.notes ?? null,
+				updatedAt: now,
+			},
+		})
+		.returning();
 	return rows[0];
 }
 
