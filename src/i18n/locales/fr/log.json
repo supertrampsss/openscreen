@@ -1,0 +1,81 @@
+{
+	"addMenu": {
+		"title": "Que voulez-vous noter ?",
+		"stool": "Selle rapide",
+		"symptoms": "Symptômes",
+		"mealManual": "Repas manuel",
+		"photo": "Photo repas",
+		"voice": "Note vocale",
+		"soon": "bientôt",
+		"pr4": "PR 4",
+		"pr5": "PR 5"
+	},
+	"stool": {
+		"title": "Selle rapide",
+		"bristol": "Type de selle",
+		"urgency": "Urgence",
+		"blood": "Sang",
+		"pain": "Douleur au moment",
+		"time": "Heure",
+		"save": "Enregistrer",
+		"saved": "Selle enregistrée.",
+		"urgencyLevels": {
+			"0": "Aucune",
+			"1": "Légère",
+			"2": "Modérée",
+			"3": "Forte"
+		},
+		"bloodLevels": {
+			"0": "Non",
+			"1": "Traces",
+			"2": "Visible"
+		},
+		"painLevels": {
+			"0": "Aucune",
+			"1": "Légère",
+			"2": "Modérée",
+			"3": "Forte"
+		}
+	},
+	"symptom": {
+		"title": "Symptômes",
+		"pain": "Douleur",
+		"painZone": "Localisation",
+		"fatigue": "Fatigue",
+		"wellbeing": "Forme générale",
+		"extraIntestinal": "Manifestations associées",
+		"notes": "Notes",
+		"notesPlaceholder": "Un mot sur votre journée (optionnel)",
+		"addNote": "Ajouter une note",
+		"save": "Enregistrer",
+		"saved": "Symptômes enregistrés.",
+		"levels": {
+			"0": "Aucune",
+			"1": "Légère",
+			"2": "Modérée",
+			"3": "Forte"
+		},
+		"wellbeingLevels": {
+			"0": "Très bien",
+			"1": "Un peu moins bien",
+			"2": "Mal",
+			"3": "Très mal",
+			"4": "Terrible"
+		},
+		"zones": {
+			"lower_right": "Ventre droit",
+			"lower_left": "Ventre gauche",
+			"lower_center": "Bas-ventre",
+			"diffuse": "Diffus"
+		},
+		"complications": {
+			"arthralgia": "Arthralgies",
+			"uveitis": "Uvéite",
+			"erythema_nodosum": "Érythème noueux",
+			"aphthae": "Aphtes",
+			"fissure": "Fissure",
+			"fistula": "Fistule",
+			"abscess": "Abcès"
+		}
+	}
+}

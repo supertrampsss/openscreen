@@ -1,0 +1,26 @@
+{
+	"title": "Journal",
+	"empty": "Your journal is still empty.",
+	"emptyHint": "Every entry builds your record. Start whenever you like.",
+	"today": "Today",
+	"yesterday": "Yesterday",
+	"kinds": {
+		"stool": "Stool",
+		"symptom": "Symptoms"
+	},
+	"badges": {
+		"stools_one": "{{count}} stool",
+		"stools_other": "{{count}} stools",
+		"pain": "Pain {{level}}",
+		"meals_one": "{{count}} meal",
+		"meals_other": "{{count}} meals"
+	},
+	"entry": {
+		"bristol": "Type {{value}}",
+		"blood": "Blood",
+		"urgency": "Urgency",
+		"draft": "draft"
+	},
+	"deleted": "Entry deleted",
+	"undo": "Undo"
+}

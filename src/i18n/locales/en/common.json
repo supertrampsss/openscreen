@@ -1,3 +1,56 @@
 {
-	"appName": "Crohnicle"
+	"appName": "Crohnicle",
+	"loading": "Preparing your journal…",
+	"tabs": {
+		"home": "Home",
+		"journal": "Journal",
+		"trends": "Trends",
+		"settings": "Settings"
+	},
+	"actions": {
+		"save": "Save",
+		"cancel": "Cancel",
+		"close": "Close",
+		"confirm": "Confirm",
+		"delete": "Delete",
+		"undo": "Undo"
+	},
+	"time": {
+		"now": "Now",
+		"minus15": "−15 min",
+		"minus1h": "−1 h",
+		"other": "Other"
+	},
+	"draft": "draft",
+	"home": {
+		"greeting": "Hello",
+		"ringTitle": "Today",
+		"stoolsUnit_one": "stool",
+		"stoolsUnit_other": "stools",
+		"ringDone": "Day documented",
+		"ringEmpty": "Nothing yet",
+		"recentTitle": "Recently logged",
+		"recentEmpty": "Your first entries will show up here. Tap “+” to start.",
+		"addButton": "Add an entry"
+	},
+	"trends": {
+		"title": "Trends",
+		"soon": "Your charts and associations are coming soon.",
+		"soonHint": "Keep documenting: every day enriches your report."
+	},
+	"settings": {
+		"title": "Settings",
+		"dataSection": "Your data",
+		"backup": "Export a backup",
+		"restore": "Restore a backup",
+		"backupDone": "Backup exported.",
+		"backupError": "Export failed. Please try again.",
+		"restoreConfirmTitle": "Restore this backup?",
+		"restoreConfirmBody": "Your current data will be replaced by the file's contents. This cannot be undone.",
+		"restoreDone": "Backup restored.",
+		"restoreError": "Invalid or unreadable file.",
+		"privacyTitle": "Your data stays with you",
+		"privacyBody": "Everything is stored on your device. Your data and its export will stay free forever.",
+		"disclaimer": "Crohnicle is a personal tracking tool, not a medical device."
+	}
 }

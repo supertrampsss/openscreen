@@ -1,3 +1,56 @@
 {
-	"appName": "Crohnicle"
+	"appName": "Crohnicle",
+	"loading": "Préparation de votre journal…",
+	"tabs": {
+		"home": "Accueil",
+		"journal": "Journal",
+		"trends": "Tendances",
+		"settings": "Réglages"
+	},
+	"actions": {
+		"save": "Enregistrer",
+		"cancel": "Annuler",
+		"close": "Fermer",
+		"confirm": "Confirmer",
+		"delete": "Supprimer",
+		"undo": "Annuler"
+	},
+	"time": {
+		"now": "Maintenant",
+		"minus15": "−15 min",
+		"minus1h": "−1 h",
+		"other": "Autre"
+	},
+	"draft": "brouillon",
+	"home": {
+		"greeting": "Bonjour",
+		"ringTitle": "Aujourd'hui",
+		"stoolsUnit_one": "selle",
+		"stoolsUnit_other": "selles",
+		"ringDone": "Journée documentée",
+		"ringEmpty": "Rien pour l'instant",
+		"recentTitle": "Récemment loggé",
+		"recentEmpty": "Vos premières entrées apparaîtront ici. Un tap sur « + » pour commencer.",
+		"addButton": "Ajouter une entrée"
+	},
+	"trends": {
+		"title": "Tendances",
+		"soon": "Vos courbes et associations arrivent bientôt.",
+		"soonHint": "Continuez à documenter : chaque jour enrichit votre bilan."
+	},
+	"settings": {
+		"title": "Réglages",
+		"dataSection": "Vos données",
+		"backup": "Exporter une sauvegarde",
+		"restore": "Restaurer une sauvegarde",
+		"backupDone": "Sauvegarde exportée.",
+		"backupError": "Export impossible. Réessayez.",
+		"restoreConfirmTitle": "Restaurer cette sauvegarde ?",
+		"restoreConfirmBody": "Vos données actuelles seront remplacées par celles du fichier. Cette action est définitive.",
+		"restoreDone": "Sauvegarde restaurée.",
+		"restoreError": "Fichier invalide ou illisible.",
+		"privacyTitle": "Vos données restent chez vous",
+		"privacyBody": "Tout est stocké sur votre appareil. Vos données et leur export resteront gratuits pour toujours.",
+		"disclaimer": "Crohnicle est un outil de suivi personnel, pas un dispositif médical."
+	}
 }

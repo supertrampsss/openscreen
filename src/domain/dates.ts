@@ -94,6 +94,16 @@ export function groupByLocalDate<T extends { localDate: string }>(items: T[]): [
 	return [...map.entries()].sort((a, b) => (a[0] < b[0] ? 1 : a[0] > b[0] ? -1 : 0));
 }
 
+/** Heure locale 'HH:MM' d'un instant dans une timezone. */
+export function formatClock(epochMs: number, tz: string): string {
+	return new Intl.DateTimeFormat("fr-FR", {
+		timeZone: tz,
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	}).format(new Date(epochMs));
+}
+
 const DAY_LABELS_FR = ["D", "L", "M", "M", "J", "V", "S"];
 
 /** Métadonnées d'affichage d'une local_date (lettre du jour + numéro). */
