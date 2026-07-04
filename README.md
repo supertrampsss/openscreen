@@ -92,7 +92,15 @@ CI GitHub Actions (Node 22) : Biome · tsc + expo-doctor · Vitest (domaine + mi
 
 ## Captures d'écran
 
-> _À ajouter avant la publication_ (§ ASO de [`docs/RELEASE.md`](./docs/RELEASE.md)) : scan photo (brouillon + confidence), export médecin PDF, anneau d'accueil, Tendances (courbes + associations).
+Générées automatiquement depuis l'export web (`npm run screenshots` → [`scripts/screenshots.mjs`](./scripts/screenshots.mjs) pilote Playwright et seed les données via l'UI) ; elles servent aussi de base à l'ASO (§ [`docs/RELEASE.md`](./docs/RELEASE.md)).
+
+| Accueil | Journal | Tendances |
+|:---:|:---:|:---:|
+| <img src="./docs/screenshots/home.png" width="250" alt="Accueil : anneau de complétude, série, récemment loggé" /> | <img src="./docs/screenshots/journal.png" width="250" alt="Journal : timeline des logs par jour" /> | <img src="./docs/screenshots/trends.png" width="250" alt="Tendances : courbes, bilan hebdo, HBI/SCCAI" /> |
+| Export médecin | Carte d'urgence | Premium |
+| <img src="./docs/screenshots/export.png" width="250" alt="Export médecin : aperçu et points à aborder avec le gastro" /> | <img src="./docs/screenshots/urgence.png" width="250" alt="Carte d'urgence toilettes multilingue plein écran" /> | <img src="./docs/screenshots/premium.png" width="250" alt="Paywall éthique : prix affichés, engagement gratuit à vie" /> |
+| Onboarding | Accueil (sombre) | |
+| <img src="./docs/screenshots/onboarding.png" width="250" alt="Onboarding : premier écran du funnel" /> | <img src="./docs/screenshots/home-dark.png" width="250" alt="Accueil en thème sombre" /> | |
 
 ## Avertissement médical
 
