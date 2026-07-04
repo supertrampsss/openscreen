@@ -6,10 +6,11 @@
  * (tout ou rien : §2 loi 2, jamais de base à moitié écrasée).
  */
 
+import type { SQLiteTable } from "drizzle-orm/sqlite-core";
 import { getDocumentAsync } from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
 import { isAvailableAsync, shareAsync } from "expo-sharing";
-import { db } from "@/db/client";
+import { db, getRawSqlite } from "@/db/client";
 import {
 	dailyExtras,
 	foods,
@@ -22,6 +23,7 @@ import {
 	treatmentEvents,
 	treatments,
 } from "@/db/schema";
+import { type RestoreDriver, restoreAllTables } from "@/db/transactions";
 import {
 	BACKUP_TABLES,
 	type BackupTableName,
@@ -32,8 +34,7 @@ import {
 } from "@/domain/backup";
 
 /** Table drizzle par nom logique (ordre d'import = ordre FK-safe). */
-// biome-ignore lint/suspicious/noExplicitAny: tables hétérogènes, insert générique.
-const TABLE_MAP: Record<BackupTableName, any> = {
+const TABLE_MAP: Record<BackupTableName, SQLiteTable> = {
 	profile,
 	foods,
 	symptom_entries: symptomEntries,
@@ -110,19 +111,24 @@ export async function importBackup(): Promise<ImportResult> {
 	const json = await new File(asset.uri).text();
 	const backup = parseBackup(json); // lève BackupError avant toute écriture.
 
-	let rowCount = 0;
-	await db.transaction(async (tx) => {
-		// Purge en ordre inverse (FK-safe), puis réinsertion en ordre normal.
-		for (const name of [...BACKUP_TABLES].reverse()) {
-			await tx.delete(TABLE_MAP[name]);
-		}
-		for (const name of BACKUP_TABLES) {
-			const rows = backup.tables[name];
-			if (rows.length === 0) continue;
-			await tx.insert(TABLE_MAP[name]).values(rows);
-			rowCount += rows.length;
-		}
-	});
+	// Transaction SYNChrone pilotée sur le handle brut (BEGIN/COMMIT/ROLLBACK) :
+	// les écritures drizzle `.run()` sont synchrones et partagent cette connexion.
+	// Tout-ou-rien réel — jamais de `db.transaction(async …)`. Cf. db/transactions.
+	const sqlite = getRawSqlite();
+	const driver: RestoreDriver = {
+		begin: () => sqlite.execSync("BEGIN"),
+		commit: () => sqlite.execSync("COMMIT"),
+		rollback: () => sqlite.execSync("ROLLBACK"),
+		deleteAll: (name) => {
+			db.delete(TABLE_MAP[name]).run();
+		},
+		insertRows: (name, rows) => {
+			db.insert(TABLE_MAP[name])
+				.values(rows as never)
+				.run();
+		},
+	};
+	const rowCount = restoreAllTables(driver, backup);
 
 	return { imported: true, rowCount };
 }

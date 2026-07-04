@@ -19,7 +19,15 @@ export function newMealId(): string {
 	return newId();
 }
 
-/** Autosave transactionnel du brouillon repas. */
+/**
+ * Autosave du brouillon repas.
+ *
+ * Upsert atomique en UNE instruction (INSERT ... ON CONFLICT), comme
+ * `symptomRepo.upsertDraft` : PAS de `db.transaction(async …)`. Le driver
+ * expo-sqlite est SYNChrone — un callback `async` rend la main (et provoque le
+ * `commit`) avant que le builder awaité ne s'exécute, laissant l'INSERT hors
+ * transaction et désynchronisant le worker WASM web. Cf. src/db/client.ts.
+ */
 export async function upsertDraft(entry: MealDraftInput): Promise<Meal> {
 	const now = Date.now();
 	const values: NewMeal = {
@@ -29,26 +37,24 @@ export async function upsertDraft(entry: MealDraftInput): Promise<Meal> {
 		updatedAt: now,
 		...entry,
 	};
-	const rows = await db.transaction(async (tx) => {
-		return tx
-			.insert(meals)
-			.values(values)
-			.onConflictDoUpdate({
-				target: meals.id,
-				set: {
-					occurredAt: values.occurredAt,
-					tz: values.tz,
-					localDate: values.localDate,
-					name: values.name ?? null,
-					source: values.source ?? "manual",
-					photoUri: values.photoUri ?? null,
-					aiConfidence: values.aiConfidence ?? null,
-					aiRaw: values.aiRaw ?? null,
-					updatedAt: now,
-				},
-			})
-			.returning();
-	});
+	const rows = await db
+		.insert(meals)
+		.values(values)
+		.onConflictDoUpdate({
+			target: meals.id,
+			set: {
+				occurredAt: values.occurredAt,
+				tz: values.tz,
+				localDate: values.localDate,
+				name: values.name ?? null,
+				source: values.source ?? "manual",
+				photoUri: values.photoUri ?? null,
+				aiConfidence: values.aiConfidence ?? null,
+				aiRaw: values.aiRaw ?? null,
+				updatedAt: now,
+			},
+		})
+		.returning();
 	return rows[0];
 }
 

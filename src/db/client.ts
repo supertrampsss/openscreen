@@ -43,6 +43,15 @@ function getSqlite(): SQLiteDatabase {
 	return sqliteHandle;
 }
 
+/**
+ * Handle SQLite brut (même connexion que `db`). Utilisé pour piloter des
+ * transactions explicites BEGIN/COMMIT/ROLLBACK autour de plusieurs écritures
+ * drizzle (ex. restauration de backup — §2 loi 2). Sur web, exige un warmup.
+ */
+export function getRawSqlite(): SQLiteDatabase {
+	return getSqlite();
+}
+
 function makeDb() {
 	return drizzle(getSqlite(), { schema });
 }

@@ -24,7 +24,17 @@ interface SnackbarApi {
 	hide: () => void;
 }
 
-const SnackbarContext = createContext<SnackbarApi>({ show: () => {}, hide: () => {} });
+/**
+ * Défaut hors `SnackbarProvider` : no-op explicite. Le provider est monté à la
+ * racine (`app/_layout.tsx`), donc ce défaut ne sert qu'au typage / aux tests
+ * de composants isolés — afficher un toast sans provider est silencieusement ignoré.
+ */
+const noopSnackbar: SnackbarApi = {
+	show: () => undefined,
+	hide: () => undefined,
+};
+
+const SnackbarContext = createContext<SnackbarApi>(noopSnackbar);
 
 /** Snackbar/toast global : message discret + action optionnelle (undo). */
 export function SnackbarProvider({ children }: { children: ReactNode }) {
