@@ -19,6 +19,16 @@
 			"empty": "Documentez un jour cette semaine pour votre premier bilan."
 		}
 	},
+	"insight": {
+		"title": "Insight IA de la semaine",
+		"teaser": "Un résumé bienveillant de votre semaine, avec Premium",
+		"loading": "Génération de votre insight…",
+		"empty": "Documentez quelques jours pour votre insight de la semaine.",
+		"disclaimer": "Généré par IA à partir d'agrégats anonymes · à évoquer avec votre gastro",
+		"regenerate": "Régénérer",
+		"demoHeadline": "Votre semaine en bref",
+		"demoBody": "Vous avez documenté {{documented}} jour(s) cette semaine, en moyenne {{avg}} selles par jour, {{painDays}} jour(s) avec des douleurs et {{bloodDays}} jour(s) avec du sang. Ces éléments sont à évoquer avec votre gastro lors de votre prochaine consultation."
+	},
 	"score": {
 		"titleHbi": "HBI estimé",
 		"titleSccai": "SCCAI estimé",

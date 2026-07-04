@@ -18,6 +18,8 @@
  * at build time (Request/Response/fetch come from the WebWorker lib).
  */
 
+import { INSIGHT_PROMPT } from "./insightPrompt";
+import { INSIGHT_SCHEMA } from "./insightSchema";
 import { SYSTEM_PROMPT } from "./prompt";
 import { SCHEMA } from "./schema";
 import { VOICE_PROMPT } from "./voicePrompt";
@@ -316,11 +318,11 @@ interface VoiceBody {
 }
 
 /**
- * Is this request allowed to use /parse-voice? Voice is a premium feature (§8):
- * the caller must present a verified `premium` entitlement. `DEMO_ALLOW_TRIAL`
- * opens it for local demos where RevenueCat is not configured.
+ * Is this request allowed on a PREMIUM-only endpoint (/parse-voice,
+ * /weekly-insight)? The caller must present a verified `premium` entitlement.
+ * `DEMO_ALLOW_TRIAL` opens it for local demos where RevenueCat is not configured.
  */
-async function voiceAllowed(env: Env, token: string | undefined): Promise<boolean> {
+async function premiumAllowed(env: Env, token: string | undefined): Promise<boolean> {
 	if (env.DEMO_ALLOW_TRIAL === "true") return true;
 	if (env.REVENUECAT_API_KEY && token) return isPremium(env, token);
 	return false;
@@ -353,7 +355,7 @@ async function handleParseVoice(request: Request, env: Env): Promise<Response> {
 	}
 
 	// Premium gate (§8): no trial path for voice.
-	if (!(await voiceAllowed(env, entitlementToken))) {
+	if (!(await premiumAllowed(env, entitlementToken))) {
 		log("/parse-voice", deviceId, 403, started);
 		return json({ error: "premium_required" }, 403);
 	}
@@ -393,6 +395,92 @@ async function handleParseVoice(request: Request, env: Env): Promise<Response> {
 	return json({ result });
 }
 
+// ---------------------------------------------------------------------------
+// /weekly-insight (§7) — anonymous aggregates → a short kind weekly insight.
+// PREMIUM ONLY. Receives ONLY aggregates (no raw entries, notes or dates).
+// ---------------------------------------------------------------------------
+
+interface InsightBody {
+	aggregates?: unknown;
+	lang?: unknown;
+	deviceId?: unknown;
+	entitlementToken?: unknown;
+}
+
+async function handleWeeklyInsight(request: Request, env: Env): Promise<Response> {
+	const started = Date.now();
+	let body: InsightBody;
+	try {
+		body = (await request.json()) as InsightBody;
+	} catch {
+		return json({ error: "invalid_json" }, 400);
+	}
+
+	const aggregates = body.aggregates;
+	const lang = body.lang === "en" ? "en" : "fr";
+	const deviceId = typeof body.deviceId === "string" ? body.deviceId : "";
+	const entitlementToken =
+		typeof body.entitlementToken === "string" && body.entitlementToken
+			? body.entitlementToken
+			: undefined;
+
+	if (!aggregates || typeof aggregates !== "object") {
+		return json({ error: "missing_aggregates" }, 400);
+	}
+	if (!deviceId) {
+		return json({ error: "missing_device_id" }, 400);
+	}
+	if (!env.ANTHROPIC_API_KEY) {
+		return json({ error: "not_configured" }, 500);
+	}
+
+	// Premium gate (§8).
+	if (!(await premiumAllowed(env, entitlementToken))) {
+		log("/weekly-insight", deviceId, 403, started);
+		return json({ error: "premium_required" }, 403);
+	}
+
+	const language = lang === "en" ? "English" : "French";
+	const content = [
+		{
+			type: "text",
+			text: `Write the headline and insight in ${language}.\nAnonymous weekly aggregates:\n${JSON.stringify(aggregates)}`,
+		},
+	];
+	let message: AnthropicMessage;
+	try {
+		message = await callAnthropic(env, INSIGHT_PROMPT, INSIGHT_SCHEMA, content, 700);
+		if (message.stop_reason === "max_tokens") {
+			message = await callAnthropic(env, INSIGHT_PROMPT, INSIGHT_SCHEMA, content, 1200);
+		}
+	} catch {
+		log("/weekly-insight", deviceId, 502, started);
+		return json({ error: "upstream_error" }, 502);
+	}
+
+	if (message.stop_reason === "refusal") {
+		log("/weekly-insight", deviceId, 422, started);
+		return json({ error: "refused" }, 422);
+	}
+
+	const textBlock = message.content?.find((b) => b.type === "text" && typeof b.text === "string");
+	if (!textBlock?.text) {
+		log("/weekly-insight", deviceId, 502, started);
+		return json({ error: "empty_result" }, 502);
+	}
+
+	let result: unknown;
+	try {
+		result = JSON.parse(textBlock.text);
+	} catch {
+		log("/weekly-insight", deviceId, 502, started);
+		return json({ error: "parse_error" }, 502);
+	}
+
+	log("/weekly-insight", deviceId, 200, started);
+	return json({ result });
+}
+
 export default {
 	async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
 		if (request.method === "OPTIONS") {
@@ -404,6 +492,9 @@ export default {
 		}
 		if (request.method === "POST" && url.pathname === "/parse-voice") {
 			return handleParseVoice(request, env);
+		}
+		if (request.method === "POST" && url.pathname === "/weekly-insight") {
+			return handleWeeklyInsight(request, env);
 		}
 		return json({ error: "not_found" }, 404);
 	},

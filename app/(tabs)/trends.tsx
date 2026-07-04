@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card, type ChartBand, ChipTrigger, LineChart } from "@/components/ui";
 import { localDateDaysAgo, nowEntryTimestamp } from "@/domain/dates";
+import type { InsightAggregatesInput } from "@/domain/insightAggregates";
 import {
 	dailyScoreSeries,
 	groupEntriesByDate,
@@ -22,6 +23,7 @@ import {
 } from "@/domain/scoreSeries";
 import { datesInclusive } from "@/domain/streak";
 import { type WeeklyDigest, weeklyDigest } from "@/domain/weeklyDigest";
+import { WeeklyInsightCard } from "@/features/trends/WeeklyInsightCard";
 import {
 	getDay as getExtrasDay,
 	listSince as listExtrasSince,
@@ -67,6 +69,8 @@ interface TrendsData {
 	countdown: number;
 	associations: DisplayAssociation[];
 	todayComplications: string[];
+	/** Entrée d'agrégats ANONYMES (7 j) pour l'insight IA hebdo (§7). */
+	insightInput: InsightAggregatesInput;
 }
 
 const EMPTY: TrendsData = {
@@ -86,6 +90,15 @@ const EMPTY: TrendsData = {
 	countdown: 14,
 	associations: [],
 	todayComplications: [],
+	insightInput: {
+		dailyStools: [],
+		painValues: [],
+		bloodByDay: [],
+		scores: [],
+		scoreKind: "hbi",
+		triggerAssociations: [],
+		adherencePct: null,
+	},
 };
 
 export default function TrendsScreen() {
@@ -149,22 +162,40 @@ export default function TrendsScreen() {
 				const last7Dates = dates.slice(-7);
 				const bloodDays = last7Dates.filter((d) => (bloodByDate.get(d) ?? 0) > 0).length;
 
+				const scoreSeries = dailyScoreSeries(
+					dates,
+					entriesByDate as Map<string, ScoreDayEntry[]>,
+					extrasByDate,
+					scoreKind,
+				);
+				const displayAssociations = topAssociations(associations, 5);
+
+				// Agrégats ANONYMES (7 j) pour l'insight IA hebdo (§7, §2 loi 4) :
+				// uniquement des nombres et des libellés de déclencheurs génériques.
+				const insightInput: InsightAggregatesInput = {
+					dailyStools: last7Stools,
+					painValues: painPerDay.slice(-7),
+					bloodByDay: last7Dates.map((d) => bloodByDate.get(d) ?? 0),
+					scores: scoreSeries.slice(-7).filter((v): v is number => v != null),
+					scoreKind,
+					triggerAssociations: displayAssociations
+						.filter((a) => a.kind === "trigger")
+						.map((a) => a.key),
+					adherencePct: null,
+				};
+
 				setData({
 					scoreKind,
 					undiagnosed: !profile?.diagnosis || profile.diagnosis === "undiagnosed",
-					scoreSeries: dailyScoreSeries(
-						dates,
-						entriesByDate as Map<string, ScoreDayEntry[]>,
-						extrasByDate,
-						scoreKind,
-					),
+					scoreSeries,
 					stoolsPerDay,
 					painPerDay,
 					fatiguePerDay,
 					digest: weeklyDigest({ dailyStools: last7Stools, bloodDays, previousAvgStools }),
 					countdown: associations.daysUntilEligible,
-					associations: topAssociations(associations, 5),
+					associations: displayAssociations,
 					todayComplications: todayExtra?.complications ?? [],
+					insightInput,
 				});
 			});
 		},
@@ -291,6 +322,9 @@ export default function TrendsScreen() {
 						})}
 					</Text>
 				</Card>
+
+				{/* Insight IA de la semaine (§7) — Premium (sinon teaser discret). */}
+				<WeeklyInsightCard input={data.insightInput} />
 
 				{/* Score HBI / SCCAI. */}
 				<Card style={{ gap: theme.spacing.sm }}>

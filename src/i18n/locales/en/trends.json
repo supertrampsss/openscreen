@@ -19,6 +19,16 @@
 			"empty": "Document a day this week for your first digest."
 		}
 	},
+	"insight": {
+		"title": "AI insight of the week",
+		"teaser": "A kind summary of your week, with Premium",
+		"loading": "Generating your insight…",
+		"empty": "Document a few days for your weekly insight.",
+		"disclaimer": "AI-generated from anonymous aggregates · discuss with your gastro",
+		"regenerate": "Regenerate",
+		"demoHeadline": "Your week at a glance",
+		"demoBody": "You documented {{documented}} day(s) this week, averaging {{avg}} stools per day, {{painDays}} day(s) with pain and {{bloodDays}} day(s) with blood. These are worth mentioning to your gastroenterologist at your next visit."
+	},
 	"score": {
 		"titleHbi": "Estimated HBI",
 		"titleSccai": "Estimated SCCAI",
