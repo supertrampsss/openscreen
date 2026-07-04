@@ -90,7 +90,9 @@
 			"urgency": "urgence"
 		},
 		"na": "—",
-		"disclaimer": "Document d'auto-évaluation généré par Crohnicle — ne constitue pas un avis médical ni un dispositif médical."
+		"disclaimer": "Document d'auto-évaluation généré par Crohnicle — ne constitue pas un avis médical ni un dispositif médical.",
+		"observanceHeading": "Observance du traitement",
+		"observanceText": "{{taken}}/{{expected}} prises sur la période"
 	},
 	"points": {
 		"visibleBlood_one": "Sang visible rapporté {{days}} jour sur {{total}}.",

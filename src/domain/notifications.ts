@@ -17,6 +17,8 @@ export interface NotificationPrefs {
 	eveningReminder: boolean;
 	/** Bilan hebdo du dimanche. */
 	weeklyDigest: boolean;
+	/** Rappels de traitement à cycle long (J-1 / J-0 des biothérapies, §5.9). */
+	treatmentReminders: boolean;
 	/** Heure du rappel du soir (0-23). */
 	reminderHour: number;
 	/** Minute du rappel du soir (0-59). */
@@ -29,6 +31,7 @@ export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
 	master: false,
 	eveningReminder: true,
 	weeklyDigest: true,
+	treatmentReminders: true,
 	reminderHour: 20,
 	reminderMinute: 30,
 };
@@ -46,6 +49,10 @@ export function coercePrefs(raw: Partial<NotificationPrefs> | null | undefined):
 			typeof raw.weeklyDigest === "boolean"
 				? raw.weeklyDigest
 				: DEFAULT_NOTIFICATION_PREFS.weeklyDigest,
+		treatmentReminders:
+			typeof raw.treatmentReminders === "boolean"
+				? raw.treatmentReminders
+				: DEFAULT_NOTIFICATION_PREFS.treatmentReminders,
 		reminderHour: clampInt(raw.reminderHour, 0, 23, DEFAULT_NOTIFICATION_PREFS.reminderHour),
 		reminderMinute: clampInt(raw.reminderMinute, 0, 59, DEFAULT_NOTIFICATION_PREFS.reminderMinute),
 	};

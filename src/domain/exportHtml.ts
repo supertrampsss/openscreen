@@ -39,6 +39,10 @@ export interface ReportLabels {
 	weeklyHeading: string;
 	weeklyEmpty: string;
 	weekWord: string;
+	/** En-tête de la section observance (rendue seulement si `report.observance`). */
+	observanceHeading?: string;
+	/** Ligne d'observance déjà interpolée (« 7/8 prises sur la période »). */
+	observanceText?: string;
 	col: { week: string; stools: string; bloodDays: string; worstPain: string; weight: string };
 	consultHeading: string;
 	/** Lignes des points à aborder, déjà traduites/interpolées. */
@@ -223,6 +227,13 @@ export function renderReportHtml(report: ReportData, labels: ReportLabels): stri
 			? `<ul class="consult">${labels.consultLines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`
 			: "";
 
+	// Observance (§5.9) : section rendue uniquement si des traitements à cadence
+	// existent (sinon `report.observance` est null → aucune sortie, snapshot stable).
+	const observanceSection =
+		report.observance && labels.observanceHeading && labels.observanceText
+			? `\n\n<section>\n<h2>${esc(labels.observanceHeading)}</h2>\n<p>${esc(labels.observanceText)}</p>\n</section>`
+			: "";
+
 	const associationsBlock =
 		labels.associationLines && labels.associationLines.length > 0
 			? `<ul class="consult">${labels.associationLines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`
@@ -294,7 +305,7 @@ ${weeklyTable(report, labels)}
 <section>
 <h2>${esc(labels.consultHeading)}</h2>
 ${consultItems}
-</section>
+</section>${observanceSection}
 
 <section>
 <h2>${esc(labels.associationsHeading)}</h2>

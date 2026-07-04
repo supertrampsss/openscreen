@@ -1,0 +1,90 @@
+{
+	"title": "Treatments",
+	"subtitle": "Your biologic reminders and adherence.",
+	"empty": "No treatment yet.",
+	"add": "Add a treatment",
+	"close": "Close",
+	"kinds": {
+		"biologic_injection": "Injectable biologic",
+		"infusion": "Infusion biologic",
+		"immunosuppressant": "Immunosuppressant",
+		"corticosteroid": "Corticosteroids",
+		"five_asa": "5-ASA",
+		"other": "Other"
+	},
+	"cadence": {
+		"none": "One-off",
+		"everyWeeks_one": "Every {{count}} week",
+		"everyWeeks_other": "Every {{count}} weeks"
+	},
+	"nextDue": {
+		"today": "Due today",
+		"inDays_one": "In {{count}} day",
+		"inDays_other": "In {{count}} days",
+		"overdue_one": "{{count}} day overdue",
+		"overdue_other": "{{count}} days overdue",
+		"none": "No scheduled due date"
+	},
+	"adherence": {
+		"label": "Adherence 90d",
+		"value": "{{taken}}/{{expected}} doses",
+		"none": "—"
+	},
+	"markTaken": "Done ✓",
+	"takenToday": "Done today",
+	"takenToast": "Dose recorded",
+	"undo": "Undo",
+	"sideEffect": {
+		"button": "Side effect",
+		"title": "A side effect?",
+		"subtitle": "Select, add a note if needed.",
+		"chips": {
+			"nausea": "Nausea",
+			"headache": "Headache",
+			"fatigue": "Fatigue",
+			"rash": "Rash",
+			"injection_site": "Injection-site reaction",
+			"infection": "Infection",
+			"joint_pain": "Joint pain",
+			"other": "Other"
+		},
+		"notePlaceholder": "Note (optional)",
+		"save": "Save",
+		"saved": "Side effect noted"
+	},
+	"form": {
+		"addTitle": "New treatment",
+		"editTitle": "Edit treatment",
+		"namePlaceholder": "Name (e.g. Adalimumab)",
+		"kindLabel": "Type",
+		"cadenceLabel": "Cadence (weeks)",
+		"cadenceHint": "For injectables and infusions.",
+		"save": "Save",
+		"delete": "Delete",
+		"deleteConfirmTitle": "Delete this treatment?",
+		"deleteConfirmBody": "History is kept but the treatment leaves the list."
+	},
+	"history": {
+		"show": "Show history",
+		"hide": "Hide history",
+		"empty": "No events.",
+		"taken": "Dose",
+		"skipped": "Skipped",
+		"side_effect": "Side effect"
+	},
+	"seed": {
+		"title": "Create your treatments?",
+		"body": "We noted your treatments at sign-up. Create them pre-filled?",
+		"confirm": "Create",
+		"dismiss": "Later"
+	},
+	"settingsCard": {
+		"title": "Treatments",
+		"body": "Biologic reminders, adherence, side effects."
+	},
+	"homeCard": {
+		"dueToday": "{{name}}: due today",
+		"dueInDays_one": "{{name}} in {{count}} day",
+		"dueInDays_other": "{{name}} in {{count}} days"
+	}
+}

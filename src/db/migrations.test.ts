@@ -81,6 +81,19 @@ describe("migrations drizzle", () => {
 		}
 	});
 
+	it("les colonnes traitements de la migration 0001 existent", () => {
+		const trCols = (db.prepare("PRAGMA table_info(treatments)").all() as { name: string }[]).map(
+			(c) => c.name,
+		);
+		expect(trCols).toContain("next_due");
+		expect(trCols).toContain("cadence_weeks");
+		const evCols = (
+			db.prepare("PRAGMA table_info(treatment_events)").all() as { name: string }[]
+		).map((c) => c.name);
+		expect(evCols).toContain("tz");
+		expect(evCols).toContain("local_date");
+	});
+
 	it("les index local_date existent", () => {
 		const idx = (
 			db.prepare("SELECT name FROM sqlite_master WHERE type='index'").all() as { name: string }[]

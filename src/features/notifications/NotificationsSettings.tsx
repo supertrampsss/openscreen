@@ -59,6 +59,14 @@ export function NotificationsSettings() {
 								trackColor={{ true: theme.colors.energy }}
 							/>
 						</Row>
+						<Row label={t("notifications.treatment")} hint={t("notifications.treatmentHint")}>
+							<Switch
+								testID="notif-treatment"
+								value={prefs.treatmentReminders}
+								onValueChange={(v) => void update({ treatmentReminders: v })}
+								trackColor={{ true: theme.colors.energy }}
+							/>
+						</Row>
 						{prefs.eveningReminder ? (
 							<View style={{ gap: theme.spacing.sm }}>
 								<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>

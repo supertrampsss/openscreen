@@ -91,7 +91,9 @@
 		"weekly": "Weekly recap",
 		"weeklyHint": "Your week, on Sunday evening.",
 		"time": "Reminder time",
-		"unsupported": "Reminders are not available on the web."
+		"unsupported": "Reminders are not available on the web.",
+		"treatment": "Treatment reminders",
+		"treatmentHint": "The day before and the day of the due date."
 	},
 	"notifCopy": {
 		"evening": {
@@ -122,7 +124,8 @@
 		},
 		"treatment": {
 			"title": "Treatment",
-			"body": "Time for your biologic. Injection done?"
+			"body": "Time for your biologic. Injection done?",
+			"bodyNamed": "Time for your {{name}}. Dose taken?"
 		}
 	},
 	"settings": {

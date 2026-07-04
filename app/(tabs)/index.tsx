@@ -40,6 +40,7 @@ import {
 	type ScoreKind,
 	scoreKindForDiagnosis,
 } from "@/domain/scoreSeries";
+import { daysBetweenLocalDates } from "@/domain/treatments";
 import { FlareBanner } from "@/features/flare/FlareBanner";
 import { type AddAction, AddSheet } from "@/features/log/AddSheet";
 import { MealScanResultSheet } from "@/features/log/MealScanResultSheet";
@@ -60,6 +61,7 @@ import {
 } from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import { listCommittedSince, listRecent } from "@/repositories/symptomRepo";
+import { listActive as listActiveTreatments } from "@/repositories/treatmentRepo";
 import { currentEntitlementToken } from "@/services/entitlements";
 import {
 	analyzeMeal,
@@ -86,6 +88,8 @@ interface HomeData {
 	scoreSeries: (number | null)[];
 	bloodToday: number;
 	urgencyToday: number;
+	/** Échéance de traitement la plus proche (J-2 → J+n), pour la carte discrète. */
+	dueTreatment: { name: string; days: number } | null;
 }
 
 const EMPTY: HomeData = {
@@ -104,10 +108,12 @@ const EMPTY: HomeData = {
 	scoreSeries: [],
 	bloodToday: 0,
 	urgencyToday: 0,
+	dueTreatment: null,
 };
 
 export default function HomeScreen() {
 	const { t } = useTranslation("common");
+	const { t: ttr } = useTranslation("treatments");
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
 	const router = useRouter();
@@ -144,7 +150,8 @@ export default function HomeScreen() {
 			listRecent(25),
 			listRecentCommittedWithItems(10),
 			listActivePhotoDrafts(10),
-		]).then(([committed, meals, extras, profile, recent, recentMeals, photoDrafts]) => {
+			listActiveTreatments(),
+		]).then(([committed, meals, extras, profile, recent, recentMeals, photoDrafts, treatments]) => {
 			const last7 = last7LocalDates();
 			const entriesByDate = groupEntriesByDate(committed as ScoreDayEntry[]);
 			const extrasByDate = new Map(extras.map((e) => [e.localDate, e]));
@@ -177,6 +184,16 @@ export default function HomeScreen() {
 
 			const scoreKind = scoreKindForDiagnosis(profile?.diagnosis);
 
+			// Échéance de traitement la plus urgente si elle approche (J-2 → passée).
+			let dueTreatment: { name: string; days: number } | null = null;
+			for (const tr of treatments) {
+				if (!tr.nextDue) continue;
+				const days = daysBetweenLocalDates(today, tr.nextDue);
+				if (days <= 2 && (dueTreatment == null || days < dueTreatment.days)) {
+					dueTreatment = { name: tr.name, days };
+				}
+			}
+
 			setData({
 				recent,
 				recentMeals,
@@ -193,6 +210,7 @@ export default function HomeScreen() {
 				scoreSeries: dailyScoreSeries(last7, entriesByDate, extrasByDate, scoreKind),
 				bloodToday,
 				urgencyToday,
+				dueTreatment,
 			});
 		});
 	}, [today]);
@@ -403,6 +421,51 @@ export default function HomeScreen() {
 				<FlareBanner />
 
 				<WeekStrip days={weekDays} onSelectDay={goToDay} />
+
+				{/* Échéance de traitement qui approche (§5.9) : carte discrète, ambre pâle
+				    jamais rouge, tap → écran Traitements. */}
+				{data.dueTreatment ? (
+					<Pressable
+						accessibilityRole="button"
+						testID="home-treatment-due"
+						accessibilityLabel={
+							data.dueTreatment.days <= 0
+								? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
+								: ttr("homeCard.dueInDays", {
+										name: data.dueTreatment.name,
+										count: data.dueTreatment.days,
+									})
+						}
+						onPress={() => router.push("/treatments")}
+					>
+						<Card
+							padding="md"
+							style={[
+								styles.recentCard,
+								{
+									backgroundColor: theme.colors.flareBackground,
+									borderColor: theme.colors.flareBorder,
+									borderWidth: StyleSheet.hairlineWidth,
+								},
+							]}
+						>
+							<Text style={styles.recentEmoji}>💊</Text>
+							<View style={styles.recentBody}>
+								<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+									{data.dueTreatment.days <= 0
+										? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
+										: ttr("homeCard.dueInDays", {
+												name: data.dueTreatment.name,
+												count: data.dueTreatment.days,
+											})}
+								</Text>
+							</View>
+							<Text style={[theme.typography.subheading, { color: theme.colors.textFaint }]}>
+								›
+							</Text>
+						</Card>
+					</Pressable>
+				) : null}
 
 				{/* Hero swipeable : page 1 = anneau complétude, page 2 = courbe score. */}
 				<View>

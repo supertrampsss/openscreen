@@ -26,6 +26,7 @@ import { listSince as listExtrasSince } from "@/repositories/dailyExtrasRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import * as settingsRepo from "@/repositories/settingsRepo";
 import { listCommittedSince } from "@/repositories/symptomRepo";
+import { adherenceInputs } from "@/repositories/treatmentRepo";
 import { loadAssociations, topAssociations } from "@/services/correlationService";
 import { documentedLocalDates } from "@/services/streakService";
 
@@ -124,6 +125,13 @@ function reportLabels(report: ReportData): ReportLabels {
 		weeklyHeading: t("report.weeklyHeading"),
 		weeklyEmpty: t("report.weeklyEmpty"),
 		weekWord: t("report.weekWord"),
+		observanceHeading: t("report.observanceHeading"),
+		observanceText: report.observance
+			? t("report.observanceText", {
+					taken: report.observance.taken,
+					expected: report.observance.expected,
+				})
+			: undefined,
 		col: {
 			week: t("report.col.week"),
 			stools: t("report.col.stools"),
@@ -160,14 +168,16 @@ export async function loadReport(periodDays: ReportPeriodDays): Promise<ReportBu
 	const today = nowEntryTimestamp().localDate;
 	const fromDate = localDateDaysAgo(periodDays - 1);
 
-	const [committed, extras, profile, identity, docDates, associations] = await Promise.all([
-		listCommittedSince(fromDate),
-		listExtrasSince(fromDate),
-		getProfile(),
-		getIdentity(),
-		documentedLocalDates(),
-		loadAssociations(),
-	]);
+	const [committed, extras, profile, identity, docDates, associations, treatments] =
+		await Promise.all([
+			listCommittedSince(fromDate),
+			listExtrasSince(fromDate),
+			getProfile(),
+			getIdentity(),
+			documentedLocalDates(),
+			loadAssociations(),
+			adherenceInputs(periodDays),
+		]);
 
 	const extrasByDate = new Map(
 		extras.map((e) => [e.localDate, { complications: e.complications, weightKg: e.weightKg }]),
@@ -189,6 +199,7 @@ export async function loadReport(periodDays: ReportPeriodDays): Promise<ReportBu
 		identity,
 		entries: committed as ReportEntry[],
 		extrasByDate,
+		treatments,
 		topAssociations: reportAssociations,
 		correlationsReady: reportAssociations.length > 0,
 		correlationsCountdown:

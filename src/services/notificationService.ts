@@ -21,11 +21,13 @@ import {
 	type NotificationPrefs,
 	nextDailyOccurrence,
 } from "@/domain/notifications";
+import { treatmentReminderDates } from "@/domain/treatments";
 import i18n from "@/i18n";
 import { listCommittedSince as listMealsSince } from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import { get as getSetting, set as setSetting } from "@/repositories/settingsRepo";
 import { listCommittedSince } from "@/repositories/symptomRepo";
+import { listActive as listActiveTreatments } from "@/repositories/treatmentRepo";
 import { onLogCommitted } from "./logHooks";
 
 const PREFS_KEY = "notification_prefs";
@@ -134,6 +136,33 @@ export async function reschedule(): Promise<void> {
 			},
 		});
 	}
+
+	// Rappels de traitement à cycle long (§5.9) : J-1 et J-0 à 9 h pour chaque
+	// traitement actif ayant une échéance. Re-programmés à chaque prise (le screen
+	// appelle reschedule via markTaken).
+	if (prefs.treatmentReminders) {
+		const active = await listActiveTreatments().catch(() => []);
+		for (const t of active) {
+			if (!t.nextDue) continue;
+			for (const when of treatmentReminderDates(t.nextDue, now)) {
+				await N.scheduleNotificationAsync({
+					content: {
+						title: tn("notifCopy.treatment.title"),
+						body: tn("notifCopy.treatment.bodyNamed", { name: t.name }),
+					},
+					trigger: { type: N.SchedulableTriggerInputTypes.DATE, date: when },
+				});
+			}
+		}
+	}
+}
+
+/**
+ * Re-programme tous les rappels (dont ceux de traitement) — appelée par l'écran
+ * Traitements après création/édition/prise. Alias sûr de `reschedule`.
+ */
+export async function syncTreatmentReminders(): Promise<void> {
+	await reschedule();
 }
 
 /**

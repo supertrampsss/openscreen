@@ -76,6 +76,8 @@ function Migrator() {
 						<Stack.Screen name="export" options={{ presentation: "modal" }} />
 						{/* Premium (§8) : paywall éthique en modal. */}
 						<Stack.Screen name="premium" options={{ presentation: "modal" }} />
+						{/* Traitements (§5.9) : écran poussé plein écran. */}
+						<Stack.Screen name="treatments" options={{ presentation: "modal" }} />
 						{/* Deep-links / quick actions (§5.12). */}
 						<Stack.Screen name="log/stool" />
 						<Stack.Screen name="log/photo" />

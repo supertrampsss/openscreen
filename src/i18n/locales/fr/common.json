@@ -91,7 +91,9 @@
 		"weekly": "Bilan hebdomadaire",
 		"weeklyHint": "Votre semaine, le dimanche soir.",
 		"time": "Heure du rappel",
-		"unsupported": "Les rappels ne sont pas disponibles sur le web."
+		"unsupported": "Les rappels ne sont pas disponibles sur le web.",
+		"treatment": "Rappels de traitement",
+		"treatmentHint": "La veille et le jour de l'échéance."
 	},
 	"notifCopy": {
 		"evening": {
@@ -122,7 +124,8 @@
 		},
 		"treatment": {
 			"title": "Traitement",
-			"body": "C'est le moment de votre biothérapie. Injection faite ?"
+			"body": "C'est le moment de votre biothérapie. Injection faite ?",
+			"bodyNamed": "C'est le moment de votre {{name}}. Injection faite ?"
 		}
 	},
 	"settings": {

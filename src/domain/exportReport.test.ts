@@ -79,6 +79,18 @@ describe("buildReport — structure & période", () => {
 		});
 		expect(report.scoreKind).toBe("sccai");
 	});
+
+	it("observance agrégée sur les traitements à cadence (§5.9)", () => {
+		const report = buildReport({
+			...baseInput([symptom("2026-06-10")]),
+			// période 30 j : cadence 2 sem → ~2 attendus ; sans cadence → ignoré.
+			treatments: [
+				{ cadenceWeeks: 2, takenCount: 1 },
+				{ cadenceWeeks: null, takenCount: 5 },
+			],
+		});
+		expect(report.observance).toEqual({ taken: 1, expected: 2 });
+	});
 });
 
 describe("buildReport — identité optionnelle", () => {

@@ -21,6 +21,7 @@ import {
 	scoreKindForDiagnosis,
 } from "./scoreSeries";
 import { datesInclusive, isoWeekKey } from "./streak";
+import { aggregateAdherence } from "./treatments";
 
 /** Entrée brute (sur-ensemble couvrant HBI, SCCAI, fatigue et sang). */
 export interface ReportEntry {
@@ -61,14 +62,23 @@ export interface ReportInput {
 	entries: ReportEntry[];
 	/** Extras par local_date (complications, poids). */
 	extrasByDate: Map<string, ReportDayExtra>;
-	/** Traitements actifs (V2) — observance omise si vide. */
-	treatments?: unknown[];
+	/**
+	 * Traitements actifs (§5.9) avec leurs prises sur la période — l'observance
+	 * n'est calculée que pour ceux qui ont une cadence ; section omise si aucun.
+	 */
+	treatments?: TreatmentAdherenceInput[];
 	/** Corrélations disponibles (Phase 4) ? Sinon compte à rebours. */
 	correlationsReady?: boolean;
 	/** Jours restants avant les premières associations (si pas prêtes). */
 	correlationsCountdown?: number;
 	/** Top associations observées (§5.7) — vide tant qu'aucune n'est éligible. */
 	topAssociations?: ReportAssociation[];
+}
+
+/** Un traitement + son nombre de prises sur la période (pour l'observance). */
+export interface TreatmentAdherenceInput {
+	cadenceWeeks: number | null;
+	takenCount: number;
 }
 
 /** Une association observée reportée dans le PDF (déjà prête à l'affichage). */
@@ -108,8 +118,8 @@ export interface ReportData {
 	/** Valeurs de score alignées sur `scoreDates` (`null` = jour sans donnée). */
 	scoreSeries: (number | null)[];
 	weekly: WeeklyRow[];
-	/** Observance traitement (V2) — `null` si aucun traitement (section omise). */
-	observance: null;
+	/** Observance traitement (§5.9) — `null` si aucun traitement à cadence. */
+	observance: { taken: number; expected: number } | null;
 	/** Top associations observées (§5.7) : `items` peuplé dès qu'éligibles. */
 	associations: { ready: boolean; countdown: number; items: ReportAssociation[] };
 	consultPoints: ConsultPoint[];
@@ -169,9 +179,8 @@ export function buildReport(input: ReportInput): ReportData {
 	});
 
 	const identity = input.identity?.trim() ? input.identity.trim() : null;
-	// Observance (V2) : la section n'est renseignée que si des traitements sont
-	// suivis. Aucun traitement en Phase 3 → toujours omise (`null`).
-	const hasTreatments = (input.treatments ?? []).length > 0;
+	// Observance (§5.9) : agrégée sur les traitements à cadence ; `null` sinon.
+	const observance = aggregateAdherence(input.treatments ?? [], input.periodDays);
 
 	return {
 		period: { days: input.periodDays, from: input.fromDate, to: input.toDate },
@@ -184,7 +193,7 @@ export function buildReport(input: ReportInput): ReportData {
 		scoreDates: dates,
 		scoreSeries,
 		weekly,
-		observance: hasTreatments ? null : null,
+		observance,
 		associations: {
 			ready: (input.topAssociations?.length ?? 0) > 0 || Boolean(input.correlationsReady),
 			countdown: input.correlationsCountdown ?? 0,

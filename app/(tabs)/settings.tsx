@@ -22,6 +22,7 @@ export default function SettingsScreen() {
 	const { t } = useTranslation("common");
 	const { t: tx } = useTranslation("export");
 	const { t: tp } = useTranslation("premium");
+	const { t: ttr } = useTranslation("treatments");
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
 	const router = useRouter();
@@ -94,6 +95,27 @@ export default function SettingsScreen() {
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>
 					{t("settings.title")}
 				</Text>
+
+				{/* Traitements (§5.9) : rappels biothérapie, observance, effets secondaires. */}
+				<Pressable
+					accessibilityRole="button"
+					accessibilityLabel={ttr("settingsCard.title")}
+					testID="settings-treatments"
+					onPress={() => router.push("/treatments")}
+				>
+					<Card style={styles.premiumRow}>
+						<Text style={styles.premiumEmoji}>💊</Text>
+						<View style={styles.premiumBody}>
+							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+								{ttr("settingsCard.title")}
+							</Text>
+							<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+								{ttr("settingsCard.body")}
+							</Text>
+						</View>
+						<Text style={[theme.typography.heading, { color: theme.colors.textFaint }]}>›</Text>
+					</Card>
+				</Pressable>
 
 				{/* Carte mise en avant : export médecin (§5.8, gratuit à vie). */}
 				<Pressable

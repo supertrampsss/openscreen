@@ -127,11 +127,25 @@ export const mealItems = sqliteTable("meal_items", {
 // ---------------------------------------------------------------------------
 // treatments / treatment_events — V2 (colonnes minimales, tables vides).
 // ---------------------------------------------------------------------------
+/** Familles de traitement (§5.9). */
+export const TREATMENT_KINDS = [
+	"biologic_injection",
+	"infusion",
+	"immunosuppressant",
+	"corticosteroid",
+	"five_asa",
+	"other",
+] as const;
+export type TreatmentKind = (typeof TREATMENT_KINDS)[number];
+
 export const treatments = sqliteTable("treatments", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
-	kind: text("kind"),
+	kind: text("kind", { enum: TREATMENT_KINDS }),
+	/** Cadence en semaines (1-8) pour les rappels à cycle long ; null = ponctuel. */
 	cadenceWeeks: integer("cadence_weeks"),
+	/** Prochaine échéance (local_date figée) — recalculée à chaque prise. */
+	nextDue: text("next_due"),
 	isActive: integer("is_active").notNull().default(1),
 	...timestamps,
 	deletedAt: integer("deleted_at"),
@@ -143,8 +157,9 @@ export const treatmentEvents = sqliteTable("treatment_events", {
 		.notNull()
 		.references(() => treatments.id),
 	occurredAt: integer("occurred_at").notNull(),
+	tz: text("tz"),
 	localDate: text("local_date").notNull(),
-	kind: text("kind"),
+	kind: text("kind", { enum: ["taken", "skipped", "side_effect"] }),
 	notes: text("notes"),
 	createdAt: integer("created_at").notNull().default(sql`(unixepoch() * 1000)`),
 });
@@ -186,3 +201,7 @@ export type MealItem = typeof mealItems.$inferSelect;
 export type Profile = typeof profile.$inferSelect;
 export type DailyExtra = typeof dailyExtras.$inferSelect;
 export type Setting = typeof settings.$inferSelect;
+export type Treatment = typeof treatments.$inferSelect;
+export type NewTreatment = typeof treatments.$inferInsert;
+export type TreatmentEvent = typeof treatmentEvents.$inferSelect;
+export type NewTreatmentEvent = typeof treatmentEvents.$inferInsert;
