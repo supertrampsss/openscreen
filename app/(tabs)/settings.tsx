@@ -1,6 +1,7 @@
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
@@ -12,8 +13,10 @@ import { useTheme } from "@/theme";
 
 export default function SettingsScreen() {
 	const { t } = useTranslation("common");
+	const { t: tx } = useTranslation("export");
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
+	const router = useRouter();
 	const snackbar = useSnackbar();
 	const { flare } = useFlare();
 	const [busy, setBusy] = useState(false);
@@ -67,6 +70,27 @@ export default function SettingsScreen() {
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>
 					{t("settings.title")}
 				</Text>
+
+				{/* Carte mise en avant : export médecin (§5.8, gratuit à vie). */}
+				<Pressable
+					accessibilityRole="button"
+					accessibilityLabel={tx("card.settingsTitle")}
+					testID="settings-export"
+					onPress={() => router.push("/export")}
+				>
+					<Card style={[styles.exportCard, { backgroundColor: theme.colors.text }]}>
+						<Text style={styles.exportEmoji}>🩺</Text>
+						<View style={styles.exportBody}>
+							<Text style={[theme.typography.subheading, { color: theme.colors.background }]}>
+								{tx("card.settingsTitle")}
+							</Text>
+							<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+								{tx("card.settingsBody")}
+							</Text>
+						</View>
+						<Text style={[theme.typography.heading, { color: theme.colors.background }]}>›</Text>
+					</Card>
+				</Pressable>
 
 				<View style={{ gap: theme.spacing.sm }}>
 					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
@@ -125,4 +149,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
 	flex: { flex: 1 },
+	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
+	exportEmoji: { fontSize: 26 },
+	exportBody: { flex: 1, gap: 2 },
 });

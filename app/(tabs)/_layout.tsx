@@ -52,6 +52,7 @@ export default function TabsLayout() {
 				name="settings"
 				options={{
 					title: t("tabs.settings"),
+					tabBarButtonTestID: "tab-settings",
 					tabBarIcon: ({ color }) => <TabIcon emoji="⚙️" color={color} />,
 				}}
 			/>

@@ -1,5 +1,6 @@
 export { Card } from "./Card";
 export { ChipTrigger } from "./ChipTrigger";
+export { Confetti } from "./Confetti";
 export { DraftSheet } from "./DraftSheet";
 export { type ChartBand, LineChart } from "./LineChart";
 export { PillButton } from "./PillButton";

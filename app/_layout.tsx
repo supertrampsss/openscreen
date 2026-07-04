@@ -50,7 +50,11 @@ function Migrator() {
 						headerShown: false,
 						contentStyle: { backgroundColor: theme.colors.background },
 					}}
-				/>
+				>
+					<Stack.Screen name="(tabs)" />
+					{/* Export médecin : écran poussé plein écran (modal). */}
+					<Stack.Screen name="export" options={{ presentation: "modal" }} />
+				</Stack>
 			</SnackbarProvider>
 		</FlareProvider>
 	);

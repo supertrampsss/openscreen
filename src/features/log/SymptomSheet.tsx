@@ -127,6 +127,7 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 	const wellbeingLevels = Array.from({ length: 5 }, (_, i) => ({
 		value: i,
 		label: t(`symptom.wellbeingLevels.${i}`),
+		testID: `wellbeing-${i}`,
 	}));
 
 	return (
@@ -137,6 +138,7 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 			confirmLabel={t("symptom.save")}
 			onConfirm={save}
 			confirmDisabled={!canSave}
+			confirmTestID="symptom-save"
 			confirmAccessibilityLabel={t("symptom.save")}
 		>
 			<TapRow

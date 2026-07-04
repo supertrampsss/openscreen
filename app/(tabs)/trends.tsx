@@ -1,4 +1,4 @@
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
@@ -75,8 +75,10 @@ const EMPTY: TrendsData = {
 
 export default function TrendsScreen() {
 	const { t } = useTranslation("trends");
+	const { t: tx } = useTranslation("export");
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
+	const router = useRouter();
 	const { width } = useWindowDimensions();
 
 	const [period, setPeriod] = useState<30 | 90>(30);
@@ -196,6 +198,27 @@ export default function TrendsScreen() {
 				}}
 			>
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("title")}</Text>
+
+				{/* Préparer ma consultation → écran Export médecin (§5.8). */}
+				<Pressable
+					accessibilityRole="button"
+					accessibilityLabel={tx("card.trendsTitle")}
+					testID="trends-export"
+					onPress={() => router.push("/export")}
+				>
+					<Card style={styles.exportCard}>
+						<Text style={styles.exportEmoji}>🩺</Text>
+						<View style={styles.exportBody}>
+							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+								{tx("card.trendsTitle")}
+							</Text>
+							<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+								{tx("card.trendsBody")}
+							</Text>
+						</View>
+						<Text style={[theme.typography.heading, { color: theme.colors.textFaint }]}>›</Text>
+					</Card>
+				</Pressable>
 
 				{/* Sélecteur de période 30 / 90 j. */}
 				<View style={styles.segment}>
@@ -410,6 +433,9 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	chipWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
+	exportEmoji: { fontSize: 26 },
+	exportBody: { flex: 1, gap: 2 },
 	legend: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
 	legendItem: { flexDirection: "row", alignItems: "center", gap: 5 },
 	legendDot: { width: 12, height: 12, borderRadius: 3, borderWidth: StyleSheet.hairlineWidth },
