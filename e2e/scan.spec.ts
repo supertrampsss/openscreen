@@ -10,7 +10,7 @@ import { expect, test } from "@playwright/test";
  */
 
 test("scan photo (mode démo) : shimmer → résultat → journal", async ({ page }) => {
-	await page.goto("/");
+	await page.goto("/?e2e=1");
 	await expect(page.getByTestId("fab-add")).toBeVisible({ timeout: 30_000 });
 
 	await page.getByTestId("fab-add").click();

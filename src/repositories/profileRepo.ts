@@ -16,3 +16,22 @@ export function getProfile(): Promise<Profile | undefined> {
 		.limit(1)
 		.then((rows) => rows[0]);
 }
+
+/** Champs du profil renseignables à l'onboarding (§4). */
+export type ProfilePatch = Partial<
+	Pick<
+		Profile,
+		"diagnosis" | "diagnosisYear" | "baselineStools" | "flareStatus" | "goals" | "obstacles"
+	>
+>;
+
+/**
+ * Upsert du profil (ligne unique id=1). Fusionne le patch : ré-exécuter
+ * l'onboarding met à jour sans jamais effacer les données de suivi (§ Réglages).
+ */
+export async function upsertProfile(patch: ProfilePatch): Promise<void> {
+	await db
+		.insert(profile)
+		.values({ id: 1, ...patch })
+		.onConflictDoUpdate({ target: profile.id, set: patch });
+}

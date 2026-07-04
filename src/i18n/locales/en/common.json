@@ -85,6 +85,7 @@
 		"privacyTitle": "Your data stays with you",
 		"privacyBody": "Everything is stored on your device. Your data and its export will stay free forever.",
 		"disclaimer": "Crohnicle is a personal tracking tool, not a medical device.",
+		"replayOnboarding": "Replay the intro",
 		"version": "Version {{version}}"
 	}
 }

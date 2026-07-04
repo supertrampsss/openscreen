@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
  */
 
 test("logger un repas manuel via la recherche d'aliments", async ({ page }) => {
-	await page.goto("/");
+	await page.goto("/?e2e=1");
 	await expect(page.getByTestId("fab-add")).toBeVisible({ timeout: 30_000 });
 
 	await page.getByTestId("fab-add").click();

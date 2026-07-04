@@ -1,0 +1,128 @@
+{
+	"progress": "Step {{current}} of {{total}}",
+	"skip": "Skip",
+	"continue": "Continue",
+	"welcome": {
+		"title": "Document your IBD in seconds a day",
+		"subtitle": "Snap your meal — the AI spots the triggers. Nothing is ever required.",
+		"cta": "Get started",
+		"scanCaption": "Meal analysis",
+		"scanDish": "Chicken rice bowl"
+	},
+	"diagnosis": {
+		"title": "What is your diagnosis?",
+		"subtitle": "This tailors the scores and the app's tone.",
+		"crohn": "Crohn's disease",
+		"uc": "Ulcerative colitis (UC)",
+		"ibd_u": "IBD unclassified",
+		"undiagnosed": "Not diagnosed yet"
+	},
+	"year": {
+		"title": "Which year?",
+		"subtitle": "Year of your diagnosis — an estimate is fine.",
+		"unknown": "I'm not sure"
+	},
+	"state": {
+		"title": "Where are you today?",
+		"subtitle": "We pre-set the tone and your streak protection.",
+		"flare": "In a flare",
+		"remission": "In remission",
+		"unknown": "I'm not sure"
+	},
+	"stools": {
+		"title": "How many stools per day, usually?",
+		"subtitle": "Your personal normal — never a target.",
+		"0-2": "0 to 2",
+		"3-5": "3 to 5",
+		"6-9": "6 to 9",
+		"10+": "10 or more"
+	},
+	"symptoms": {
+		"title": "What bothers you most?",
+		"subtitle": "Pick as many as you like.",
+		"urgency": "Urgency",
+		"pain": "Pain",
+		"fatigue": "Fatigue",
+		"blood": "Blood",
+		"joints": "Joints",
+		"mood": "Mood"
+	},
+	"treatment": {
+		"title": "Your current treatment?",
+		"subtitle": "Pick as many as you like.",
+		"biologic_injectable": "Injectable biologic",
+		"biologic_infusion": "Infusion biologic",
+		"immunosuppressant": "Immunosuppressant",
+		"corticosteroids": "Corticosteroids",
+		"aminosalicylates": "5-ASA",
+		"none": "None",
+		"cadenceTitle": "How often?",
+		"cadenceSubtitle": "Frequency of your biologic.",
+		"week_one": "{{count}} wk",
+		"week_other": "{{count}} wks"
+	},
+	"proof": {
+		"title": "Documenting changes your appointments",
+		"body": "Patients who log their symptoms come better prepared and get more effective follow-up.",
+		"chartLabel": "Follow-up quality",
+		"chartBefore": "No tracking",
+		"chartAfter": "With tracking",
+		"source": "Source: afa Crohn RCH France"
+	},
+	"goals": {
+		"title": "Your goals?",
+		"subtitle": "Pick as many as you like.",
+		"triggers": "Identify my triggers",
+		"flares": "Objectify my flares",
+		"consults": "Prepare my appointments",
+		"treatment": "Track my treatment"
+	},
+	"obstacles": {
+		"title": "What holds you back?",
+		"subtitle": "We'll adapt our reminders — gently.",
+		"forget": "I forget",
+		"too_long": "It takes too long",
+		"anxious": "It makes me anxious",
+		"doctor": "My GI doesn't look at it"
+	},
+	"attribution": {
+		"title": "How did you hear about us?",
+		"subtitle": "It helps us — no pressure.",
+		"friend": "A friend or relative",
+		"social": "Social media",
+		"search": "Web search",
+		"association": "A patient association (afa…)",
+		"doctor": "My doctor",
+		"other": "Other"
+	},
+	"notifications": {
+		"title": "Helpful reminders, never nagging",
+		"body": "A gentle evening nudge if your day is empty, plus your Sunday recap. Two per day at most — all adjustable.",
+		"allow": "Turn on reminders",
+		"later": "Later"
+	},
+	"health": {
+		"title": "Apple Health & Google Fit",
+		"body": "Soon: sync your activity and sleep. The connection is coming in a future version.",
+		"soon": "Coming soon",
+		"toggle": "Connect"
+	},
+	"calc": {
+		"title": "Building your IBD profile…",
+		"symptoms": "Symptom profile",
+		"plan": "Tracking plan",
+		"baseline": "HBI / SCCAI baseline"
+	},
+	"plan": {
+		"title": "Your plan is ready",
+		"subtitle": "Editable anytime.",
+		"baselineLabel": "Your baseline",
+		"baselineValue": "{{range}} stools / day",
+		"baselineUnknown": "To establish with your first days",
+		"rhythmLabel": "Suggested rhythm",
+		"rhythmValue": "2 moments per day",
+		"goalLabel": "Your first goal",
+		"goalValue": "14 documented days → your first associations",
+		"cta": "Continue"
+	}
+}

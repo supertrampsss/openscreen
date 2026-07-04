@@ -9,6 +9,7 @@ import { useSnackbar } from "@/components/ui/Snackbar";
 import { BackupError } from "@/domain/backup";
 import { useFlare } from "@/features/flare/FlareContext";
 import { FlareToggle } from "@/features/flare/FlareToggle";
+import { useOnboarding } from "@/features/onboarding/OnboardingGate";
 import { exportBackup, importBackup } from "@/services/backupService";
 import { devToggleMockPremium, useEntitlements } from "@/services/entitlements";
 import { useTheme } from "@/theme";
@@ -25,6 +26,7 @@ export default function SettingsScreen() {
 	const router = useRouter();
 	const snackbar = useSnackbar();
 	const { flare } = useFlare();
+	const { replay } = useOnboarding();
 	const { status: entitlement, reload: reloadEntitlement } = useEntitlements();
 	const [busy, setBusy] = useState(false);
 	const devTaps = useRef(0);
@@ -177,6 +179,14 @@ export default function SettingsScreen() {
 						/>
 					</Card>
 				</View>
+
+				<PillButton
+					label={t("settings.replayOnboarding")}
+					variant="secondary"
+					onPress={() => void replay()}
+					accessibilityLabel={t("settings.replayOnboarding")}
+					testID="settings-replay-onboarding"
+				/>
 
 				<Card>
 					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>

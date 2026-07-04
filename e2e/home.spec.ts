@@ -17,7 +17,7 @@ async function logStool(page: Page, bristol: number) {
 }
 
 test("logger une selle remplit l'anneau et démarre la série", async ({ page }) => {
-	await page.goto("/");
+	await page.goto("/?e2e=1");
 	await expect(page.getByTestId("fab-add")).toBeVisible({ timeout: 30_000 });
 
 	// État initial : aucune selle aujourd'hui, série à 0.

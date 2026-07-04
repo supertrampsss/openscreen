@@ -27,7 +27,7 @@ async function logStool(page: Page, bristol: number, opts?: { urgency?: number }
 
 test("les selles enregistrées persistent après un reload", async ({ page }) => {
 	// ① Ouvre l'app → attend que les migrations soient passées (Home rendu).
-	await page.goto("/");
+	await page.goto("/?e2e=1");
 	await expect(page.getByTestId("fab-add")).toBeVisible({ timeout: 30_000 });
 
 	// ②③ Enregistre 3 selles (Bristol 4 ; Bristol 6 + urgence ; Bristol 3).

@@ -13,6 +13,7 @@ import commonEn from "./locales/en/common.json";
 import exportEn from "./locales/en/export.json";
 import journalEn from "./locales/en/journal.json";
 import logEn from "./locales/en/log.json";
+import onboardingEn from "./locales/en/onboarding.json";
 import premiumEn from "./locales/en/premium.json";
 import scanEn from "./locales/en/scan.json";
 import trendsEn from "./locales/en/trends.json";
@@ -20,6 +21,7 @@ import commonFr from "./locales/fr/common.json";
 import exportFr from "./locales/fr/export.json";
 import journalFr from "./locales/fr/journal.json";
 import logFr from "./locales/fr/log.json";
+import onboardingFr from "./locales/fr/onboarding.json";
 import premiumFr from "./locales/fr/premium.json";
 import scanFr from "./locales/fr/scan.json";
 import trendsFr from "./locales/fr/trends.json";
@@ -33,6 +35,7 @@ export const namespaces = [
 	"export",
 	"scan",
 	"premium",
+	"onboarding",
 ] as const;
 export const supportedLanguages = ["fr", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
@@ -46,6 +49,7 @@ export const resources = {
 		export: exportFr,
 		scan: scanFr,
 		premium: premiumFr,
+		onboarding: onboardingFr,
 	},
 	en: {
 		common: commonEn,
@@ -55,6 +59,7 @@ export const resources = {
 		export: exportEn,
 		scan: scanEn,
 		premium: premiumEn,
+		onboarding: onboardingEn,
 	},
 } as const;
 

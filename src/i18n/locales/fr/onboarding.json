@@ -1,0 +1,128 @@
+{
+	"progress": "Étape {{current}} sur {{total}}",
+	"skip": "Passer",
+	"continue": "Continuer",
+	"welcome": {
+		"title": "Documentez votre MICI en quelques secondes par jour",
+		"subtitle": "Photographiez votre repas — l'IA repère les déclencheurs. Rien n'est jamais obligatoire.",
+		"cta": "Commencer",
+		"scanCaption": "Analyse du repas",
+		"scanDish": "Bol de riz au poulet"
+	},
+	"diagnosis": {
+		"title": "Quel est votre diagnostic ?",
+		"subtitle": "Cela adapte les scores et le ton de l'app.",
+		"crohn": "Maladie de Crohn",
+		"uc": "Rectocolite hémorragique (RCH)",
+		"ibd_u": "MICI indéterminée",
+		"undiagnosed": "Pas encore diagnostiqué·e"
+	},
+	"year": {
+		"title": "En quelle année ?",
+		"subtitle": "Année de votre diagnostic — une approximation suffit.",
+		"unknown": "Je ne sais pas"
+	},
+	"state": {
+		"title": "Où en êtes-vous aujourd'hui ?",
+		"subtitle": "On pré-règle le ton et la protection de votre série.",
+		"flare": "En poussée",
+		"remission": "En rémission",
+		"unknown": "Je ne sais pas"
+	},
+	"stools": {
+		"title": "Combien de selles par jour, d'habitude ?",
+		"subtitle": "Votre normale personnelle — jamais un objectif.",
+		"0-2": "0 à 2",
+		"3-5": "3 à 5",
+		"6-9": "6 à 9",
+		"10+": "10 ou plus"
+	},
+	"symptoms": {
+		"title": "Qu'est-ce qui vous gêne le plus ?",
+		"subtitle": "Plusieurs choix possibles.",
+		"urgency": "Urgences",
+		"pain": "Douleurs",
+		"fatigue": "Fatigue",
+		"blood": "Sang",
+		"joints": "Articulations",
+		"mood": "Moral"
+	},
+	"treatment": {
+		"title": "Votre traitement actuel ?",
+		"subtitle": "Plusieurs choix possibles.",
+		"biologic_injectable": "Biothérapie injectable",
+		"biologic_infusion": "Biothérapie en perfusion",
+		"immunosuppressant": "Immunosuppresseur",
+		"corticosteroids": "Corticoïdes",
+		"aminosalicylates": "5-ASA",
+		"none": "Aucun",
+		"cadenceTitle": "Toutes les combien ?",
+		"cadenceSubtitle": "Fréquence de votre biothérapie.",
+		"week_one": "{{count}} sem.",
+		"week_other": "{{count}} sem."
+	},
+	"proof": {
+		"title": "Documenter change vos consultations",
+		"body": "Les patients qui notent leurs symptômes arrivent mieux préparés et obtiennent un suivi plus efficace.",
+		"chartLabel": "Qualité du suivi",
+		"chartBefore": "Sans suivi",
+		"chartAfter": "Avec suivi",
+		"source": "Source : afa Crohn RCH France"
+	},
+	"goals": {
+		"title": "Vos objectifs ?",
+		"subtitle": "Plusieurs choix possibles.",
+		"triggers": "Identifier mes déclencheurs",
+		"flares": "Objectiver mes poussées",
+		"consults": "Préparer mes consultations",
+		"treatment": "Suivre mon traitement"
+	},
+	"obstacles": {
+		"title": "Qu'est-ce qui vous freine ?",
+		"subtitle": "On adaptera nos rappels — en douceur.",
+		"forget": "J'oublie",
+		"too_long": "C'est trop long",
+		"anxious": "Ça m'angoisse",
+		"doctor": "Mon gastro ne regarde pas"
+	},
+	"attribution": {
+		"title": "Comment nous avez-vous connus ?",
+		"subtitle": "Ça nous aide — sans pression.",
+		"friend": "Un·e proche",
+		"social": "Réseaux sociaux",
+		"search": "Recherche web",
+		"association": "Une association (afa…)",
+		"doctor": "Mon médecin",
+		"other": "Autre"
+	},
+	"notifications": {
+		"title": "Des rappels utiles, jamais harcelants",
+		"body": "Un rappel tout doux le soir si votre journée est vide, et votre bilan du dimanche. Deux au maximum par jour — tout est réglable.",
+		"allow": "Activer les rappels",
+		"later": "Plus tard"
+	},
+	"health": {
+		"title": "Apple Santé & Google Fit",
+		"body": "Bientôt : synchronisez votre activité et votre sommeil. La connexion arrive dans une prochaine version.",
+		"soon": "Bientôt disponible",
+		"toggle": "Connecter"
+	},
+	"calc": {
+		"title": "Création de votre profil MICI…",
+		"symptoms": "Profil symptômes",
+		"plan": "Plan de suivi",
+		"baseline": "Baseline HBI / SCCAI"
+	},
+	"plan": {
+		"title": "Votre plan est prêt",
+		"subtitle": "Modifiable à tout moment.",
+		"baselineLabel": "Votre baseline",
+		"baselineValue": "{{range}} selles / jour",
+		"baselineUnknown": "À établir avec vos premiers jours",
+		"rhythmLabel": "Rythme conseillé",
+		"rhythmValue": "2 moments par jour",
+		"goalLabel": "Votre 1er objectif",
+		"goalValue": "14 jours documentés → vos 1res associations",
+		"cta": "Continuer"
+	}
+}

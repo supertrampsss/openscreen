@@ -12,7 +12,7 @@ import { expect, test } from "@playwright/test";
 test("premium : prix + engagement affichés d'emblée, aucune relance à la fermeture", async ({
 	page,
 }) => {
-	await page.goto("/");
+	await page.goto("/?e2e=1");
 	await expect(page.getByTestId("fab-add")).toBeVisible({ timeout: 30_000 });
 
 	await page.getByTestId("tab-settings").click();

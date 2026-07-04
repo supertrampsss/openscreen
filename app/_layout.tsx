@@ -10,6 +10,7 @@ import { SnackbarProvider } from "@/components/ui/Snackbar";
 import { db, warmupDb } from "@/db/client";
 import { seedFoods } from "@/db/seedFoods";
 import { FlareProvider } from "@/features/flare/FlareContext";
+import { OnboardingGate } from "@/features/onboarding/OnboardingGate";
 import { initI18n } from "@/i18n";
 import { ThemeProvider, useTheme } from "@/theme";
 import migrations from "../drizzle/migrations";
@@ -53,19 +54,23 @@ function Migrator() {
 	return (
 		<FlareProvider>
 			<SnackbarProvider>
-				<StatusBar style={theme.isDark ? "light" : "dark"} />
-				<Stack
-					screenOptions={{
-						headerShown: false,
-						contentStyle: { backgroundColor: theme.colors.background },
-					}}
-				>
-					<Stack.Screen name="(tabs)" />
-					{/* Export médecin : écran poussé plein écran (modal). */}
-					<Stack.Screen name="export" options={{ presentation: "modal" }} />
-					{/* Premium (§8) : paywall éthique en modal. */}
-					<Stack.Screen name="premium" options={{ presentation: "modal" }} />
-				</Stack>
+				<OnboardingGate>
+					<StatusBar style={theme.isDark ? "light" : "dark"} />
+					<Stack
+						screenOptions={{
+							headerShown: false,
+							contentStyle: { backgroundColor: theme.colors.background },
+						}}
+					>
+						<Stack.Screen name="(tabs)" />
+						{/* Onboarding (§4) : funnel plein écran, gestes de retour désactivés. */}
+						<Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
+						{/* Export médecin : écran poussé plein écran (modal). */}
+						<Stack.Screen name="export" options={{ presentation: "modal" }} />
+						{/* Premium (§8) : paywall éthique en modal. */}
+						<Stack.Screen name="premium" options={{ presentation: "modal" }} />
+					</Stack>
+				</OnboardingGate>
 			</SnackbarProvider>
 		</FlareProvider>
 	);

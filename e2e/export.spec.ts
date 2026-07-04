@@ -42,7 +42,7 @@ test("l'export médecin construit un aperçu et déclenche la génération (web)
 		}) as typeof window.open;
 	});
 
-	await page.goto("/");
+	await page.goto("/?e2e=1");
 	await expect(page.getByTestId("fab-add")).toBeVisible({ timeout: 30_000 });
 
 	// Seed : 1 selle + 1 symptôme → au moins un jour documenté.
