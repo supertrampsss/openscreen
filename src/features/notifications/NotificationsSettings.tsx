@@ -33,6 +33,7 @@ export function NotificationsSettings() {
 				>
 					<Switch
 						testID="notif-master"
+						accessibilityLabel={t("notifications.master")}
 						value={prefs.master}
 						disabled={!supported}
 						onValueChange={(v) => void update({ master: v })}
@@ -46,6 +47,7 @@ export function NotificationsSettings() {
 						<Row label={t("notifications.evening")} hint={t("notifications.eveningHint")}>
 							<Switch
 								testID="notif-evening"
+								accessibilityLabel={t("notifications.evening")}
 								value={prefs.eveningReminder}
 								onValueChange={(v) => void update({ eveningReminder: v })}
 								trackColor={{ true: theme.colors.energy }}
@@ -54,6 +56,7 @@ export function NotificationsSettings() {
 						<Row label={t("notifications.weekly")} hint={t("notifications.weeklyHint")}>
 							<Switch
 								testID="notif-weekly"
+								accessibilityLabel={t("notifications.weekly")}
 								value={prefs.weeklyDigest}
 								onValueChange={(v) => void update({ weeklyDigest: v })}
 								trackColor={{ true: theme.colors.energy }}
@@ -62,6 +65,7 @@ export function NotificationsSettings() {
 						<Row label={t("notifications.treatment")} hint={t("notifications.treatmentHint")}>
 							<Switch
 								testID="notif-treatment"
+								accessibilityLabel={t("notifications.treatment")}
 								value={prefs.treatmentReminders}
 								onValueChange={(v) => void update({ treatmentReminders: v })}
 								trackColor={{ true: theme.colors.energy }}

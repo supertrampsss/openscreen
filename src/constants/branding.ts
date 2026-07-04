@@ -7,8 +7,21 @@
 
 import { Platform } from "react-native";
 
-/** Nom de travail affiché (aussi dans app.json + i18n `common.appName`). */
+/** Nom de l'app (confirmé) — aussi dans app.json + i18n `common.appName`. */
 export const APP_NAME = "Crohnicle";
+
+/** Accroche de marque (§2) — affichée au splash/à-propos, réutilisable en ASO. */
+export const TAGLINE = {
+	fr: "Votre compagnon MICI",
+	en: "Your IBD companion",
+} as const;
+
+/** Couleurs de marque (§3) — le violet « selles » sert de teinte primaire. */
+export const BRAND_COLORS = {
+	primary: "#8B5CF6",
+	background: "#F7F7F8",
+	backgroundDark: "#0A0A0A",
+} as const;
 
 /**
  * Adresse de support / remboursement humain (§8) — PLACEHOLDER de marque.

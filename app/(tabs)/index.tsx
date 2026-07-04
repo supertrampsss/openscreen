@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	ActivityIndicator,
@@ -818,7 +818,9 @@ function formatNormal(n: StoolNormal): string {
 	return n.low === n.high ? String(n.low) : `${n.low}-${n.high}`;
 }
 
-function MiniCard({
+// React.memo : cartes pures (aucune closure en prop) → pas de re-render quand le
+// Home re-rend pour un état non lié (ouverture d'un sheet, etc.).
+const MiniCard = memo(function MiniCard({
 	label,
 	value,
 	color,
@@ -836,9 +838,17 @@ function MiniCard({
 			<Text style={[theme.typography.dataLg, { color }]}>{value}</Text>
 		</Card>
 	);
-}
+});
 
-function StatPill({ label, value, color }: { label: string; value: string; color: string }) {
+const StatPill = memo(function StatPill({
+	label,
+	value,
+	color,
+}: {
+	label: string;
+	value: string;
+	color: string;
+}) {
 	const theme = useTheme();
 	return (
 		<View
@@ -852,7 +862,7 @@ function StatPill({ label, value, color }: { label: string; value: string; color
 			<Text style={[theme.typography.label, { color: theme.colors.text }]}>{value}</Text>
 		</View>
 	);
-}
+});
 
 function RecentRow({ entry, onPress }: { entry: SymptomEntry; onPress: () => void }) {
 	const { t } = useTranslation(["common", "journal"]);
