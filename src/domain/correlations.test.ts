@@ -5,6 +5,7 @@ import {
 	type CorrelationSignal,
 	chiSquareYates,
 	computeAssociations,
+	localBucket,
 } from "./correlations";
 import type { FoodTriggers } from "./foods";
 
@@ -197,6 +198,41 @@ describe("computeAssociations — éligibilité 14 jours", () => {
 		expect(res.byFood).toHaveLength(0);
 		expect(res.byTrigger).toHaveLength(0);
 		expect(res.daysUntilEligible).toBe(13); // 1 jour documenté
+	});
+});
+
+// ---------------------------------------------------------------------------
+// DST : le début de bucket (borne de la fenêtre d'exposition) doit être calculé
+// sur l'heure MURALE locale, pas via un décalage en ms réelles qui dérive d'1 h
+// les jours de bascule. Sans le correctif, la fenêtre 4–48 h se décale d'1 h.
+// ---------------------------------------------------------------------------
+describe("localBucket — début de bucket DST-safe (Europe/Paris)", () => {
+	it("jour normal (UTC) : start = minuit/midi local", () => {
+		const am = localBucket(Date.UTC(2026, 0, 5, 2, 0), "UTC");
+		expect(am.key).toBe("2026-01-05#0");
+		expect(am.start).toBe(Date.UTC(2026, 0, 5, 0, 0));
+		const pm = localBucket(Date.UTC(2026, 0, 5, 14, 0), "UTC");
+		expect(pm.key).toBe("2026-01-05#1");
+		expect(pm.start).toBe(Date.UTC(2026, 0, 5, 12, 0));
+	});
+
+	it("printemps (bascule 29 mars 02:00→03:00) : start = vrai minuit local, pas 1 h trop tôt", () => {
+		// 2026-03-29 06:00 Paris (UTC+2 après la bascule) = 04:00 UTC, bucket AM.
+		const b = localBucket(Date.UTC(2026, 2, 29, 4, 0), "Europe/Paris");
+		expect(b.key).toBe("2026-03-29#0");
+		// Minuit local 2026-03-29 (encore UTC+1) = 2026-03-28 23:00 UTC.
+		expect(b.start).toBe(Date.UTC(2026, 2, 28, 23, 0));
+		// L'ancien calcul (occurredAt − 6 h murales) donnait 22:00 UTC : 1 h trop tôt.
+		expect(b.start).not.toBe(Date.UTC(2026, 2, 28, 22, 0));
+	});
+
+	it("automne (bascule 25 oct 03:00→02:00) : start = vrai minuit local, pas 1 h trop tard", () => {
+		// 2026-10-25 06:00 Paris (UTC+1 après la bascule) = 05:00 UTC, bucket AM.
+		const b = localBucket(Date.UTC(2026, 9, 25, 5, 0), "Europe/Paris");
+		expect(b.key).toBe("2026-10-25#0");
+		// Minuit local 2026-10-25 (encore UTC+2) = 2026-10-24 22:00 UTC.
+		expect(b.start).toBe(Date.UTC(2026, 9, 24, 22, 0));
+		expect(b.start).not.toBe(Date.UTC(2026, 9, 24, 23, 0));
 	});
 });
 

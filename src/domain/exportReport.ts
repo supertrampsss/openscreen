@@ -99,7 +99,13 @@ export interface WeeklyRow {
 	weekNumber: number;
 	/** Nb total de selles de la semaine. */
 	stools: number;
-	/** Nb de jours avec du sang (>0). */
+	/**
+	 * Nb de jours avec du sang, seuil bas blood ≥ 1 (TRACES INCLUSES) — colonne
+	 * hebdo descriptive, libellée « Jours avec sang (traces incluses) ». À NE PAS
+	 * confondre avec `consultPoints.visibleBlood` qui exige blood ≥ 2 (sang
+	 * VISIBLE) : les deux seuils sont voulus (§5.8) — panorama large ici, signal
+	 * clinique à remonter au gastro là-bas.
+	 */
 	bloodDays: number;
 	/** Pire douleur de la semaine (`null` si jamais renseignée). */
 	worstPain: number | null;
@@ -234,6 +240,7 @@ function buildWeekly(
 		if (es && es.length > 0) {
 			row.documentedDays++;
 			row.stools += es.filter((e) => e.kind === "stool").length;
+			// Seuil bas volontaire (blood ≥ 1, traces incluses) — cf. doc de `bloodDays`.
 			if ((worstOf(es, "blood") ?? 0) > 0) row.bloodDays++;
 			const pain = worstOf(es, "pain");
 			if (pain != null)

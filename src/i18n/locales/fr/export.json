@@ -72,7 +72,7 @@
 		"col": {
 			"week": "Semaine",
 			"stools": "Selles",
-			"bloodDays": "Jours avec sang",
+			"bloodDays": "Jours avec sang (traces incluses)",
 			"worstPain": "Pire douleur",
 			"weight": "Poids"
 		},

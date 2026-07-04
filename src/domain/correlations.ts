@@ -39,6 +39,8 @@ const HOUR_MS = 3_600_000;
 export interface CorrelationMeal {
 	occurredAt: number;
 	tz: string;
+	/** local_date figée à la saisie ('YYYY-MM-DD') — autoritaire si fournie. */
+	localDate?: string;
 	items: { foodId: string; triggers: FoodTriggers }[];
 }
 
@@ -46,6 +48,8 @@ export interface CorrelationMeal {
 export interface CorrelationSignal {
 	occurredAt: number;
 	tz: string;
+	/** local_date figée à la saisie ('YYYY-MM-DD') — autoritaire si fournie. */
+	localDate?: string;
 	/** Type de signal (ex. « pain », « bristol », « blood », « urgency »). */
 	kind: string;
 }
@@ -91,21 +95,21 @@ export interface AssociationsResult {
 	daysUntilEligible: number;
 }
 
-/** Découpe locale d'un instant en bucket de demi-journée. */
-interface BucketRef {
+/** Découpe locale d'un instant en bucket de demi-journée (exporté pour test). */
+export interface BucketRef {
 	key: string;
-	/** Epoch ms du DÉBUT du bucket (minuit ou midi local). */
+	/** Epoch ms du DÉBUT du bucket (minuit ou midi local, DST-safe). */
 	start: number;
 	/** Date locale 'YYYY-MM-DD' (pour compter les jours distincts). */
 	date: string;
 }
 
 /**
- * Bucket demi-journée d'un instant dans sa timezone. Le début du bucket est
- * dérivé de l'heure locale de l'instant lui-même (aucune supposition DST hasardeuse).
+ * Offset (ms) de la timezone `tz` à l'instant `epochMs` : positif à l'est de
+ * Greenwich (Europe/Paris = +3_600_000 l'hiver, +7_200_000 l'été).
  */
-function localBucket(occurredAt: number, tz: string): BucketRef {
-	const parts = new Intl.DateTimeFormat("en-CA", {
+function tzOffsetMs(epochMs: number, tz: string): number {
+	const parts = new Intl.DateTimeFormat("en-US", {
 		timeZone: tz,
 		year: "numeric",
 		month: "2-digit",
@@ -114,15 +118,59 @@ function localBucket(occurredAt: number, tz: string): BucketRef {
 		minute: "2-digit",
 		second: "2-digit",
 		hour12: false,
+	}).formatToParts(new Date(epochMs));
+	const get = (type: string) =>
+		Number.parseInt(parts.find((p) => p.type === type)?.value ?? "0", 10);
+	const hour = get("hour") % 24; // en-US peut rendre '24' à minuit
+	const asUtc = Date.UTC(
+		get("year"),
+		get("month") - 1,
+		get("day"),
+		hour,
+		get("minute"),
+		get("second"),
+	);
+	return asUtc - epochMs;
+}
+
+/**
+ * Epoch ms réel du début d'un bucket demi-journée (heure murale locale
+ * `date` à 00:00 ou 12:00) dans `tz`. Conversion mur→instant DST-safe : on part
+ * de l'heure murale « comme si UTC », puis on retranche l'offset réel à cet
+ * instant (raffiné une fois pour absorber une bascule proche). Un jour de DST
+ * (23 h/25 h) ne fait plus dériver la borne d'1 h.
+ */
+function bucketStartMs(date: string, half: 0 | 1, tz: string): number {
+	const [y, m, d] = date.split("-").map(Number);
+	const wallAsUtc = Date.UTC(y, m - 1, d, half * 12);
+	let epoch = wallAsUtc - tzOffsetMs(wallAsUtc, tz);
+	// Raffinage : si l'offset diffère à l'instant estimé (bascule DST), recalcule.
+	const refined = wallAsUtc - tzOffsetMs(epoch, tz);
+	if (refined !== epoch) epoch = refined;
+	return epoch;
+}
+
+/**
+ * Bucket demi-journée d'un instant dans sa timezone. Le bucket est IDENTIFIÉ par
+ * une clé civile stable `${localDate}#${half}` (jamais par un timestamp qui
+ * dériverait les jours de DST) ; son `start` (borne réelle pour la fenêtre
+ * d'exposition) est calculé DST-safe via `bucketStartMs`. `localDate` figée à la
+ * saisie prime sur le recalcul quand elle est fournie.
+ */
+export function localBucket(occurredAt: number, tz: string, localDate?: string): BucketRef {
+	const parts = new Intl.DateTimeFormat("en-CA", {
+		timeZone: tz,
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+		hour: "2-digit",
+		hour12: false,
 	}).formatToParts(new Date(occurredAt));
 	const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "0";
-	const date = `${get("year")}-${get("month")}-${get("day")}`;
+	const date = localDate ?? `${get("year")}-${get("month")}-${get("day")}`;
 	const hour = Number.parseInt(get("hour"), 10) % 24;
-	const min = Number.parseInt(get("minute"), 10);
-	const sec = Number.parseInt(get("second"), 10);
-	const half = hour < 12 ? 0 : 1;
-	const offsetMs = (((hour - half * 12) * 60 + min) * 60 + sec) * 1000;
-	return { key: `${date}|${half}`, start: occurredAt - offsetMs, date };
+	const half: 0 | 1 = hour < 12 ? 0 : 1;
+	return { key: `${date}#${half}`, start: bucketStartMs(date, half, tz), date };
 }
 
 interface BucketState {
@@ -174,10 +222,10 @@ export function computeAssociations(
 		return b;
 	};
 
-	for (const meal of meals) ensure(localBucket(meal.occurredAt, meal.tz));
+	for (const meal of meals) ensure(localBucket(meal.occurredAt, meal.tz, meal.localDate));
 	const signalKinds = new Set<string>();
 	for (const sig of signals) {
-		const b = ensure(localBucket(sig.occurredAt, sig.tz));
+		const b = ensure(localBucket(sig.occurredAt, sig.tz, sig.localDate));
 		b.signalKinds.add(sig.kind);
 		signalKinds.add(sig.kind);
 	}
@@ -209,7 +257,10 @@ export function computeAssociations(
 		}
 	}
 
-	const bucketList = [...buckets.values()];
+	// Ordre déterministe par CLÉ civile (indépendant de l'ordre d'insertion).
+	const bucketList = [...buckets.entries()]
+		.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+		.map(([, v]) => v);
 
 	// --- 3. Tables 2×2 & scoring ---
 	const scorePair = (

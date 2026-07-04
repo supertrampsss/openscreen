@@ -63,9 +63,24 @@ export function entryTimestampAt(epochMs: number, tz: string = currentTimeZone()
 	return { epochMs, tz, localDate: localDateInTz(epochMs, tz) };
 }
 
+/**
+ * Décale une date locale 'YYYY-MM-DD' de N jours civils (même technique que
+ * `streak.addDays`) : on opère sur la CHAÎNE via midi UTC, jamais sur des
+ * millisecondes réelles. Indispensable pour rester juste les jours de DST — un
+ * jour de 23 h (printemps) ou 25 h (automne) reste UN jour civil. Passer par
+ * `shiftMinutes` (ms réelles) ferait sauter « hier » le matin d'un jour à 23 h.
+ */
+export function addLocalDays(localDate: string, n: number): string {
+	const [y, m, d] = localDate.split("-").map(Number);
+	const shifted = new Date(Date.UTC(y, m - 1, d, 12) + n * 86_400_000);
+	const pad = (x: number) => String(x).padStart(2, "0");
+	return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
+}
+
 /** local_date de N jours avant une date de référence (dans sa tz). */
 export function localDateDaysAgo(days: number, ref: EntryTimestamp = nowEntryTimestamp()): string {
-	return shiftMinutes(ref, -days * 24 * 60).localDate;
+	// DST-safe : arithmétique sur la date civile, pas sur les ms (cf. addLocalDays).
+	return addLocalDays(ref.localDate, -days);
 }
 
 /**
@@ -75,7 +90,8 @@ export function localDateDaysAgo(days: number, ref: EntryTimestamp = nowEntryTim
 export function last7LocalDates(ref: EntryTimestamp = nowEntryTimestamp()): string[] {
 	const out: string[] = [];
 	for (let i = 6; i >= 0; i--) {
-		out.push(shiftMinutes(ref, -i * 24 * 60).localDate);
+		// DST-safe : on décale la date civile, jamais l'epoch (cf. addLocalDays).
+		out.push(addLocalDays(ref.localDate, -i));
 	}
 	return out;
 }

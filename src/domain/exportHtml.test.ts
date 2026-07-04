@@ -27,7 +27,7 @@ const FR_LABELS: ReportLabels = {
 	col: {
 		week: "Semaine",
 		stools: "Selles",
-		bloodDays: "Jours avec sang",
+		bloodDays: "Jours avec sang (traces incluses)",
 		worstPain: "Pire douleur",
 		weight: "Poids",
 	},
@@ -65,7 +65,7 @@ const EN_LABELS: ReportLabels = {
 	col: {
 		week: "Week",
 		stools: "Stools",
-		bloodDays: "Days with blood",
+		bloodDays: "Days with blood (incl. traces)",
 		worstPain: "Worst pain",
 		weight: "Weight",
 	},

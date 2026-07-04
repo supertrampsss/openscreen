@@ -49,6 +49,7 @@ export async function recomputeAssociations(): Promise<AssociationsResult> {
 	const meals: CorrelationMeal[] = mealRows.map((m) => ({
 		occurredAt: m.meal.occurredAt,
 		tz: m.meal.tz,
+		localDate: m.meal.localDate,
 		items: m.items.map((it) => ({ foodId: it.foodId, triggers: it.triggers })),
 	}));
 
@@ -61,7 +62,7 @@ export async function recomputeAssociations(): Promise<AssociationsResult> {
 	for (const e of symptomRows) {
 		for (const kind of Object.keys(SIGNAL_THRESHOLDS) as SignalKind[]) {
 			if (SIGNAL_THRESHOLDS[kind](e)) {
-				signals.push({ occurredAt: e.occurredAt, tz: e.tz, kind });
+				signals.push({ occurredAt: e.occurredAt, tz: e.tz, localDate: e.localDate, kind });
 			}
 		}
 	}

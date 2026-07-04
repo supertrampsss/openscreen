@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+	addLocalDays,
 	describeLocalDate,
 	entryTimestampAt,
 	formatClock,
 	groupByLocalDate,
 	last7LocalDates,
+	localDateDaysAgo,
 	localDateInTz,
 	shiftMinutes,
 } from "./dates";
@@ -33,6 +35,57 @@ describe("shiftMinutes — décale et recalcule local_date", () => {
 	it("avance au-delà de minuit → jour suivant", () => {
 		const base = entryTimestampAt(Date.UTC(2024, 0, 1, 22, 30), "Europe/Paris"); // 23:30 Paris
 		expect(shiftMinutes(base, 60).localDate).toBe("2024-01-02"); // 00:30 Paris
+	});
+});
+
+describe("localDateDaysAgo & last7LocalDates — DST-safe (jour civil, pas ms)", () => {
+	// Europe/Paris — printemps 2026 : bascule le dimanche 29 mars 02:00→03:00
+	// (jour de 23 h). Le matin du 30 mars 00:30 (déjà en heure d'été, UTC+2),
+	// un décalage en ms réelles faisait sauter « hier » (29 mars).
+	it("printemps (jour de 23 h) : 'hier' = 2026-03-29, pas 03-28", () => {
+		// 2026-03-30 00:30 Paris (UTC+2) = 2026-03-29 22:30 UTC.
+		const ref = entryTimestampAt(Date.UTC(2026, 2, 29, 22, 30), "Europe/Paris");
+		expect(ref.localDate).toBe("2026-03-30");
+		expect(localDateDaysAgo(1, ref)).toBe("2026-03-29");
+		expect(localDateDaysAgo(2, ref)).toBe("2026-03-28");
+		const week = last7LocalDates(ref);
+		expect(week).toEqual([
+			"2026-03-24",
+			"2026-03-25",
+			"2026-03-26",
+			"2026-03-27",
+			"2026-03-28",
+			"2026-03-29", // « hier » — l'ancien calcul en ms le perdait
+			"2026-03-30",
+		]);
+	});
+
+	// Europe/Paris — automne 2026 : bascule le dimanche 25 octobre 03:00→02:00
+	// (jour de 25 h). Le soir du 25 (UTC+1), un décalage en ms réelles renvoyait
+	// « aujourd'hui » (25 oct) au lieu d'« hier » (24 oct).
+	it("automne (jour de 25 h) : 'hier' = 2026-10-24, pas un doublon du 25", () => {
+		// 2026-10-25 23:30 Paris (UTC+1, après la bascule) = 2026-10-25 22:30 UTC.
+		const ref = entryTimestampAt(Date.UTC(2026, 9, 25, 22, 30), "Europe/Paris");
+		expect(ref.localDate).toBe("2026-10-25");
+		expect(localDateDaysAgo(1, ref)).toBe("2026-10-24");
+		const week = last7LocalDates(ref);
+		expect(week).toEqual([
+			"2026-10-19",
+			"2026-10-20",
+			"2026-10-21",
+			"2026-10-22",
+			"2026-10-23",
+			"2026-10-24",
+			"2026-10-25",
+		]);
+		// 7 dates distinctes, strictement croissantes (ni saut, ni doublon).
+		expect(new Set(week).size).toBe(7);
+	});
+
+	it("addLocalDays traverse un mois et une bascule sans dériver", () => {
+		expect(addLocalDays("2026-03-29", 1)).toBe("2026-03-30");
+		expect(addLocalDays("2026-10-25", -1)).toBe("2026-10-24");
+		expect(addLocalDays("2026-01-31", 1)).toBe("2026-02-01");
 	});
 });
 

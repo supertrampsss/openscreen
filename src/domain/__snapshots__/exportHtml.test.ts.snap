@@ -61,7 +61,7 @@ footer { margin-top: 28px; padding-top: 12px; border-top: 1px solid #E5E5EA; fon
 
 <section>
 <h2>Week by week</h2>
-<table class="weekly"><thead><tr><th>Week</th><th>Stools</th><th>Days with blood</th><th>Worst pain</th><th>Weight</th></tr></thead><tbody><tr><td>Week 25</td><td>1</td><td>0</td><td>—</td><td>—</td></tr></tbody></table>
+<table class="weekly"><thead><tr><th>Week</th><th>Stools</th><th>Days with blood (incl. traces)</th><th>Worst pain</th><th>Weight</th></tr></thead><tbody><tr><td>Week 25</td><td>1</td><td>0</td><td>—</td><td>—</td></tr></tbody></table>
 </section>
 
 <section>
@@ -141,7 +141,7 @@ footer { margin-top: 28px; padding-top: 12px; border-top: 1px solid #E5E5EA; fon
 
 <section>
 <h2>Semaine par semaine</h2>
-<table class="weekly"><thead><tr><th>Semaine</th><th>Selles</th><th>Jours avec sang</th><th>Pire douleur</th><th>Poids</th></tr></thead><tbody><tr><td>Semaine 23</td><td>12</td><td>3</td><td>1</td><td>—</td></tr><tr><td>Semaine 24</td><td>7</td><td>0</td><td>2</td><td>61.2 kg</td></tr></tbody></table>
+<table class="weekly"><thead><tr><th>Semaine</th><th>Selles</th><th>Jours avec sang (traces incluses)</th><th>Pire douleur</th><th>Poids</th></tr></thead><tbody><tr><td>Semaine 23</td><td>12</td><td>3</td><td>1</td><td>—</td></tr><tr><td>Semaine 24</td><td>7</td><td>0</td><td>2</td><td>61.2 kg</td></tr></tbody></table>
 </section>
 
 <section>
