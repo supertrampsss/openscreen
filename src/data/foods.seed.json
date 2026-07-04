@@ -1,0 +1,5807 @@
+[
+	{
+		"name_normalized": "baguette",
+		"display_fr": "Baguette",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain de mie",
+		"display_fr": "Pain de mie",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "pain complet",
+		"display_fr": "Pain complet",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain aux cereales",
+		"display_fr": "Pain aux céréales",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain de seigle",
+		"display_fr": "Pain de seigle",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain sans gluten",
+		"display_fr": "Pain sans gluten",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "biscotte",
+		"display_fr": "Biscotte",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pates",
+		"display_fr": "Pâtes",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pates completes",
+		"display_fr": "Pâtes complètes",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "spaghetti",
+		"display_fr": "Spaghetti",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lasagnes",
+		"display_fr": "Lasagnes",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "macaroni",
+		"display_fr": "Macaroni",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "ravioli",
+		"display_fr": "Ravioli",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "nouilles",
+		"display_fr": "Nouilles",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "nouilles de riz",
+		"display_fr": "Nouilles de riz",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "riz blanc",
+		"display_fr": "Riz blanc",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "riz complet",
+		"display_fr": "Riz complet",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "riz basmati",
+		"display_fr": "Riz basmati",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "risotto",
+		"display_fr": "Risotto",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "semoule",
+		"display_fr": "Semoule",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "boulgour",
+		"display_fr": "Boulgour",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "couscous",
+		"display_fr": "Couscous",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "quinoa",
+		"display_fr": "Quinoa",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "polenta",
+		"display_fr": "Polenta",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "sarrasin",
+		"display_fr": "Sarrasin",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "avoine",
+		"display_fr": "Avoine",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "flocons d avoine",
+		"display_fr": "Flocons d'avoine",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "muesli",
+		"display_fr": "Muesli",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "corn flakes",
+		"display_fr": "Corn flakes",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "ble",
+		"display_fr": "Blé",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "orge",
+		"display_fr": "Orge",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pomme de terre",
+		"display_fr": "Pomme de terre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "puree de pommes de terre",
+		"display_fr": "Purée de pommes de terre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "frites",
+		"display_fr": "Frites",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chips",
+		"display_fr": "Chips",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "patate douce",
+		"display_fr": "Patate douce",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gnocchi",
+		"display_fr": "Gnocchi",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "crepe",
+		"display_fr": "Crêpe",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "galette de sarrasin",
+		"display_fr": "Galette de sarrasin",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain pita",
+		"display_fr": "Pain pita",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tortilla de ble",
+		"display_fr": "Tortilla de blé",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tortilla de mais",
+		"display_fr": "Tortilla de maïs",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "boulangerie viennoiserie",
+		"display_fr": "Boulangerie viennoiserie",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "croissant",
+		"display_fr": "Croissant",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain au chocolat",
+		"display_fr": "Pain au chocolat",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "brioche",
+		"display_fr": "Brioche",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait de vache",
+		"display_fr": "Lait de vache",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait demi ecreme",
+		"display_fr": "Lait demi-écrémé",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait entier",
+		"display_fr": "Lait entier",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait sans lactose",
+		"display_fr": "Lait sans lactose",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait d amande",
+		"display_fr": "Lait d'amande",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait de soja",
+		"display_fr": "Lait de soja",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait d avoine",
+		"display_fr": "Lait d'avoine",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lait de coco",
+		"display_fr": "Lait de coco",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "yaourt nature",
+		"display_fr": "Yaourt nature",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "yaourt aux fruits",
+		"display_fr": "Yaourt aux fruits",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "yaourt grec",
+		"display_fr": "Yaourt grec",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "fromage blanc",
+		"display_fr": "Fromage blanc",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "petit suisse",
+		"display_fr": "Petit-suisse",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "creme fraiche",
+		"display_fr": "Crème fraîche",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "creme liquide",
+		"display_fr": "Crème liquide",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "beurre",
+		"display_fr": "Beurre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "comte",
+		"display_fr": "Comté",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "emmental",
+		"display_fr": "Emmental",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gruyere",
+		"display_fr": "Gruyère",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "parmesan",
+		"display_fr": "Parmesan",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cheddar",
+		"display_fr": "Cheddar",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "camembert",
+		"display_fr": "Camembert",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "brie",
+		"display_fr": "Brie",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "roquefort",
+		"display_fr": "Roquefort",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chevre frais",
+		"display_fr": "Chèvre frais",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "buche de chevre",
+		"display_fr": "Bûche de chèvre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mozzarella",
+		"display_fr": "Mozzarella",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "feta",
+		"display_fr": "Feta",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "ricotta",
+		"display_fr": "Ricotta",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mascarpone",
+		"display_fr": "Mascarpone",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cancoillotte",
+		"display_fr": "Cancoillotte",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "glace vanille",
+		"display_fr": "Glace vanille",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "creme glacee",
+		"display_fr": "Crème glacée",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "pomme",
+		"display_fr": "Pomme",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poire",
+		"display_fr": "Poire",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "banane mure",
+		"display_fr": "Banane mûre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "banane verte",
+		"display_fr": "Banane verte",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "orange",
+		"display_fr": "Orange",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "clementine",
+		"display_fr": "Clémentine",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mandarine",
+		"display_fr": "Mandarine",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pamplemousse",
+		"display_fr": "Pamplemousse",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "citron",
+		"display_fr": "Citron",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "citron vert",
+		"display_fr": "Citron vert",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "fraise",
+		"display_fr": "Fraise",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "framboise",
+		"display_fr": "Framboise",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "myrtille",
+		"display_fr": "Myrtille",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mure",
+		"display_fr": "Mûre",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cassis",
+		"display_fr": "Cassis",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "raisin",
+		"display_fr": "Raisin",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "kiwi",
+		"display_fr": "Kiwi",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "ananas",
+		"display_fr": "Ananas",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mangue",
+		"display_fr": "Mangue",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "papaye",
+		"display_fr": "Papaye",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "fruit de la passion",
+		"display_fr": "Fruit de la passion",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "melon",
+		"display_fr": "Melon",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pasteque",
+		"display_fr": "Pastèque",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "peche",
+		"display_fr": "Pêche",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "nectarine",
+		"display_fr": "Nectarine",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "abricot",
+		"display_fr": "Abricot",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "prune",
+		"display_fr": "Prune",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cerise",
+		"display_fr": "Cerise",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "figue",
+		"display_fr": "Figue",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "datte",
+		"display_fr": "Datte",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "raisin sec",
+		"display_fr": "Raisin sec",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pruneau",
+		"display_fr": "Pruneau",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "abricot sec",
+		"display_fr": "Abricot sec",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "grenade",
+		"display_fr": "Grenade",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "litchi",
+		"display_fr": "Litchi",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "kaki",
+		"display_fr": "Kaki",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "avocat",
+		"display_fr": "Avocat",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "noix de coco",
+		"display_fr": "Noix de coco",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "rhubarbe",
+		"display_fr": "Rhubarbe",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "groseille",
+		"display_fr": "Groseille",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "coing",
+		"display_fr": "Coing",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "clementine confite",
+		"display_fr": "Clémentine confite",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "compote de pommes",
+		"display_fr": "Compote de pommes",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "salade de fruits",
+		"display_fr": "Salade de fruits",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "jus d orange",
+		"display_fr": "Jus d'orange",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "carotte",
+		"display_fr": "Carotte",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "courgette",
+		"display_fr": "Courgette",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "aubergine",
+		"display_fr": "Aubergine",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tomate",
+		"display_fr": "Tomate",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tomate cerise",
+		"display_fr": "Tomate cerise",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "concombre",
+		"display_fr": "Concombre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poivron rouge",
+		"display_fr": "Poivron rouge",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poivron vert",
+		"display_fr": "Poivron vert",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "salade verte",
+		"display_fr": "Salade verte",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "laitue",
+		"display_fr": "Laitue",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "roquette",
+		"display_fr": "Roquette",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "epinard",
+		"display_fr": "Épinard",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mache",
+		"display_fr": "Mâche",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "endive",
+		"display_fr": "Endive",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "haricot vert",
+		"display_fr": "Haricot vert",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "petit pois",
+		"display_fr": "Petit pois",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "brocoli",
+		"display_fr": "Brocoli",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chou fleur",
+		"display_fr": "Chou-fleur",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chou vert",
+		"display_fr": "Chou vert",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chou de bruxelles",
+		"display_fr": "Chou de Bruxelles",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chou rouge",
+		"display_fr": "Chou rouge",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chou rave",
+		"display_fr": "Chou-rave",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "choucroute",
+		"display_fr": "Choucroute",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "oignon",
+		"display_fr": "Oignon",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "echalote",
+		"display_fr": "Échalote",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "ail",
+		"display_fr": "Ail",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poireau",
+		"display_fr": "Poireau",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "champignon de paris",
+		"display_fr": "Champignon de Paris",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cepe",
+		"display_fr": "Cèpe",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "asperge",
+		"display_fr": "Asperge",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "artichaut",
+		"display_fr": "Artichaut",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "betterave",
+		"display_fr": "Betterave",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "celeri",
+		"display_fr": "Céleri",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "celeri rave",
+		"display_fr": "Céleri-rave",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "fenouil",
+		"display_fr": "Fenouil",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "navet",
+		"display_fr": "Navet",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "radis",
+		"display_fr": "Radis",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "panais",
+		"display_fr": "Panais",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "courge butternut",
+		"display_fr": "Courge butternut",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "potiron",
+		"display_fr": "Potiron",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mais",
+		"display_fr": "Maïs",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "epi de mais",
+		"display_fr": "Épi de maïs",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poivron grille",
+		"display_fr": "Poivron grillé",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "ratatouille",
+		"display_fr": "Ratatouille",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "blette",
+		"display_fr": "Blette",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cresson",
+		"display_fr": "Cresson",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "topinambour",
+		"display_fr": "Topinambour",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "salsifis",
+		"display_fr": "Salsifis",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "olive verte",
+		"display_fr": "Olive verte",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "olive noire",
+		"display_fr": "Olive noire",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "cornichon",
+		"display_fr": "Cornichon",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "chou kale",
+		"display_fr": "Chou kale",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "germe de soja",
+		"display_fr": "Germe de soja",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gingembre",
+		"display_fr": "Gingembre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "piment",
+		"display_fr": "Piment",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poireau vinaigrette",
+		"display_fr": "Poireau vinaigrette",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "soupe de legumes",
+		"display_fr": "Soupe de légumes",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "puree de carottes",
+		"display_fr": "Purée de carottes",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lentilles",
+		"display_fr": "Lentilles",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lentilles corail",
+		"display_fr": "Lentilles corail",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pois chiche",
+		"display_fr": "Pois chiche",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "haricot rouge",
+		"display_fr": "Haricot rouge",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "haricot blanc",
+		"display_fr": "Haricot blanc",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "flageolet",
+		"display_fr": "Flageolet",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "feve",
+		"display_fr": "Fève",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "houmous",
+		"display_fr": "Houmous",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tofu",
+		"display_fr": "Tofu",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tempeh",
+		"display_fr": "Tempeh",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cacahuete",
+		"display_fr": "Cacahuète",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "amande",
+		"display_fr": "Amande",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "noix",
+		"display_fr": "Noix",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "noisette",
+		"display_fr": "Noisette",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "noix de cajou",
+		"display_fr": "Noix de cajou",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pistache",
+		"display_fr": "Pistache",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "graine de tournesol",
+		"display_fr": "Graine de tournesol",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "graine de courge",
+		"display_fr": "Graine de courge",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "graine de chia",
+		"display_fr": "Graine de chia",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "beurre de cacahuete",
+		"display_fr": "Beurre de cacahuète",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poulet",
+		"display_fr": "Poulet",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "blanc de poulet",
+		"display_fr": "Blanc de poulet",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poulet roti",
+		"display_fr": "Poulet rôti",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "escalope de dinde",
+		"display_fr": "Escalope de dinde",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "dinde",
+		"display_fr": "Dinde",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "b uf",
+		"display_fr": "Bœuf",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "steak hache",
+		"display_fr": "Steak haché",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "roti de b uf",
+		"display_fr": "Rôti de bœuf",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "veau",
+		"display_fr": "Veau",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "porc",
+		"display_fr": "Porc",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cote de porc",
+		"display_fr": "Côte de porc",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "agneau",
+		"display_fr": "Agneau",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gigot d agneau",
+		"display_fr": "Gigot d'agneau",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "canard",
+		"display_fr": "Canard",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "magret de canard",
+		"display_fr": "Magret de canard",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lapin",
+		"display_fr": "Lapin",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "jambon blanc",
+		"display_fr": "Jambon blanc",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "jambon cru",
+		"display_fr": "Jambon cru",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "bacon",
+		"display_fr": "Bacon",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "lardons",
+		"display_fr": "Lardons",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "saucisson",
+		"display_fr": "Saucisson",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "chorizo",
+		"display_fr": "Chorizo",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "merguez",
+		"display_fr": "Merguez",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "saucisse",
+		"display_fr": "Saucisse",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "boudin noir",
+		"display_fr": "Boudin noir",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "pate",
+		"display_fr": "Pâté",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "rillettes",
+		"display_fr": "Rillettes",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "nuggets de poulet",
+		"display_fr": "Nuggets de poulet",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "cordon bleu",
+		"display_fr": "Cordon bleu",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "uf",
+		"display_fr": "Œuf",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "uf dur",
+		"display_fr": "Œuf dur",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "omelette",
+		"display_fr": "Omelette",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "ufs brouilles",
+		"display_fr": "Œufs brouillés",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "saumon",
+		"display_fr": "Saumon",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "saumon fume",
+		"display_fr": "Saumon fumé",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "thon",
+		"display_fr": "Thon",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cabillaud",
+		"display_fr": "Cabillaud",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "colin",
+		"display_fr": "Colin",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "sole",
+		"display_fr": "Sole",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "truite",
+		"display_fr": "Truite",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "sardine",
+		"display_fr": "Sardine",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "maquereau",
+		"display_fr": "Maquereau",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "hareng",
+		"display_fr": "Hareng",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "bar",
+		"display_fr": "Bar",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "dorade",
+		"display_fr": "Dorade",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "crevette",
+		"display_fr": "Crevette",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "moule",
+		"display_fr": "Moule",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "huitre",
+		"display_fr": "Huître",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "crabe",
+		"display_fr": "Crabe",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "homard",
+		"display_fr": "Homard",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "calamar",
+		"display_fr": "Calamar",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poisson pane",
+		"display_fr": "Poisson pané",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "surimi",
+		"display_fr": "Surimi",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "blanquette de veau",
+		"display_fr": "Blanquette de veau",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "b uf bourguignon",
+		"display_fr": "Bœuf bourguignon",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pot au feu",
+		"display_fr": "Pot-au-feu",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cassoulet",
+		"display_fr": "Cassoulet",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "choucroute garnie",
+		"display_fr": "Choucroute garnie",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "raclette",
+		"display_fr": "Raclette",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "fondue savoyarde",
+		"display_fr": "Fondue savoyarde",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tartiflette",
+		"display_fr": "Tartiflette",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "gratin dauphinois",
+		"display_fr": "Gratin dauphinois",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "croque monsieur",
+		"display_fr": "Croque-monsieur",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "quiche lorraine",
+		"display_fr": "Quiche lorraine",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "pizza margherita",
+		"display_fr": "Pizza margherita",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pizza 4 fromages",
+		"display_fr": "Pizza 4 fromages",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "hamburger",
+		"display_fr": "Hamburger",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "hot dog",
+		"display_fr": "Hot-dog",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sandwich jambon beurre",
+		"display_fr": "Sandwich jambon-beurre",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "kebab",
+		"display_fr": "Kebab",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sushi",
+		"display_fr": "Sushi",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "maki",
+		"display_fr": "Maki",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "curry de poulet",
+		"display_fr": "Curry de poulet",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chili con carne",
+		"display_fr": "Chili con carne",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "paella",
+		"display_fr": "Paella",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "couscous royal",
+		"display_fr": "Couscous royal",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tajine",
+		"display_fr": "Tajine",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "lasagnes bolognaise",
+		"display_fr": "Lasagnes bolognaise",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "hachis parmentier",
+		"display_fr": "Hachis parmentier",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "steak frites",
+		"display_fr": "Steak-frites",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "soupe a l oignon",
+		"display_fr": "Soupe à l'oignon",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "veloute de potiron",
+		"display_fr": "Velouté de potiron",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "salade cesar",
+		"display_fr": "Salade César",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "salade nicoise",
+		"display_fr": "Salade niçoise",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "omelette aux champignons",
+		"display_fr": "Omelette aux champignons",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gratin de chou fleur",
+		"display_fr": "Gratin de chou-fleur",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "bo bun",
+		"display_fr": "Bo bun",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "nems",
+		"display_fr": "Nems",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "riz cantonais",
+		"display_fr": "Riz cantonais",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "falafel",
+		"display_fr": "Falafel",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cafe",
+		"display_fr": "Café",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cafe au lait",
+		"display_fr": "Café au lait",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "expresso",
+		"display_fr": "Expresso",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cappuccino",
+		"display_fr": "Cappuccino",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cafe decafeine",
+		"display_fr": "Café décaféiné",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "the noir",
+		"display_fr": "Thé noir",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "the vert",
+		"display_fr": "Thé vert",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "the a la menthe",
+		"display_fr": "Thé à la menthe",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tisane",
+		"display_fr": "Tisane",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "infusion camomille",
+		"display_fr": "Infusion camomille",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chocolat chaud",
+		"display_fr": "Chocolat chaud",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "eau",
+		"display_fr": "Eau",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "eau gazeuse",
+		"display_fr": "Eau gazeuse",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "jus de pomme",
+		"display_fr": "Jus de pomme",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "jus de raisin",
+		"display_fr": "Jus de raisin",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "limonade",
+		"display_fr": "Limonade",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "coca cola",
+		"display_fr": "Coca-cola",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "soda",
+		"display_fr": "Soda",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "soda light",
+		"display_fr": "Soda light",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "boisson energisante",
+		"display_fr": "Boisson énergisante",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sirop de fruit",
+		"display_fr": "Sirop de fruit",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "biere",
+		"display_fr": "Bière",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "biere sans alcool",
+		"display_fr": "Bière sans alcool",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "vin rouge",
+		"display_fr": "Vin rouge",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "vin blanc",
+		"display_fr": "Vin blanc",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "rose",
+		"display_fr": "Rosé",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "champagne",
+		"display_fr": "Champagne",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cidre",
+		"display_fr": "Cidre",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "whisky",
+		"display_fr": "Whisky",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "rhum",
+		"display_fr": "Rhum",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cocktail",
+		"display_fr": "Cocktail",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": true,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "smoothie",
+		"display_fr": "Smoothie",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "kombucha",
+		"display_fr": "Kombucha",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chocolat noir",
+		"display_fr": "Chocolat noir",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "chocolat au lait",
+		"display_fr": "Chocolat au lait",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": true,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "chocolat blanc",
+		"display_fr": "Chocolat blanc",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "biscuit",
+		"display_fr": "Biscuit",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "cookie",
+		"display_fr": "Cookie",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "madeleine",
+		"display_fr": "Madeleine",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gaufre",
+		"display_fr": "Gaufre",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "gateau au chocolat",
+		"display_fr": "Gâteau au chocolat",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tarte aux pommes",
+		"display_fr": "Tarte aux pommes",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "tarte au citron",
+		"display_fr": "Tarte au citron",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "eclair au chocolat",
+		"display_fr": "Éclair au chocolat",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "macaron",
+		"display_fr": "Macaron",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "pain d epices",
+		"display_fr": "Pain d'épices",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "croissant aux amandes",
+		"display_fr": "Croissant aux amandes",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "beignet",
+		"display_fr": "Beignet",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "churros",
+		"display_fr": "Churros",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": true,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "donut",
+		"display_fr": "Donut",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": true,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "bonbon",
+		"display_fr": "Bonbon",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "chewing gum",
+		"display_fr": "Chewing-gum",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "miel",
+		"display_fr": "Miel",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "confiture",
+		"display_fr": "Confiture",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "nutella",
+		"display_fr": "Nutella",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "pate a tartiner",
+		"display_fr": "Pâte à tartiner",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "barre chocolatee",
+		"display_fr": "Barre chocolatée",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "popcorn",
+		"display_fr": "Popcorn",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cacahuetes grillees",
+		"display_fr": "Cacahuètes grillées",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": true,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "creme dessert",
+		"display_fr": "Crème dessert",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "riz au lait",
+		"display_fr": "Riz au lait",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mousse au chocolat",
+		"display_fr": "Mousse au chocolat",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "flan",
+		"display_fr": "Flan",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "yaourt a boire",
+		"display_fr": "Yaourt à boire",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "huile d olive",
+		"display_fr": "Huile d'olive",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "huile de tournesol",
+		"display_fr": "Huile de tournesol",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "huile de colza",
+		"display_fr": "Huile de colza",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "vinaigre",
+		"display_fr": "Vinaigre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "vinaigre balsamique",
+		"display_fr": "Vinaigre balsamique",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "vinaigrette",
+		"display_fr": "Vinaigrette",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "moutarde",
+		"display_fr": "Moutarde",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "mayonnaise",
+		"display_fr": "Mayonnaise",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "ketchup",
+		"display_fr": "Ketchup",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sauce tomate",
+		"display_fr": "Sauce tomate",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sauce bolognaise",
+		"display_fr": "Sauce bolognaise",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sauce soja",
+		"display_fr": "Sauce soja",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sauce barbecue",
+		"display_fr": "Sauce barbecue",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "harissa",
+		"display_fr": "Harissa",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sauce piquante",
+		"display_fr": "Sauce piquante",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "pesto",
+		"display_fr": "Pesto",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": true,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "bechamel",
+		"display_fr": "Béchamel",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": true,
+			"gluten": true,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "creme de balsamique",
+		"display_fr": "Crème de balsamique",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "bouillon cube",
+		"display_fr": "Bouillon cube",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "sel",
+		"display_fr": "Sel",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "poivre",
+		"display_fr": "Poivre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "curry en poudre",
+		"display_fr": "Curry en poudre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "paprika",
+		"display_fr": "Paprika",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": true,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cumin",
+		"display_fr": "Cumin",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "herbes de provence",
+		"display_fr": "Herbes de Provence",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "sucre",
+		"display_fr": "Sucre",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "cassonade",
+		"display_fr": "Cassonade",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "sirop d agave",
+		"display_fr": "Sirop d'agave",
+		"triggers": {
+			"fodmap": "high",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "sirop d erable",
+		"display_fr": "Sirop d'érable",
+		"triggers": {
+			"fodmap": "medium",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": false
+		}
+	},
+	{
+		"name_normalized": "margarine",
+		"display_fr": "Margarine",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	},
+	{
+		"name_normalized": "tapenade",
+		"display_fr": "Tapenade",
+		"triggers": {
+			"fodmap": "low",
+			"lactose": false,
+			"gluten": false,
+			"fried": false,
+			"spicy": false,
+			"insoluble_fiber": false,
+			"alcohol": false,
+			"caffeine": false,
+			"additives": true
+		}
+	}
+]

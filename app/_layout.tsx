@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SnackbarProvider } from "@/components/ui/Snackbar";
 import { db, warmupDb } from "@/db/client";
+import { seedFoods } from "@/db/seedFoods";
 import { FlareProvider } from "@/features/flare/FlareContext";
 import { initI18n } from "@/i18n";
 import { ThemeProvider, useTheme } from "@/theme";
@@ -33,6 +34,14 @@ function Migrator() {
 	const { t } = useTranslation("common");
 	const theme = useTheme();
 	const { success, error } = useMigrations(db, migrations);
+
+	// Seed d'aliments FR (§5.5) : idempotent & versionné, joué UNE fois les
+	// migrations appliquées. Un échec de seed ne bloque jamais l'app (best-effort).
+	useEffect(() => {
+		if (success) {
+			seedFoods().catch(() => undefined);
+		}
+	}, [success]);
 
 	if (error) {
 		return <LoadingScreen error message="Redémarrez l'application. Vos données sont intactes." />;
