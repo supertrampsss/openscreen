@@ -65,8 +65,16 @@ export async function upsertDraft(entry: MealDraftInput): Promise<Meal> {
 	return rows[0];
 }
 
+/** Valide un brouillon. Loi 2 : 0 ligne mise à jour = erreur, jamais un succès silencieux. */
 export async function commitDraft(id: string): Promise<void> {
-	await db.update(meals).set({ isDraft: 0, updatedAt: Date.now() }).where(eq(meals.id, id));
+	const rows = await db
+		.update(meals)
+		.set({ isDraft: 0, updatedAt: Date.now() })
+		.where(eq(meals.id, id))
+		.returning({ id: meals.id });
+	if (rows.length === 0) {
+		throw new Error(`commitDraft: no draft row for id ${id}`);
+	}
 	// Signale le log (§7 : annule le rappel du soir du jour même).
 	emitLogCommitted();
 }

@@ -124,6 +124,21 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 	const save = async () => {
 		if (bristol == null) return;
 		try {
+			// Loi 2 : persiste l'état courant AVANT le commit. Le défaut intelligent
+			// (dernier Bristol) est posé sans passer par persist() — sans cet upsert,
+			// accepter le défaut puis Enregistrer committerait un brouillon inexistant
+			// (0 ligne mise à jour) et la selle serait perdue en silence.
+			await upsertDraft({
+				id: entryId,
+				kind: "stool",
+				occurredAt: occurred.epochMs,
+				tz: occurred.tz,
+				localDate: occurred.localDate,
+				bristol,
+				urgency,
+				blood,
+				pain,
+			});
 			await commitDraft(entryId);
 			snackbar.show({ message: t("stool.saved") });
 			onSaved();

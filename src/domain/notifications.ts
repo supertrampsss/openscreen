@@ -92,6 +92,40 @@ export function nextDailyOccurrence(now: Date, hour: number, minute: number): Da
 }
 
 /**
+ * Les `count` prochaines occurrences quotidiennes à `hour:minute`, en one-shots.
+ * Un trigger répétitif DAILY ne permettrait pas d'annuler la seule occurrence du
+ * jour quand un log existe déjà — on planifie donc N one-shots d'avance : même si
+ * l'app n'est pas rouverte après le premier rappel, les suivants partent quand
+ * même (re-remplis à chaque reschedule : ouverture d'app ou commit de log).
+ * `skipToday` exclut l'occurrence du jour (déjà loggé) sans réduire le total.
+ */
+export function nextDailyOccurrences(
+	now: Date,
+	hour: number,
+	minute: number,
+	count: number,
+	skipToday: boolean,
+): Date[] {
+	const out: Date[] = [];
+	let cursor = nextDailyOccurrence(now, hour, minute);
+	if (
+		skipToday &&
+		cursor.getFullYear() === now.getFullYear() &&
+		cursor.getMonth() === now.getMonth() &&
+		cursor.getDate() === now.getDate()
+	) {
+		cursor = new Date(cursor);
+		cursor.setDate(cursor.getDate() + 1);
+	}
+	for (let i = 0; i < count; i++) {
+		out.push(new Date(cursor));
+		cursor = new Date(cursor);
+		cursor.setDate(cursor.getDate() + 1);
+	}
+	return out;
+}
+
+/**
  * Prochaine occurrence hebdomadaire à un jour (0=dimanche … 6=samedi) et une
  * heure donnés, à partir de `now`. Si c'est aujourd'hui et l'heure est passée,
  * on renvoie la semaine suivante.

@@ -17,14 +17,14 @@
 			"distribution": "internal",
 			"channel": "preview",
 			"env": {
-				"EXPO_PUBLIC_ENTITLEMENTS": "revenuecat"
+				"EXPO_PUBLIC_ENTITLEMENTS": "mock"
 			}
 		},
 		"production": {
 			"autoIncrement": true,
 			"channel": "production",
 			"env": {
-				"EXPO_PUBLIC_ENTITLEMENTS": "revenuecat"
+				"EXPO_PUBLIC_ENTITLEMENTS": "mock"
 			}
 		}
 	},

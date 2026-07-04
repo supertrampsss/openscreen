@@ -71,12 +71,21 @@ export async function upsertDraft(entry: DraftInput): Promise<SymptomEntry> {
 	return rows[0];
 }
 
-/** Valide un brouillon : is_draft = 0. */
+/**
+ * Valide un brouillon : is_draft = 0.
+ * Loi 2 : committer un id sans ligne brouillon ne doit JAMAIS passer pour un
+ * succès (0 ligne mise à jour = donnée perdue en silence) → throw, le catch
+ * des sheets affiche le snackbar et garde la sheet ouverte.
+ */
 export async function commitDraft(id: string): Promise<void> {
-	await db
+	const rows = await db
 		.update(symptomEntries)
 		.set({ isDraft: 0, updatedAt: Date.now() })
-		.where(eq(symptomEntries.id, id));
+		.where(eq(symptomEntries.id, id))
+		.returning({ id: symptomEntries.id });
+	if (rows.length === 0) {
+		throw new Error(`commitDraft: no draft row for id ${id}`);
+	}
 	// Signale le log (§7 : annule le rappel du soir du jour même).
 	emitLogCommitted();
 }

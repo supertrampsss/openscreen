@@ -39,8 +39,11 @@ provider is **mock** (persists a fake `premium` flag in settings). To go live:
 4. [ ] In `src/services/entitlements.ts` → `RevenueCatEntitlementsProvider`,
        **uncomment** the `react-native-purchases` calls (they are written and
        commented, method by method). Delete the `notConfigured()` throws.
-5. [ ] Set `EXPO_PUBLIC_ENTITLEMENTS=revenuecat` (EAS env / `.env`). Default is
-       `mock`; any other value stays mock.
+5. [ ] Set `EXPO_PUBLIC_ENTITLEMENTS=revenuecat` — **including in `eas.json`**:
+       flip the `preview` and `production` profiles' `env` from `mock` to
+       `revenuecat`. All profiles ship as `mock` on purpose (safe default): a
+       release built before step 4 would otherwise have a broken paywall, since
+       the RevenueCat provider throws until wired.
 6. [ ] Wire the Worker entitlement check: set `REVENUECAT_API_KEY` on the Worker
        (see [`DEPLOY_WORKER.md`](./DEPLOY_WORKER.md)); `getEntitlementToken()` already
        returns the RevenueCat app-user-id that the Worker verifies.
@@ -151,11 +154,11 @@ Checklist:
 
 `eas.json` is committed with three profiles:
 
-| Profile       | Distribution | `EXPO_PUBLIC_ENTITLEMENTS` | Use                                  |
-| ------------- | ------------ | -------------------------- | ------------------------------------ |
-| `development` | internal     | `mock`                     | dev client; test flows without stores |
-| `preview`     | internal     | `revenuecat`               | internal QA with real billing         |
-| `production`  | store        | `revenuecat`               | App Store / Play submission           |
+| Profile       | Distribution | `EXPO_PUBLIC_ENTITLEMENTS`                    | Use                                  |
+| ------------- | ------------ | --------------------------------------------- | ------------------------------------ |
+| `development` | internal     | `mock`                                        | dev client; test flows without stores |
+| `preview`     | internal     | `mock` (→ `revenuecat` after RevenueCat step) | internal QA                           |
+| `production`  | store        | `mock` (→ `revenuecat` after RevenueCat step) | App Store / Play submission           |
 
 Step by step:
 

@@ -114,6 +114,21 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 	const save = async () => {
 		if (!canSave) return;
 		try {
+			// Loi 2 : persiste l'état courant complet AVANT le commit (les notes ne
+			// sont persistées qu'au blur et peuvent activer Save sans brouillon).
+			await upsertDraft({
+				id: entryId,
+				kind: "symptom",
+				occurredAt: occurred.epochMs,
+				tz: occurred.tz,
+				localDate: occurred.localDate,
+				pain,
+				painZone,
+				fatigue,
+				wellbeing,
+				extraIntestinal: complications,
+				notes: notes.trim() ? notes.trim() : null,
+			});
 			await commitDraft(entryId);
 			if (complications.length > 0) {
 				await setComplications(occurred.localDate, complications);

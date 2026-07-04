@@ -19,7 +19,7 @@ import {
 	DEFAULT_NOTIFICATION_PREFS,
 	eveningReminderCopyKey,
 	type NotificationPrefs,
-	nextDailyOccurrence,
+	nextDailyOccurrences,
 } from "@/domain/notifications";
 import { treatmentReminderDates } from "@/domain/treatments";
 import i18n from "@/i18n";
@@ -83,14 +83,6 @@ async function hasLoggedToday(): Promise<boolean> {
 	return entries.some((e) => e.localDate === today) || meals.some((m) => m.localDate === today);
 }
 
-function isSameDay(a: Date, b: Date): boolean {
-	return (
-		a.getFullYear() === b.getFullYear() &&
-		a.getMonth() === b.getMonth() &&
-		a.getDate() === b.getDate()
-	);
-}
-
 /**
  * (Re)planifie les notifications à partir des préférences courantes. Annule tout
  * l'existant d'abord (idempotent). No-op si non supporté / master off / non
@@ -109,20 +101,28 @@ export async function reschedule(): Promise<void> {
 	const now = new Date();
 
 	if (prefs.eveningReminder) {
-		let when = nextDailyOccurrence(now, prefs.reminderHour, prefs.reminderMinute);
-		// Si l'occurrence tombe aujourd'hui mais qu'un log existe déjà : demain.
-		if (isSameDay(when, now) && (await hasLoggedToday())) {
-			when = new Date(when);
-			when.setDate(when.getDate() + 1);
-		}
+		// 7 one-shots d'avance (et non un trigger DAILY répétitif) : on garde la
+		// possibilité de sauter l'occurrence du jour quand un log existe déjà, et
+		// les rappels continuent même si l'app n'est pas rouverte pendant une
+		// semaine. Re-remplis à chaque reschedule (ouverture / commit de log).
+		const skipToday = await hasLoggedToday();
+		const occurrences = nextDailyOccurrences(
+			now,
+			prefs.reminderHour,
+			prefs.reminderMinute,
+			7,
+			skipToday,
+		);
 		const copyKey = eveningReminderCopyKey((await getProfile())?.obstacles);
-		await N.scheduleNotificationAsync({
-			content: {
-				title: tn(`notifCopy.evening.${copyKey}.title`),
-				body: tn(`notifCopy.evening.${copyKey}.body`),
-			},
-			trigger: { type: N.SchedulableTriggerInputTypes.DATE, date: when },
-		});
+		for (const when of occurrences) {
+			await N.scheduleNotificationAsync({
+				content: {
+					title: tn(`notifCopy.evening.${copyKey}.title`),
+					body: tn(`notifCopy.evening.${copyKey}.body`),
+				},
+				trigger: { type: N.SchedulableTriggerInputTypes.DATE, date: when },
+			});
+		}
 	}
 
 	if (prefs.weeklyDigest) {

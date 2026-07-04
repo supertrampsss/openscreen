@@ -6,6 +6,7 @@ import {
 	eveningReminderShouldFire,
 	formatReminderTime,
 	nextDailyOccurrence,
+	nextDailyOccurrences,
 	nextWeeklyOccurrence,
 } from "./notifications";
 
@@ -95,6 +96,42 @@ describe("eveningReminderShouldFire (annulation du jour)", () => {
 	it("ne sonne jamais si master ou evening off", () => {
 		expect(eveningReminderShouldFire({ ...on, master: false }, false)).toBe(false);
 		expect(eveningReminderShouldFire({ ...on, eveningReminder: false }, false)).toBe(false);
+	});
+});
+
+describe("nextDailyOccurrences (7 one-shots d'avance — le rappel survit sans réouverture)", () => {
+	// 2026-01-10 est un samedi ; heure du rappel : 20h30.
+	it("7 occurrences consécutives quand l'heure du jour est à venir", () => {
+		const now = new Date(2026, 0, 10, 10, 0, 0);
+		const occ = nextDailyOccurrences(now, 20, 30, 7, false);
+		expect(occ).toHaveLength(7);
+		expect(occ[0].getDate()).toBe(10); // aujourd'hui 20h30 inclus
+		expect(occ[6].getDate()).toBe(16);
+		for (const d of occ) {
+			expect(d.getHours()).toBe(20);
+			expect(d.getMinutes()).toBe(30);
+		}
+	});
+	it("skipToday exclut l'occurrence du jour sans réduire le total", () => {
+		const now = new Date(2026, 0, 10, 10, 0, 0);
+		const occ = nextDailyOccurrences(now, 20, 30, 7, true);
+		expect(occ).toHaveLength(7);
+		expect(occ[0].getDate()).toBe(11); // demain
+		expect(occ[6].getDate()).toBe(17);
+	});
+	it("heure déjà passée : démarre demain, skipToday sans effet supplémentaire", () => {
+		const now = new Date(2026, 0, 10, 22, 0, 0);
+		const plain = nextDailyOccurrences(now, 20, 30, 7, false);
+		const skipped = nextDailyOccurrences(now, 20, 30, 7, true);
+		expect(plain[0].getDate()).toBe(11);
+		expect(skipped[0].getDate()).toBe(11); // la 1re occurrence n'est plus « aujourd'hui »
+	});
+	it("franchit les fins de mois", () => {
+		const now = new Date(2026, 0, 29, 10, 0, 0);
+		const occ = nextDailyOccurrences(now, 20, 30, 7, false);
+		expect(occ[0].getDate()).toBe(29);
+		expect(occ[3].getMonth()).toBe(1); // 1er février
+		expect(occ[3].getDate()).toBe(1);
 	});
 });
 
