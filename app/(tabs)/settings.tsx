@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { BackupError } from "@/domain/backup";
+import { useFlare } from "@/features/flare/FlareContext";
+import { FlareToggle } from "@/features/flare/FlareToggle";
 import { exportBackup, importBackup } from "@/services/backupService";
 import { useTheme } from "@/theme";
 
@@ -13,6 +15,7 @@ export default function SettingsScreen() {
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
 	const snackbar = useSnackbar();
+	const { flare } = useFlare();
 	const [busy, setBusy] = useState(false);
 
 	const doExport = async () => {
@@ -64,6 +67,23 @@ export default function SettingsScreen() {
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>
 					{t("settings.title")}
 				</Text>
+
+				<View style={{ gap: theme.spacing.sm }}>
+					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+						{t("flare.sectionTitle")}
+					</Text>
+					<Card style={{ gap: theme.spacing.md }}>
+						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+							{t("flare.sectionBody")}
+						</Text>
+						{flare.active && flare.since ? (
+							<Text style={[theme.typography.caption, { color: theme.colors.pain }]}>
+								{t("flare.since", { date: flare.since })}
+							</Text>
+						) : null}
+						<FlareToggle />
+					</Card>
+				</View>
 
 				<View style={{ gap: theme.spacing.sm }}>
 					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>

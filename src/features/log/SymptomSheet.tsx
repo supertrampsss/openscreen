@@ -5,6 +5,7 @@ import { ChipTrigger, DraftSheet, TapRow } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { SymptomEntry } from "@/db/schema";
 import { type EntryTimestamp, nowEntryTimestamp } from "@/domain/dates";
+import { useFlare } from "@/features/flare/FlareContext";
 import { setComplications } from "@/repositories/dailyExtrasRepo";
 import { commitDraft, type DraftInput, newEntryId, upsertDraft } from "@/repositories/symptomRepo";
 import { useTheme } from "@/theme";
@@ -32,6 +33,7 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 	const { t } = useTranslation("log");
 	const theme = useTheme();
 	const snackbar = useSnackbar();
+	const { flare } = useFlare();
 
 	const [entryId, setEntryId] = useState(newEntryId);
 	const [occurred, setOccurred] = useState<EntryTimestamp>(nowEntryTimestamp);
@@ -42,9 +44,13 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 	const [complications, setComplicationList] = useState<string[]>([]);
 	const [notes, setNotes] = useState("");
 	const [notesOpen, setNotesOpen] = useState(false);
+	// Mode poussée (§5.6) : essentiel = douleur + forme ; le reste replié.
+	const [expanded, setExpanded] = useState(false);
+	const showExtras = !flare.active || expanded;
 
 	useEffect(() => {
 		if (!visible) return;
+		setExpanded(false);
 		const now = nowEntryTimestamp();
 		if (resume) {
 			setEntryId(resume.id);
@@ -153,82 +159,95 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 				}}
 				tint="pain"
 			/>
-			<View style={{ gap: theme.spacing.sm }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("symptom.painZone")}
-				</Text>
-				<View style={styles.chipWrap}>
-					{ZONE_KEYS.map((zone) => (
-						<ChipTrigger
-							key={zone}
-							label={t(`symptom.zones.${zone}`)}
-							tint="pain"
-							selected={painZone === zone}
-							onPress={() => {
-								const next = painZone === zone ? null : zone;
-								setPainZone(next);
-								persist({ painZone: next });
-							}}
-						/>
-					))}
-				</View>
-			</View>
-			<TapRow
-				title={t("symptom.fatigue")}
-				options={levels(3)}
-				value={fatigue}
-				onChange={(v) => {
-					setFatigue(v);
-					persist({ fatigue: v });
-				}}
-				tint="energy"
-			/>
-			<View style={{ gap: theme.spacing.sm }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("symptom.extraIntestinal")}
-				</Text>
-				<View style={styles.chipWrap}>
-					{COMPLICATION_KEYS.map((key) => (
-						<ChipTrigger
-							key={key}
-							label={t(`symptom.complications.${key}`)}
-							tint="stool"
-							selected={complications.includes(key)}
-							onPress={() => toggleComplication(key)}
-						/>
-					))}
-				</View>
-			</View>
-			<View style={{ gap: theme.spacing.sm }}>
-				{notesOpen ? (
-					<TextInput
-						accessibilityLabel={t("symptom.notes")}
-						placeholder={t("symptom.notesPlaceholder")}
-						placeholderTextColor={theme.colors.textFaint}
-						value={notes}
-						onChangeText={setNotes}
-						onBlur={() => persist({ notes: notes.trim() ? notes.trim() : null })}
-						multiline
-						style={[
-							styles.notes,
-							theme.typography.body,
-							{
-								color: theme.colors.text,
-								backgroundColor: theme.colors.surface,
-								borderRadius: theme.radii.md,
-							},
-						]}
+			{showExtras ? (
+				<>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+							{t("symptom.painZone")}
+						</Text>
+						<View style={styles.chipWrap}>
+							{ZONE_KEYS.map((zone) => (
+								<ChipTrigger
+									key={zone}
+									label={t(`symptom.zones.${zone}`)}
+									tint="pain"
+									selected={painZone === zone}
+									onPress={() => {
+										const next = painZone === zone ? null : zone;
+										setPainZone(next);
+										persist({ painZone: next });
+									}}
+								/>
+							))}
+						</View>
+					</View>
+					<TapRow
+						title={t("symptom.fatigue")}
+						options={levels(3)}
+						value={fatigue}
+						onChange={(v) => {
+							setFatigue(v);
+							persist({ fatigue: v });
+						}}
+						tint="energy"
 					/>
-				) : (
-					<Text
-						accessibilityRole="button"
-						onPress={() => setNotesOpen(true)}
-						style={[theme.typography.label, { color: theme.colors.meal }]}
-					>
-						+ {t("symptom.addNote")}
-					</Text>
-				)}
-			</View>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+							{t("symptom.extraIntestinal")}
+						</Text>
+						<View style={styles.chipWrap}>
+							{COMPLICATION_KEYS.map((key) => (
+								<ChipTrigger
+									key={key}
+									label={t(`symptom.complications.${key}`)}
+									tint="stool"
+									selected={complications.includes(key)}
+									onPress={() => toggleComplication(key)}
+								/>
+							))}
+						</View>
+					</View>
+					<View style={{ gap: theme.spacing.sm }}>
+						{notesOpen ? (
+							<TextInput
+								accessibilityLabel={t("symptom.notes")}
+								placeholder={t("symptom.notesPlaceholder")}
+								placeholderTextColor={theme.colors.textFaint}
+								value={notes}
+								onChangeText={setNotes}
+								onBlur={() => persist({ notes: notes.trim() ? notes.trim() : null })}
+								multiline
+								style={[
+									styles.notes,
+									theme.typography.body,
+									{
+										color: theme.colors.text,
+										backgroundColor: theme.colors.surface,
+										borderRadius: theme.radii.md,
+									},
+								]}
+							/>
+						) : (
+							<Text
+								accessibilityRole="button"
+								onPress={() => setNotesOpen(true)}
+								style={[theme.typography.label, { color: theme.colors.meal }]}
+							>
+								+ {t("symptom.addNote")}
+							</Text>
+						)}
+					</View>
+				</>
+			) : (
+				<Text
+					accessibilityRole="button"
+					testID="symptom-more"
+					onPress={() => setExpanded(true)}
+					style={[theme.typography.label, { color: theme.colors.meal }]}
+				>
+					+ {t("showMore")}
+				</Text>
+			)}
 		</DraftSheet>
 	);
 }

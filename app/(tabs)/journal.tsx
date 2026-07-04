@@ -14,6 +14,8 @@ import {
 	localDateDaysAgo,
 	nowEntryTimestamp,
 } from "@/domain/dates";
+import { FlareBanner } from "@/features/flare/FlareBanner";
+import { FlareToggle } from "@/features/flare/FlareToggle";
 import { StoolSheet } from "@/features/log/StoolSheet";
 import { SymptomSheet } from "@/features/log/SymptomSheet";
 import { listAll, restore, softDelete } from "@/repositories/symptomRepo";
@@ -86,18 +88,12 @@ export default function JournalScreen() {
 		});
 	};
 
-	if (sections.length === 0) {
-		return (
-			<View
-				style={[styles.empty, { backgroundColor: theme.colors.background, paddingTop: insets.top }]}
-			>
-				<Text style={[theme.typography.heading, { color: theme.colors.text }]}>{t("empty")}</Text>
-				<Text style={[theme.typography.body, styles.center, { color: theme.colors.textMuted }]}>
-					{t("emptyHint")}
-				</Text>
-			</View>
-		);
-	}
+	const header = (
+		<View style={styles.header}>
+			<FlareBanner />
+			<FlareToggle />
+		</View>
+	);
 
 	return (
 		<View style={[styles.flex, { backgroundColor: theme.colors.background }]}>
@@ -111,6 +107,17 @@ export default function JournalScreen() {
 					gap: theme.spacing.sm,
 				}}
 				stickySectionHeadersEnabled={false}
+				ListHeaderComponent={header}
+				ListEmptyComponent={
+					<View style={styles.emptyInline}>
+						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+							{t("empty")}
+						</Text>
+						<Text style={[theme.typography.body, styles.center, { color: theme.colors.textMuted }]}>
+							{t("emptyHint")}
+						</Text>
+					</View>
+				}
 				renderSectionHeader={({ section }) => (
 					<View style={[styles.sectionHeader, { backgroundColor: theme.colors.background }]}>
 						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
@@ -216,11 +223,13 @@ function formatDate(localDate: string): string {
 
 const styles = StyleSheet.create({
 	flex: { flex: 1 },
-	empty: {
-		flex: 1,
+	header: {
+		gap: 12,
+		paddingBottom: 8,
+	},
+	emptyInline: {
 		alignItems: "center",
-		justifyContent: "center",
-		padding: 32,
+		paddingVertical: 48,
 		gap: 8,
 	},
 	center: { textAlign: "center" },

@@ -6,6 +6,7 @@ import { DraftSheet, TapRow } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { SymptomEntry } from "@/db/schema";
 import { type EntryTimestamp, nowEntryTimestamp } from "@/domain/dates";
+import { useFlare } from "@/features/flare/FlareContext";
 import {
 	commitDraft,
 	type DraftInput,
@@ -31,6 +32,7 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 	const { t } = useTranslation("log");
 	const theme = useTheme();
 	const snackbar = useSnackbar();
+	const { flare } = useFlare();
 
 	const [entryId, setEntryId] = useState(newEntryId);
 	const [base, setBase] = useState<EntryTimestamp>(nowEntryTimestamp);
@@ -40,10 +42,15 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 	const [urgency, setUrgency] = useState(0);
 	const [blood, setBlood] = useState(0);
 	const [pain, setPain] = useState(0);
+	// Mode poussée (§5.6) : on n'affiche que l'essentiel (Bristol + Enregistrer),
+	// le reste replié derrière « Plus » pour alléger la saisie.
+	const [expanded, setExpanded] = useState(false);
+	const showExtras = !flare.active || expanded;
 
 	// Initialisation à l'ouverture : reprise de brouillon ou défauts intelligents.
 	useEffect(() => {
 		if (!visible) return;
+		setExpanded(false);
 		const now = nowEntryTimestamp();
 		if (resume) {
 			setEntryId(resume.id);
@@ -187,43 +194,56 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 				</ScrollView>
 			</View>
 
-			<TapRow
-				title={t("stool.urgency")}
-				options={levelOptions("urgencyLevels", 3, "urgency")}
-				value={urgency}
-				onChange={(v) => {
-					setUrgency(v);
-					persist({ urgency: v });
-				}}
-				tint="pain"
-			/>
-			<TapRow
-				title={t("stool.blood")}
-				options={levelOptions("bloodLevels", 2, "blood")}
-				value={blood}
-				onChange={(v) => {
-					setBlood(v);
-					persist({ blood: v });
-				}}
-				tint="blood"
-			/>
-			<TapRow
-				title={t("stool.pain")}
-				options={levelOptions("painLevels", 3, "pain")}
-				value={pain}
-				onChange={(v) => {
-					setPain(v);
-					persist({ pain: v });
-				}}
-				tint="pain"
-			/>
+			{showExtras ? (
+				<>
+					<TapRow
+						title={t("stool.urgency")}
+						options={levelOptions("urgencyLevels", 3, "urgency")}
+						value={urgency}
+						onChange={(v) => {
+							setUrgency(v);
+							persist({ urgency: v });
+						}}
+						tint="pain"
+					/>
+					<TapRow
+						title={t("stool.blood")}
+						options={levelOptions("bloodLevels", 2, "blood")}
+						value={blood}
+						onChange={(v) => {
+							setBlood(v);
+							persist({ blood: v });
+						}}
+						tint="blood"
+					/>
+					<TapRow
+						title={t("stool.pain")}
+						options={levelOptions("painLevels", 3, "pain")}
+						value={pain}
+						onChange={(v) => {
+							setPain(v);
+							persist({ pain: v });
+						}}
+						tint="pain"
+					/>
 
-			<View style={{ gap: theme.spacing.xs }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("stool.time")}
+					<View style={{ gap: theme.spacing.xs }}>
+						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+							{t("stool.time")}
+						</Text>
+						<TimeChips base={base} mode={timeMode} value={occurred} onChange={chooseTime} />
+					</View>
+				</>
+			) : (
+				<Text
+					accessibilityRole="button"
+					testID="stool-more"
+					onPress={() => setExpanded(true)}
+					style={[theme.typography.label, { color: theme.colors.meal }]}
+				>
+					+ {t("showMore")}
 				</Text>
-				<TimeChips base={base} mode={timeMode} value={occurred} onChange={chooseTime} />
-			</View>
+			)}
 		</DraftSheet>
 	);
 }

@@ -22,6 +22,14 @@
 		"other": "Other"
 	},
 	"draft": "draft",
+	"flare": {
+		"banner": "Flare mode — we're keeping it light. Your streak is protected.",
+		"toggleOn": "Turn on flare mode",
+		"toggleOff": "Turn off flare mode",
+		"sectionTitle": "Flare mode",
+		"sectionBody": "During a flare, the app lightens logging and protects your streak. Turn it on whenever you need it.",
+		"since": "Active since {{date}}"
+	},
 	"home": {
 		"greeting": "Hello",
 		"ringTitle": "Today",

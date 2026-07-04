@@ -7,6 +7,7 @@ import { BristolIcon, type BristolType } from "@/components/BristolIcon";
 import { Card, RingCard, type WeekDay, WeekStrip } from "@/components/ui";
 import type { SymptomEntry } from "@/db/schema";
 import { describeLocalDate, formatClock, last7LocalDates, nowEntryTimestamp } from "@/domain/dates";
+import { FlareBanner } from "@/features/flare/FlareBanner";
 import { AddSheet } from "@/features/log/AddSheet";
 import { StoolSheet } from "@/features/log/StoolSheet";
 import { SymptomSheet } from "@/features/log/SymptomSheet";
@@ -84,6 +85,8 @@ export default function HomeScreen() {
 				}}
 			>
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("appName")}</Text>
+
+				<FlareBanner />
 
 				<WeekStrip days={weekDays} />
 

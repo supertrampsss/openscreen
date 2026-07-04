@@ -22,6 +22,14 @@
 		"other": "Autre"
 	},
 	"draft": "brouillon",
+	"flare": {
+		"banner": "Mode poussée — on allège. Votre série est protégée.",
+		"toggleOn": "Activer le mode poussée",
+		"toggleOff": "Désactiver le mode poussée",
+		"sectionTitle": "Mode poussée",
+		"sectionBody": "Pendant une poussée, l'app allège la saisie et protège votre série. Activez-le quand vous en avez besoin.",
+		"since": "Actif depuis le {{date}}"
+	},
 	"home": {
 		"greeting": "Bonjour",
 		"ringTitle": "Aujourd'hui",

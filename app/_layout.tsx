@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SnackbarProvider } from "@/components/ui/Snackbar";
 import { db, warmupDb } from "@/db/client";
+import { FlareProvider } from "@/features/flare/FlareContext";
 import { initI18n } from "@/i18n";
 import { ThemeProvider, useTheme } from "@/theme";
 import migrations from "../drizzle/migrations";
@@ -41,15 +42,17 @@ function Migrator() {
 	}
 
 	return (
-		<SnackbarProvider>
-			<StatusBar style={theme.isDark ? "light" : "dark"} />
-			<Stack
-				screenOptions={{
-					headerShown: false,
-					contentStyle: { backgroundColor: theme.colors.background },
-				}}
-			/>
-		</SnackbarProvider>
+		<FlareProvider>
+			<SnackbarProvider>
+				<StatusBar style={theme.isDark ? "light" : "dark"} />
+				<Stack
+					screenOptions={{
+						headerShown: false,
+						contentStyle: { backgroundColor: theme.colors.background },
+					}}
+				/>
+			</SnackbarProvider>
+		</FlareProvider>
 	);
 }
 
