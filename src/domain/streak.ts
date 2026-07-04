@@ -15,6 +15,13 @@
  * NOTE de bord assumée : la grâce étant « 1 par semaine calendaire », un trou de
  * 2 jours à cheval sur deux semaines ISO peut être ponté (une grâce par semaine).
  * C'est la lecture littérale de la règle ; un trou de 2 jours dans UNE semaine casse.
+ *
+ * SÉMANTIQUE DE LA GRÂCE (correctif) : la grâce se consomme AU SEIN d'une série —
+ * une série déjà cassée ne « gaspille » pas la grâce d'une semaine pour les séries
+ * suivantes. `longest` est donc le maximum, sur toutes les fins de série possibles,
+ * du même balayage arrière que `current` ; l'invariant current ≤ longest est
+ * structurel. (L'ancien balayage avant allouait la grâce gloutonnement à travers
+ * les séries mortes et pouvait sous-estimer `longest`.)
  */
 
 /** Découpe 'YYYY-MM-DD' → parties numériques. */
@@ -90,8 +97,40 @@ export interface StreakResult {
 }
 
 /**
- * Calcule la série documentée. Deux balayages sur l'intervalle [début … aujourd'hui] :
- * arrière pour `current` (s'arrête au premier trou non pardonné), avant pour `longest`.
+ * Balayage ARRIÈRE depuis `anchor` : longueur de la série se terminant à `anchor`,
+ * avec pont gel (poussée) et 1 grâce par semaine ISO consommée AU SEIN de la série.
+ * `skipToday` : la journée en cours non documentée n'est ni un trou ni un incrément.
+ */
+function backwardRunFrom(
+	anchor: string,
+	start: string,
+	today: string,
+	documented: ReadonlySet<string>,
+	frozen: ReadonlySet<string>,
+): { count: number; graceWeeks: Set<string> } {
+	let count = 0;
+	const graceWeeks = new Set<string>();
+	for (let d = anchor; d >= start; d = addDays(d, -1)) {
+		if (documented.has(d)) {
+			count++;
+			continue;
+		}
+		if (frozen.has(d)) continue; // gel : pont, ne casse jamais
+		if (d === today) continue; // journée en cours : ni trou ni incrément
+		const wk = isoWeekKey(d);
+		if (!graceWeeks.has(wk)) {
+			graceWeeks.add(wk); // grâce de la semaine : pardonne ce trou
+			continue;
+		}
+		break; // trou non pardonné : la série s'arrête ici
+	}
+	return { count, graceWeeks };
+}
+
+/**
+ * Calcule la série documentée. `current` = série ancrée sur aujourd'hui ;
+ * `longest` = maximum du même balayage arrière sur chaque fin de série candidate
+ * (chaque jour documenté), garanti ≥ current par construction.
  */
 export function computeStreak(input: StreakInput): StreakResult {
 	const { today } = input;
@@ -104,49 +143,28 @@ export function computeStreak(input: StreakInput): StreakResult {
 		if (d < start) start = d;
 	}
 
-	// --- current : balayage ARRIÈRE depuis aujourd'hui ---
-	let current = 0;
-	const graceBack = new Set<string>();
-	for (let d = today; d >= start; d = addDays(d, -1)) {
-		if (documented.has(d)) {
-			current++;
-			continue;
-		}
-		if (frozen.has(d)) continue; // gel : pont, ne casse jamais
-		if (d === today) continue; // journée en cours : ni trou ni incrément
-		const wk = isoWeekKey(d);
-		if (!graceBack.has(wk)) {
-			graceBack.add(wk); // grâce de la semaine : pardonne ce trou
-			continue;
-		}
-		break; // trou non pardonné : la série s'arrête ici
-	}
+	// --- current : série ancrée sur aujourd'hui ---
+	const cur = backwardRunFrom(today, start, today, documented, frozen);
+	const current = cur.count;
 
-	// --- longest : balayage AVANT sur tout l'historique ---
-	let run = 0;
-	let longest = 0;
-	const graceFwd = new Set<string>();
-	for (let d = start; d <= today; d = addDays(d, 1)) {
-		if (documented.has(d)) {
-			run++;
-			if (run > longest) longest = run;
-			continue;
-		}
-		if (frozen.has(d)) continue; // gel : pont
-		if (d === today) continue; // journée en cours
-		if (run === 0) continue; // aucune série à protéger : ne gaspille pas la grâce
-		const wk = isoWeekKey(d);
-		if (!graceFwd.has(wk)) {
-			graceFwd.add(wk);
-			continue;
-		}
-		run = 0; // trou non pardonné : la série casse
+	// --- longest : max sur toutes les fins de série candidates ---
+	// Une série maximale se termine forcément sur un jour documenté (un suffixe
+	// gelé/graced n'ajoute rien au compte) : il suffit d'évaluer ces ancres.
+	// O(D × L) — D jours documentés bornés (≤ ~1 an utile ici), calculé rarement.
+	let longest = current;
+	for (const e of documented) {
+		if (e > today) continue;
+		// Ancre dominée : si le lendemain est documenté, la série finissant à e+1
+		// contient celle finissant à e — inutile de l'évaluer.
+		if (documented.has(addDays(e, 1))) continue;
+		const { count } = backwardRunFrom(e, start, today, documented, frozen);
+		if (count > longest) longest = count;
 	}
 
 	return {
 		current,
 		longest,
 		frozen: frozen.has(today),
-		graceUsedThisWeek: current > 0 && graceBack.has(isoWeekKey(today)),
+		graceUsedThisWeek: current > 0 && cur.graceWeeks.has(isoWeekKey(today)),
 	};
 }
