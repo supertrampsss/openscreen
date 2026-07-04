@@ -35,6 +35,10 @@ const FR_LABELS: ReportLabels = {
 	consultLines: ["Sang visible rapporté 3 jours sur 30.", "5 selles nocturnes sur la période."],
 	associationsHeading: "Vos associations alimentaires",
 	associationsText: "Disponible après 14 jours de données.",
+	associationLines: [
+		"Lactose associé à selles liquides · observé sur 11 expositions.",
+		"Lait associé à douleur · observé sur 9 expositions.",
+	],
 	naValue: "—",
 	disclaimer:
 		"Document d'auto-évaluation généré par Crohnicle — ne constitue pas un avis médical ni un dispositif médical.",

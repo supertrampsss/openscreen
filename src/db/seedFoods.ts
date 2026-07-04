@@ -41,27 +41,34 @@ export interface FoodSeedItem {
 /** Le seed typé (JSON importé). */
 export const foodSeed = seedData as FoodSeedItem[];
 
+/** Taille de lot des inserts (limite bien en-deçà du plafond de variables SQLite). */
+const CHUNK = 100;
+
 /**
  * Applique le seed si nécessaire (version stockée < version courante).
- * Insertion idempotente aliment par aliment ; les customs sont préservés.
- * Renvoie le nombre d'aliments effectivement insérés (0 si déjà à jour).
+ * Insertion idempotente PAR LOTS (INSERT multi-lignes ON CONFLICT DO NOTHING) :
+ * ~4 aller-retours au lieu de ~380 — critique sur le worker WASM web (sinon le
+ * démarrage à froid traîne et entre en concurrence avec les premières écritures).
+ * Les aliments custom de même nom sont préservés. Renvoie le nombre inséré.
  */
 export async function seedFoods(): Promise<number> {
 	const stored = (await settingsRepo.get<number>(FOODS_SEED_VERSION_KEY)) ?? 0;
 	if (stored >= FOODS_SEED_VERSION) return 0;
 
+	const values = foodSeed.map((item) => ({
+		id: newId(),
+		// Re-normalise par sécurité (garantit l'invariant même si le JSON dérive).
+		nameNormalized: normalizeFoodName(item.name_normalized),
+		displayFr: item.display_fr,
+		triggers: item.triggers as unknown as Record<string, unknown>,
+		isCustom: 0,
+	}));
+
 	let inserted = 0;
-	for (const item of foodSeed) {
+	for (let i = 0; i < values.length; i += CHUNK) {
 		const rows = await db
 			.insert(foods)
-			.values({
-				id: newId(),
-				// Re-normalise par sécurité (garantit l'invariant même si le JSON dérive).
-				nameNormalized: normalizeFoodName(item.name_normalized),
-				displayFr: item.display_fr,
-				triggers: item.triggers as unknown as Record<string, unknown>,
-				isCustom: 0,
-			})
+			.values(values.slice(i, i + CHUNK))
 			.onConflictDoNothing({ target: foods.nameNormalized })
 			.returning({ id: foods.id });
 		inserted += rows.length;

@@ -45,6 +45,8 @@ export interface ReportLabels {
 	consultLines: string[];
 	associationsHeading: string;
 	associationsText: string;
+	/** Lignes des associations observées (déjà traduites) — liste si non vide. */
+	associationLines?: string[];
 	/** Valeur affichée en l'absence de donnée (« — »). */
 	naValue: string;
 	/** Disclaimer exact (footer). */
@@ -221,6 +223,11 @@ export function renderReportHtml(report: ReportData, labels: ReportLabels): stri
 			? `<ul class="consult">${labels.consultLines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`
 			: "";
 
+	const associationsBlock =
+		labels.associationLines && labels.associationLines.length > 0
+			? `<ul class="consult">${labels.associationLines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`
+			: `<p class="muted">${esc(labels.associationsText)}</p>`;
+
 	return `<!doctype html>
 <html lang="${esc(labels.lang)}">
 <head>
@@ -291,7 +298,7 @@ ${consultItems}
 
 <section>
 <h2>${esc(labels.associationsHeading)}</h2>
-<p class="muted">${esc(labels.associationsText)}</p>
+${associationsBlock}
 </section>
 
 <footer>${esc(labels.disclaimer)}</footer>

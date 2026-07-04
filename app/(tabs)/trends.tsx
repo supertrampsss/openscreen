@@ -1,7 +1,15 @@
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import {
+	Pressable,
+	RefreshControl,
+	ScrollView,
+	StyleSheet,
+	Text,
+	useWindowDimensions,
+	View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card, type ChartBand, ChipTrigger, LineChart } from "@/components/ui";
 import { localDateDaysAgo, nowEntryTimestamp } from "@/domain/dates";
@@ -22,6 +30,11 @@ import {
 import { listCommittedSince as listMealsSince } from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import { listCommittedSince } from "@/repositories/symptomRepo";
+import {
+	type DisplayAssociation,
+	loadAssociations,
+	topAssociations,
+} from "@/services/correlationService";
 import { documentedLocalDates } from "@/services/streakService";
 import { useTheme } from "@/theme";
 
@@ -52,6 +65,7 @@ interface TrendsData {
 	fatiguePerDay: (number | null)[];
 	digest: WeeklyDigest;
 	countdown: number;
+	associations: DisplayAssociation[];
 	todayComplications: string[];
 }
 
@@ -70,6 +84,7 @@ const EMPTY: TrendsData = {
 		notable: { kind: "empty" },
 	},
 	countdown: 14,
+	associations: [],
 	todayComplications: [],
 };
 
@@ -83,21 +98,23 @@ export default function TrendsScreen() {
 
 	const [period, setPeriod] = useState<30 | 90>(30);
 	const [data, setData] = useState<TrendsData>(EMPTY);
+	const [refreshing, setRefreshing] = useState(false);
 
 	const today = nowEntryTimestamp().localDate;
 	const chartWidth = width - theme.spacing.lg * 2 - theme.spacing.xl * 2;
 
 	const reload = useCallback(
-		(days: number) => {
+		(days: number, forceAssociations = false) => {
 			const since = localDateDaysAgo(days - 1);
-			Promise.all([
+			return Promise.all([
 				listCommittedSince(since),
 				listMealsSince(since),
 				listExtrasSince(since),
 				getProfile(),
 				documentedLocalDates(),
 				getExtrasDay(today),
-			]).then(([committed, _meals, extras, profile, docDates, todayExtra]) => {
+				loadAssociations(forceAssociations),
+			]).then(([committed, _meals, extras, profile, docDates, todayExtra, associations]) => {
 				const dates = datesInclusive(since, today);
 				const entriesByDate = groupEntriesByDate(committed);
 				const extrasByDate = new Map(extras.map((e) => [e.localDate, e]));
@@ -145,7 +162,8 @@ export default function TrendsScreen() {
 					painPerDay,
 					fatiguePerDay,
 					digest: weeklyDigest({ dailyStools: last7Stools, bloodDays, previousAvgStools }),
-					countdown: Math.max(0, 14 - docDates.length),
+					countdown: associations.daysUntilEligible,
+					associations: topAssociations(associations, 5),
 					todayComplications: todayExtra?.complications ?? [],
 				});
 			});
@@ -158,6 +176,11 @@ export default function TrendsScreen() {
 			reload(period);
 		}, [reload, period]),
 	);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		reload(period, true).finally(() => setRefreshing(false));
+	}, [reload, period]);
 
 	const toggleComplication = (key: string) => {
 		const next = data.todayComplications.includes(key)
@@ -190,6 +213,7 @@ export default function TrendsScreen() {
 	return (
 		<View style={[styles.flex, { backgroundColor: theme.colors.background }]}>
 			<ScrollView
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 				contentContainerStyle={{
 					padding: theme.spacing.lg,
 					paddingTop: insets.top + theme.spacing.md,
@@ -322,18 +346,28 @@ export default function TrendsScreen() {
 					max={3}
 				/>
 
-				{/* Associations alimentaires — placeholder Phase 4 + compte à rebours honnête. */}
+				{/* Associations alimentaires — corrélations réelles + garde-fous (§5.7). */}
 				<Card testID="trends-correlations" style={{ gap: theme.spacing.sm }}>
 					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
 						{t("correlations.title")}
 					</Text>
-					<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-						{data.countdown > 0
-							? t("correlations.countdown", { count: data.countdown })
-							: t("correlations.ready")}
-					</Text>
+					{data.countdown > 0 ? (
+						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+							{t("correlations.countdown", { count: data.countdown })}
+						</Text>
+					) : data.associations.length === 0 ? (
+						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+							{t("correlations.empty")}
+						</Text>
+					) : (
+						<View style={{ gap: theme.spacing.md }}>
+							{data.associations.map((a) => (
+								<AssociationRow key={`${a.kind}-${a.key}-${a.signal}`} assoc={a} />
+							))}
+						</View>
+					)}
 					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-						{t("correlations.note")}
+						{t("correlations.footer")}
 					</Text>
 				</Card>
 
@@ -397,6 +431,27 @@ function ChartCard({
 	);
 }
 
+/** Une ligne d'association observée : « Lactose associé à selles liquides · … ». */
+function AssociationRow({ assoc }: { assoc: DisplayAssociation }) {
+	const { t } = useTranslation(["trends", "log"]);
+	const theme = useTheme();
+	const label = assoc.kind === "trigger" ? t(`log:triggers.${assoc.key}`) : assoc.displayName;
+	const signal = t(`correlations.signals.${assoc.signal}`, { defaultValue: assoc.signal });
+	return (
+		<View testID="association-row" style={styles.assocRow}>
+			<ChipTrigger label={label} tint="meal" />
+			<View style={styles.assocText}>
+				<Text style={[theme.typography.body, { color: theme.colors.text }]}>
+					{t("correlations.associatedWith")} {signal}
+				</Text>
+				<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+					{t("correlations.observed", { count: assoc.n })}
+				</Text>
+			</View>
+		</View>
+	);
+}
+
 function BandLegend({ kind }: { kind: ScoreKind }) {
 	const { t } = useTranslation("trends");
 	const theme = useTheme();
@@ -433,6 +488,8 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	chipWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+	assocRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+	assocText: { flex: 1, gap: 2 },
 	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
 	exportEmoji: { fontSize: 26 },
 	exportBody: { flex: 1, gap: 2 },

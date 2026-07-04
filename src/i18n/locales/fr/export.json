@@ -81,6 +81,14 @@
 		"associationsReady": "Voir la section associations dans l'application.",
 		"associationsCountdown_one": "Disponible après encore {{count}} jour de données.",
 		"associationsCountdown_other": "Disponible après encore {{count}} jours de données.",
+		"associationLine_one": "{{name}} associé à {{signal}} · observé sur {{count}} exposition.",
+		"associationLine_other": "{{name}} associé à {{signal}} · observé sur {{count}} expositions.",
+		"associationSignals": {
+			"pain": "douleur",
+			"bristol": "selles liquides",
+			"blood": "sang",
+			"urgency": "urgence"
+		},
 		"na": "—",
 		"disclaimer": "Document d'auto-évaluation généré par Crohnicle — ne constitue pas un avis médical ni un dispositif médical."
 	},

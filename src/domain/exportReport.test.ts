@@ -58,6 +58,20 @@ describe("buildReport — structure & période", () => {
 		expect(report.observance).toBeNull();
 	});
 
+	it("top associations fournies → items reportés et ready true", () => {
+		const report = buildReport({
+			...baseInput([symptom("2026-06-10")]),
+			topAssociations: [{ displayName: "Lactose", signal: "bristol", n: 11 }],
+		});
+		expect(report.associations.ready).toBe(true);
+		expect(report.associations.items).toHaveLength(1);
+		expect(report.associations.items[0]).toEqual({
+			displayName: "Lactose",
+			signal: "bristol",
+			n: 11,
+		});
+	});
+
 	it("SCCAI pour la RCH", () => {
 		const report = buildReport({
 			...baseInput([symptom("2026-06-10")]),

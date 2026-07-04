@@ -47,7 +47,18 @@
 		"countdown_one": "Encore {{count}} jour de données avant vos premières associations.",
 		"countdown_other": "Encore {{count}} jours de données avant vos premières associations.",
 		"ready": "Assez de données : vos premières associations arrivent bientôt.",
-		"note": "Une association observée n'est pas une preuve."
+		"empty": "Assez de données, mais aucune association marquante pour l'instant.",
+		"associatedWith": "associé à",
+		"observed_one": "observé sur {{count}} exposition",
+		"observed_other": "observé sur {{count}} expositions",
+		"footer": "Associations observées dans VOS données — pas une preuve médicale. À discuter avec votre gastro.",
+		"note": "Une association observée n'est pas une preuve.",
+		"signals": {
+			"pain": "douleur",
+			"bristol": "selles liquides",
+			"blood": "sang",
+			"urgency": "urgence"
+		}
 	},
 	"complications": {
 		"title": "Complications du jour",

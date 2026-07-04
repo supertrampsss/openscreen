@@ -67,6 +67,18 @@ export interface ReportInput {
 	correlationsReady?: boolean;
 	/** Jours restants avant les premières associations (si pas prêtes). */
 	correlationsCountdown?: number;
+	/** Top associations observées (§5.7) — vide tant qu'aucune n'est éligible. */
+	topAssociations?: ReportAssociation[];
+}
+
+/** Une association observée reportée dans le PDF (déjà prête à l'affichage). */
+export interface ReportAssociation {
+	/** Libellé affichable (nom d'aliment ou attribut déjà traduit). */
+	displayName: string;
+	/** Signal concerné (clé : pain/bristol/blood/urgency). */
+	signal: string;
+	/** Nb d'expositions suivies du signal. */
+	n: number;
 }
 
 /** Une ligne du tableau hebdomadaire. */
@@ -98,8 +110,8 @@ export interface ReportData {
 	weekly: WeeklyRow[];
 	/** Observance traitement (V2) — `null` si aucun traitement (section omise). */
 	observance: null;
-	/** Top associations (V2) — `ready:false` tant que Phase 4 absente. */
-	associations: { ready: boolean; countdown: number };
+	/** Top associations observées (§5.7) : `items` peuplé dès qu'éligibles. */
+	associations: { ready: boolean; countdown: number; items: ReportAssociation[] };
 	consultPoints: ConsultPoint[];
 	/** Jours documentés sur toute la période. */
 	documentedDays: number;
@@ -174,8 +186,9 @@ export function buildReport(input: ReportInput): ReportData {
 		weekly,
 		observance: hasTreatments ? null : null,
 		associations: {
-			ready: Boolean(input.correlationsReady),
+			ready: (input.topAssociations?.length ?? 0) > 0 || Boolean(input.correlationsReady),
 			countdown: input.correlationsCountdown ?? 0,
+			items: input.topAssociations ?? [],
 		},
 		consultPoints: points,
 		documentedDays,

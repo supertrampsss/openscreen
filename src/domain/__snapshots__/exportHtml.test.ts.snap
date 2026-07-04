@@ -151,7 +151,7 @@ footer { margin-top: 28px; padding-top: 12px; border-top: 1px solid #E5E5EA; fon
 
 <section>
 <h2>Vos associations alimentaires</h2>
-<p class="muted">Disponible après 14 jours de données.</p>
+<ul class="consult"><li>Lactose associé à selles liquides · observé sur 11 expositions.</li><li>Lait associé à douleur · observé sur 9 expositions.</li></ul>
 </section>
 
 <footer>Document d&#39;auto-évaluation généré par Crohnicle — ne constitue pas un avis médical ni un dispositif médical.</footer>

@@ -26,6 +26,7 @@ import { listSince as listExtrasSince } from "@/repositories/dailyExtrasRepo";
 import { getProfile } from "@/repositories/profileRepo";
 import * as settingsRepo from "@/repositories/settingsRepo";
 import { listCommittedSince } from "@/repositories/symptomRepo";
+import { loadAssociations, topAssociations } from "@/services/correlationService";
 import { documentedLocalDates } from "@/services/streakService";
 
 /** Clé settings de l'identité optionnelle affichée sur le PDF (§5.8). */
@@ -136,6 +137,13 @@ function reportLabels(report: ReportData): ReportLabels {
 		associationsText: report.associations.ready
 			? t("report.associationsReady")
 			: t("report.associationsCountdown", { count: report.associations.countdown }),
+		associationLines: report.associations.items.map((a) =>
+			t("report.associationLine", {
+				count: a.n,
+				name: a.displayName,
+				signal: t(`report.associationSignals.${a.signal}`, { defaultValue: a.signal }),
+			}),
+		),
 		naValue: t("report.na"),
 		disclaimer: t("report.disclaimer"),
 	};
@@ -152,17 +160,26 @@ export async function loadReport(periodDays: ReportPeriodDays): Promise<ReportBu
 	const today = nowEntryTimestamp().localDate;
 	const fromDate = localDateDaysAgo(periodDays - 1);
 
-	const [committed, extras, profile, identity, docDates] = await Promise.all([
+	const [committed, extras, profile, identity, docDates, associations] = await Promise.all([
 		listCommittedSince(fromDate),
 		listExtrasSince(fromDate),
 		getProfile(),
 		getIdentity(),
 		documentedLocalDates(),
+		loadAssociations(),
 	]);
 
 	const extrasByDate = new Map(
 		extras.map((e) => [e.localDate, { complications: e.complications, weightKg: e.weightKg }]),
 	);
+
+	// Top associations éligibles → alimentent le PDF (nom/attribut déjà traduit).
+	const tLog = i18n.getFixedT(i18n.language, "log");
+	const reportAssociations = topAssociations(associations, 3).map((a) => ({
+		displayName: a.kind === "trigger" ? tLog(`triggers.${a.key}`) : a.displayName,
+		signal: a.signal,
+		n: a.n,
+	}));
 
 	const report = buildReport({
 		periodDays,
@@ -172,8 +189,10 @@ export async function loadReport(periodDays: ReportPeriodDays): Promise<ReportBu
 		identity,
 		entries: committed as ReportEntry[],
 		extrasByDate,
-		correlationsReady: false,
-		correlationsCountdown: Math.max(0, CORRELATION_TARGET_DAYS - docDates.length),
+		topAssociations: reportAssociations,
+		correlationsReady: reportAssociations.length > 0,
+		correlationsCountdown:
+			associations.daysUntilEligible || Math.max(0, CORRELATION_TARGET_DAYS - docDates.length),
 	});
 
 	return {

@@ -47,7 +47,18 @@
 		"countdown_one": "{{count}} more day of data before your first associations.",
 		"countdown_other": "{{count}} more days of data before your first associations.",
 		"ready": "Enough data: your first associations are coming soon.",
-		"note": "An observed association is not proof."
+		"empty": "Enough data, but no notable association for now.",
+		"associatedWith": "associated with",
+		"observed_one": "seen across {{count}} exposure",
+		"observed_other": "seen across {{count}} exposures",
+		"footer": "Associations observed in YOUR data — not medical proof. Discuss with your GI.",
+		"note": "An observed association is not proof.",
+		"signals": {
+			"pain": "pain",
+			"bristol": "loose stools",
+			"blood": "blood",
+			"urgency": "urgency"
+		}
 	},
 	"complications": {
 		"title": "Today's complications",
