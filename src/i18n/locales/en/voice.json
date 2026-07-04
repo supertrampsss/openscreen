@@ -1,0 +1,49 @@
+{
+	"title": "Voice note",
+	"intro": "Dictate or type your day. We turn it into entries for you to confirm.",
+	"placeholder": "e.g. 3 loose stools this morning, pain at 6, I had a raclette last night",
+	"mic": "Dictate",
+	"micStop": "Stop",
+	"interpret": "Interpret",
+	"interpreting": "Interpreting…",
+	"demoBanner": "Demo mode — AI proxy not configured",
+	"review": {
+		"title": "Interpreted entries",
+		"empty": "No entry detected. Rephrase or enter manually.",
+		"saveAll": "Save all",
+		"edit": "Edit: {{label}}",
+		"remove": "Remove: {{label}}",
+		"back": "Edit the text"
+	},
+	"entry": {
+		"stool_one": "1 stool",
+		"stool_other": "{{count}} stools",
+		"bristol": "Bristol {{value}}",
+		"symptom": "Symptoms",
+		"pain": "pain {{value}}/3",
+		"fatigue": "fatigue {{value}}/3",
+		"meal": "Meal: {{name}}"
+	},
+	"time": {
+		"morning": "this morning",
+		"midday": "at midday",
+		"afternoon": "this afternoon",
+		"evening": "this evening",
+		"night": "tonight",
+		"yesterday_evening": "yesterday evening",
+		"unspecified": ""
+	},
+	"saved_one": "1 entry saved",
+	"saved_other": "{{count}} entries saved",
+	"premium": {
+		"title": "Voice note — Premium",
+		"body": "Voice notes turn a dictated sentence into ready-to-confirm entries. It is part of Crohnicle Premium.",
+		"see": "See Premium"
+	},
+	"errors": {
+		"network": "No connection. Try again or enter manually.",
+		"server": "Interpretation unavailable right now. Try again.",
+		"refused": "Sentence could not be interpreted. Rephrase.",
+		"empty": "Dictate or type your day first."
+	}
+}

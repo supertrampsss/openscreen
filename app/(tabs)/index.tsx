@@ -41,6 +41,7 @@ import {
 	scoreKindForDiagnosis,
 } from "@/domain/scoreSeries";
 import { daysBetweenLocalDates } from "@/domain/treatments";
+import type { VoiceDraft } from "@/domain/voiceEntries";
 import { FlareBanner } from "@/features/flare/FlareBanner";
 import { type AddAction, AddSheet } from "@/features/log/AddSheet";
 import { MealScanResultSheet } from "@/features/log/MealScanResultSheet";
@@ -49,6 +50,7 @@ import { MealTriggerChips } from "@/features/log/MealTriggerChips";
 import { PremiumTeaserSheet } from "@/features/log/PremiumTeaserSheet";
 import { StoolSheet } from "@/features/log/StoolSheet";
 import { SymptomSheet } from "@/features/log/SymptomSheet";
+import { VoiceNoteSheet } from "@/features/log/VoiceNoteSheet";
 import { StreakFlame } from "@/features/streak/StreakFlame";
 import { listSince as listExtrasSince } from "@/repositories/dailyExtrasRepo";
 import {
@@ -60,7 +62,12 @@ import {
 	upsertDraft,
 } from "@/repositories/mealRepo";
 import { getProfile } from "@/repositories/profileRepo";
-import { listCommittedSince, listRecent } from "@/repositories/symptomRepo";
+import {
+	listCommittedSince,
+	listRecent,
+	newEntryId,
+	upsertDraft as upsertSymptomDraft,
+} from "@/repositories/symptomRepo";
 import { listActive as listActiveTreatments } from "@/repositories/treatmentRepo";
 import { currentEntitlementToken } from "@/services/entitlements";
 import {
@@ -136,6 +143,8 @@ export default function HomeScreen() {
 	>({});
 	const [premiumOpen, setPremiumOpen] = useState(false);
 	const [premiumMeal, setPremiumMeal] = useState<Meal | null>(null);
+	// Note vocale (§5.4, §6.1) — Premium.
+	const [voiceOpen, setVoiceOpen] = useState(false);
 
 	const today = nowEntryTimestamp().localDate;
 
@@ -365,11 +374,48 @@ export default function HomeScreen() {
 		if (action === "stool") setStoolOpen(true);
 		else if (action === "symptom") setSymptomOpen(true);
 		else if (action === "photo") startPhotoScan();
+		else if (action === "voice") setVoiceOpen(true);
 		else {
 			setResumeMeal(null);
 			setMealOpen(true);
 		}
 	};
+
+	/**
+	 * Édition d'une entrée voix (§5.4) : on pré-persiste le brouillon puis on
+	 * ouvre le sheet détaillé pré-rempli PAR-DESSUS la note vocale (qui reste
+	 * ouverte avec les entrées restantes). Rien n'est committé sans le geste.
+	 */
+	const editVoiceEntry = useCallback(async (draft: VoiceDraft) => {
+		const ts = draft.occurredAt;
+		if (draft.type === "meal") {
+			const meal = await upsertDraft({
+				id: newMealId(),
+				occurredAt: ts.epochMs,
+				tz: ts.tz,
+				localDate: ts.localDate,
+				name: draft.name,
+				source: "voice",
+			});
+			setResumeMeal({ meal, items: [] });
+			setMealOpen(true);
+			return;
+		}
+		const row = await upsertSymptomDraft({
+			id: newEntryId(),
+			kind: draft.type,
+			occurredAt: ts.epochMs,
+			tz: ts.tz,
+			localDate: ts.localDate,
+			bristol: draft.type === "stool" ? draft.bristol : null,
+			pain: draft.type === "symptom" ? draft.pain : null,
+			fatigue: draft.type === "symptom" ? draft.fatigue : null,
+			notes: draft.notes,
+		});
+		setResume(row);
+		if (draft.type === "stool") setStoolOpen(true);
+		else setSymptomOpen(true);
+	}, []);
 
 	// Quick actions / deep-links (§5.12) : `?quick=stool|photo` ouvre directement
 	// le sheet ou le picker, puis on efface le paramètre (une seule fois).
@@ -631,6 +677,16 @@ export default function HomeScreen() {
 			</Pressable>
 
 			<AddSheet visible={addOpen} onClose={() => setAddOpen(false)} onPick={pickAction} />
+			<VoiceNoteSheet
+				visible={voiceOpen}
+				onClose={() => setVoiceOpen(false)}
+				onSaved={onLogged}
+				onEditEntry={editVoiceEntry}
+				onSeePremium={() => {
+					setVoiceOpen(false);
+					router.push("/premium");
+				}}
+			/>
 			<StoolSheet
 				visible={stoolOpen}
 				onClose={() => setStoolOpen(false)}

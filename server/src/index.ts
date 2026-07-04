@@ -20,6 +20,8 @@
 
 import { SYSTEM_PROMPT } from "./prompt";
 import { SCHEMA } from "./schema";
+import { VOICE_PROMPT } from "./voicePrompt";
+import { VOICE_SCHEMA } from "./voiceSchema";
 
 export interface KVNamespace {
 	get(key: string): Promise<string | null>;
@@ -37,6 +39,12 @@ export interface Env {
 	TRIAL_QUOTA?: string;
 	/** Subscriber anti-abuse daily cap (default 200). */
 	DAILY_CAP?: string;
+	/**
+	 * Dev/demo escape hatch: when "true", /parse-voice accepts requests without a
+	 * verified premium entitlement (used for local demos where RevenueCat is not
+	 * configured). Never set in production — voice is a premium feature (§8).
+	 */
+	DEMO_ALLOW_TRIAL?: string;
 }
 
 interface ExecutionContext {
@@ -179,9 +187,14 @@ function buildContent(images: string[], userNote: string | undefined): unknown[]
 	return content;
 }
 
-/** One Anthropic Messages call. Throws on non-2xx (caller maps to 502). */
+/**
+ * One Anthropic Messages call with a frozen (cached) system prompt + structured
+ * output schema. Throws on non-2xx (caller maps to 502).
+ */
 async function callAnthropic(
 	env: Env,
+	system: string,
+	schema: unknown,
 	content: unknown[],
 	maxTokens: number,
 ): Promise<AnthropicMessage> {
@@ -195,8 +208,8 @@ async function callAnthropic(
 		body: JSON.stringify({
 			model: MODEL,
 			max_tokens: maxTokens,
-			system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
-			output_config: { format: { type: "json_schema", schema: SCHEMA } },
+			system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
+			output_config: { format: { type: "json_schema", schema } },
 			messages: [{ role: "user", content }],
 		}),
 	});
@@ -239,30 +252,30 @@ async function handleAnalyze(request: Request, env: Env): Promise<Response> {
 
 	const access = await resolveAccess(env, deviceId, entitlementToken);
 	if (!access.ok) {
-		log(deviceId, 429, started);
+		log("/analyze-meal", deviceId, 429, started);
 		return access.response;
 	}
 
 	const content = buildContent(images, userNote);
 	let message: AnthropicMessage;
 	try {
-		message = await callAnthropic(env, content, 1500);
+		message = await callAnthropic(env, SYSTEM_PROMPT, SCHEMA, content, 1500);
 		if (message.stop_reason === "max_tokens") {
-			message = await callAnthropic(env, content, 2500);
+			message = await callAnthropic(env, SYSTEM_PROMPT, SCHEMA, content, 2500);
 		}
 	} catch {
-		log(deviceId, 502, started);
+		log("/analyze-meal", deviceId, 502, started);
 		return json({ error: "upstream_error" }, 502);
 	}
 
 	if (message.stop_reason === "refusal") {
-		log(deviceId, 422, started);
+		log("/analyze-meal", deviceId, 422, started);
 		return json({ error: "refused" }, 422);
 	}
 
 	const textBlock = message.content?.find((b) => b.type === "text" && typeof b.text === "string");
 	if (!textBlock?.text) {
-		log(deviceId, 502, started);
+		log("/analyze-meal", deviceId, 502, started);
 		return json({ error: "empty_result" }, 502);
 	}
 
@@ -270,25 +283,114 @@ async function handleAnalyze(request: Request, env: Env): Promise<Response> {
 	try {
 		result = JSON.parse(textBlock.text);
 	} catch {
-		log(deviceId, 502, started);
+		log("/analyze-meal", deviceId, 502, started);
 		return json({ error: "parse_error" }, 502);
 	}
 
 	await access.commit();
-	log(deviceId, 200, started);
+	log("/analyze-meal", deviceId, 200, started);
 	return json({ result, remaining: access.remaining, cached: false });
 }
 
-/** Content-free structured log: status, duration, truncated deviceId only. */
-function log(deviceId: string, status: number, started: number): void {
+/** Content-free structured log: route, status, duration, truncated deviceId only. */
+function log(route: string, deviceId: string, status: number, started: number): void {
 	console.log(
 		JSON.stringify({
-			route: "/analyze-meal",
+			route,
 			status,
 			ms: Date.now() - started,
 			device: deviceId.slice(0, 8),
 		}),
 	);
+}
+
+// ---------------------------------------------------------------------------
+// /parse-voice (§6.1, §7) — on-device STT text → structured diary entries.
+// PREMIUM ONLY: no trial quota. Text only; audio is NEVER uploaded.
+// ---------------------------------------------------------------------------
+
+interface VoiceBody {
+	transcript?: unknown;
+	deviceId?: unknown;
+	entitlementToken?: unknown;
+}
+
+/**
+ * Is this request allowed to use /parse-voice? Voice is a premium feature (§8):
+ * the caller must present a verified `premium` entitlement. `DEMO_ALLOW_TRIAL`
+ * opens it for local demos where RevenueCat is not configured.
+ */
+async function voiceAllowed(env: Env, token: string | undefined): Promise<boolean> {
+	if (env.DEMO_ALLOW_TRIAL === "true") return true;
+	if (env.REVENUECAT_API_KEY && token) return isPremium(env, token);
+	return false;
+}
+
+async function handleParseVoice(request: Request, env: Env): Promise<Response> {
+	const started = Date.now();
+	let body: VoiceBody;
+	try {
+		body = (await request.json()) as VoiceBody;
+	} catch {
+		return json({ error: "invalid_json" }, 400);
+	}
+
+	const transcript = typeof body.transcript === "string" ? body.transcript.trim() : "";
+	const deviceId = typeof body.deviceId === "string" ? body.deviceId : "";
+	const entitlementToken =
+		typeof body.entitlementToken === "string" && body.entitlementToken
+			? body.entitlementToken
+			: undefined;
+
+	if (!transcript) {
+		return json({ error: "empty_transcript" }, 400);
+	}
+	if (!deviceId) {
+		return json({ error: "missing_device_id" }, 400);
+	}
+	if (!env.ANTHROPIC_API_KEY) {
+		return json({ error: "not_configured" }, 500);
+	}
+
+	// Premium gate (§8): no trial path for voice.
+	if (!(await voiceAllowed(env, entitlementToken))) {
+		log("/parse-voice", deviceId, 403, started);
+		return json({ error: "premium_required" }, 403);
+	}
+
+	const content = [{ type: "text", text: `Transcript: "${transcript}"` }];
+	let message: AnthropicMessage;
+	try {
+		message = await callAnthropic(env, VOICE_PROMPT, VOICE_SCHEMA, content, 1200);
+		if (message.stop_reason === "max_tokens") {
+			message = await callAnthropic(env, VOICE_PROMPT, VOICE_SCHEMA, content, 2000);
+		}
+	} catch {
+		log("/parse-voice", deviceId, 502, started);
+		return json({ error: "upstream_error" }, 502);
+	}
+
+	if (message.stop_reason === "refusal") {
+		log("/parse-voice", deviceId, 422, started);
+		return json({ error: "refused" }, 422);
+	}
+
+	const textBlock = message.content?.find((b) => b.type === "text" && typeof b.text === "string");
+	if (!textBlock?.text) {
+		log("/parse-voice", deviceId, 502, started);
+		return json({ error: "empty_result" }, 502);
+	}
+
+	let result: unknown;
+	try {
+		result = JSON.parse(textBlock.text);
+	} catch {
+		log("/parse-voice", deviceId, 502, started);
+		return json({ error: "parse_error" }, 502);
+	}
+
+	log("/parse-voice", deviceId, 200, started);
+	return json({ result });
 }
 
 export default {
@@ -299,6 +401,9 @@ export default {
 		const url = new URL(request.url);
 		if (request.method === "POST" && url.pathname === "/analyze-meal") {
 			return handleAnalyze(request, env);
+		}
+		if (request.method === "POST" && url.pathname === "/parse-voice") {
+			return handleParseVoice(request, env);
 		}
 		return json({ error: "not_found" }, 404);
 	},

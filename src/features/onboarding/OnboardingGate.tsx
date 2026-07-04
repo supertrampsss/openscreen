@@ -5,13 +5,15 @@
  *
  * Semis E2E : sur web, `?e2e=1` pré-écrit `onboarding_done=true` AVANT le gate,
  * pour que les smokes existants n'aient pas à traverser le funnel. Le smoke
- * d'onboarding, lui, ouvre « / » sans ce paramètre.
+ * d'onboarding, lui, ouvre « / » sans ce paramètre. `?e2e=1&premium=1` pré-écrit
+ * en plus le flag Premium simulé (pour tester les fonctions Premium, ex. voix).
  */
 
 import { useRouter, useSegments } from "expo-router";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { get as getSetting, set as setSetting } from "@/repositories/settingsRepo";
+import { MOCK_PREMIUM_KEY } from "@/services/entitlements";
 
 export const ONBOARDING_DONE_KEY = "onboarding_done";
 
@@ -40,6 +42,16 @@ function detectE2ESeed(): boolean {
 	}
 }
 
+/** Semis E2E Premium (`?premium=1`) — pré-active le flag Premium simulé. */
+function detectE2EPremium(): boolean {
+	if (Platform.OS !== "web") return false;
+	try {
+		return new URLSearchParams(window.location.search).has("premium");
+	} catch {
+		return false;
+	}
+}
+
 export function OnboardingGate({ children }: { children: ReactNode }) {
 	const [done, setDone] = useState<boolean | null>(null);
 	const segments = useSegments();
@@ -50,6 +62,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
 		(async () => {
 			if (detectE2ESeed()) {
 				await setSetting(ONBOARDING_DONE_KEY, true);
+				if (detectE2EPremium()) await setSetting(MOCK_PREMIUM_KEY, true);
 				if (alive) setDone(true);
 				return;
 			}

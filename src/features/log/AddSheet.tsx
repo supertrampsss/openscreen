@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { DraftSheet } from "@/components/ui";
 import { useTheme } from "@/theme";
 
-export type AddAction = "stool" | "symptom" | "meal" | "photo";
+export type AddAction = "stool" | "symptom" | "meal" | "photo" | "voice";
 
 interface AddSheetProps {
 	visible: boolean;
@@ -23,7 +23,7 @@ const ROWS: Row[] = [
 	{ emoji: "💩", labelKey: "addMenu.stool", action: "stool" },
 	{ emoji: "🤕", labelKey: "addMenu.symptoms", action: "symptom" },
 	{ emoji: "🍽️", labelKey: "addMenu.mealManual", action: "meal" },
-	{ emoji: "🎙️", labelKey: "addMenu.voice", badgeKey: "addMenu.soon" },
+	{ emoji: "🎙️", labelKey: "addMenu.voice", action: "voice" },
 ];
 
 /** Bottom-sheet des 5 actions du bouton « + » (§5.1). */
