@@ -18,6 +18,7 @@ import premiumEn from "./locales/en/premium.json";
 import scanEn from "./locales/en/scan.json";
 import treatmentsEn from "./locales/en/treatments.json";
 import trendsEn from "./locales/en/trends.json";
+import urgenceEn from "./locales/en/urgence.json";
 import commonFr from "./locales/fr/common.json";
 import exportFr from "./locales/fr/export.json";
 import journalFr from "./locales/fr/journal.json";
@@ -27,6 +28,7 @@ import premiumFr from "./locales/fr/premium.json";
 import scanFr from "./locales/fr/scan.json";
 import treatmentsFr from "./locales/fr/treatments.json";
 import trendsFr from "./locales/fr/trends.json";
+import urgenceFr from "./locales/fr/urgence.json";
 
 export const defaultNS = "common";
 export const namespaces = [
@@ -39,6 +41,7 @@ export const namespaces = [
 	"premium",
 	"onboarding",
 	"treatments",
+	"urgence",
 ] as const;
 export const supportedLanguages = ["fr", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
@@ -54,6 +57,7 @@ export const resources = {
 		premium: premiumFr,
 		onboarding: onboardingFr,
 		treatments: treatmentsFr,
+		urgence: urgenceFr,
 	},
 	en: {
 		common: commonEn,
@@ -65,6 +69,7 @@ export const resources = {
 		premium: premiumEn,
 		onboarding: onboardingEn,
 		treatments: treatmentsEn,
+		urgence: urgenceEn,
 	},
 } as const;
 

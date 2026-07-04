@@ -26,3 +26,11 @@ export const STORE_URLS = {
 export function storeReviewUrl(): string {
 	return Platform.OS === "android" ? STORE_URLS.android : STORE_URLS.ios;
 }
+
+/**
+ * Ressources toilettes/urgence (§5.10) — la Carte Urgence Toilettes officielle de
+ * l'afa (association François Aupetit) + apps communautaires complémentaires FR.
+ */
+export const AFA_URGENCY_CARD_URL = "https://www.afa.asso.fr/produit/carte-urgence-toilettes/";
+export const ICI_TOILETTES_URL = "https://www.icitoilettes.com/";
+export const OU_SONT_LES_TOILETTES_URL = "https://www.ou-sont-les-toilettes.fr/";

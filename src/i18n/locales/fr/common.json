@@ -5,7 +5,8 @@
 		"home": "Accueil",
 		"journal": "Journal",
 		"trends": "Tendances",
-		"settings": "Réglages"
+		"settings": "Réglages",
+		"urgence": "Urgence"
 	},
 	"actions": {
 		"save": "Enregistrer",
@@ -26,12 +27,6 @@
 		"stool": "Selle rapide",
 		"photo": "Photo repas",
 		"urgence": "Carte urgence"
-	},
-	"urgence": {
-		"title": "Carte d'urgence toilettes",
-		"body": "Votre carte d'urgence multilingue et les toilettes proches arrivent très bientôt.",
-		"soon": "Bientôt",
-		"back": "Retour"
 	},
 	"flare": {
 		"banner": "Mode poussée — on allège. Votre série est protégée.",

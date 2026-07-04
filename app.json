@@ -43,7 +43,13 @@
 				}
 			],
 			"expo-notifications",
-			"expo-quick-actions"
+			"expo-quick-actions",
+			[
+				"expo-location",
+				{
+					"locationWhenInUsePermission": "Crohnicle utilise votre position, uniquement à votre demande, pour trouver les toilettes à proximité. Rien n'est stocké."
+				}
+			]
 		],
 		"experiments": {
 			"typedRoutes": true,

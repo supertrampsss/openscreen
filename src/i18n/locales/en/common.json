@@ -5,7 +5,8 @@
 		"home": "Home",
 		"journal": "Journal",
 		"trends": "Trends",
-		"settings": "Settings"
+		"settings": "Settings",
+		"urgence": "Emergency"
 	},
 	"actions": {
 		"save": "Save",
@@ -26,12 +27,6 @@
 		"stool": "Quick stool",
 		"photo": "Meal photo",
 		"urgence": "Emergency card"
-	},
-	"urgence": {
-		"title": "Toilet emergency card",
-		"body": "Your multilingual emergency card and nearby toilets are coming very soon.",
-		"soon": "Soon",
-		"back": "Back"
 	},
 	"flare": {
 		"banner": "Flare mode — we're keeping it light. Your streak is protected.",
