@@ -246,7 +246,10 @@ export default function HomeScreen() {
 								tint="stool"
 								value={
 									<View style={styles.ringCenter}>
-										<Text style={[theme.typography.dataXL, { color: theme.colors.text }]}>
+										<Text
+											testID="ring-stools"
+											style={[theme.typography.dataXL, { color: theme.colors.text }]}
+										>
 											{data.stoolsToday}
 										</Text>
 										<Text

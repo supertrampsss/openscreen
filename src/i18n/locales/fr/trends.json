@@ -1,0 +1,66 @@
+{
+	"title": "Tendances",
+	"period": {
+		"30": "30 jours",
+		"90": "90 jours"
+	},
+	"week": {
+		"title": "Votre semaine",
+		"days_one": "{{count}} jour documenté",
+		"days_other": "{{count}} jours documentés",
+		"stools_one": "{{count}} selle",
+		"stools_other": "{{count}} selles",
+		"notable": {
+			"noBlood": "Aucun jour avec sang cette semaine.",
+			"fewerStools": "Vos selles sont en baisse par rapport à la semaine dernière.",
+			"fullWeek": "Semaine complète : 7 jours documentés.",
+			"documented_one": "{{count}} jour documenté cette semaine — continuez.",
+			"documented_other": "{{count}} jours documentés cette semaine — continuez.",
+			"empty": "Documentez un jour cette semaine pour votre premier bilan."
+		}
+	},
+	"score": {
+		"titleHbi": "HBI estimé",
+		"titleSccai": "SCCAI estimé",
+		"captionHbi": "estimé (auto-évaluation, item masse non évalué)",
+		"captionSccai": "estimé (auto-évaluation)",
+		"undiagnosedNote": "Diagnostic non renseigné : HBI affiché par défaut.",
+		"empty": "Pas encore de score : notez douleur et forme d'une journée.",
+		"bands": {
+			"remission": "Rémission",
+			"mild": "Légère",
+			"moderate": "Modérée",
+			"severe": "Sévère"
+		}
+	},
+	"stools": {
+		"title": "Selles par jour"
+	},
+	"pain": {
+		"title": "Douleur (pire du jour)"
+	},
+	"fatigue": {
+		"title": "Fatigue (pire du jour)"
+	},
+	"correlations": {
+		"title": "Vos associations alimentaires",
+		"countdown_one": "Encore {{count}} jour de données avant vos premières associations.",
+		"countdown_other": "Encore {{count}} jours de données avant vos premières associations.",
+		"ready": "Assez de données : vos premières associations arrivent bientôt.",
+		"note": "Une association observée n'est pas une preuve."
+	},
+	"complications": {
+		"title": "Complications du jour",
+		"hint": "Manifestations extra-intestinales notées aujourd'hui.",
+		"labels": {
+			"arthralgia": "Arthralgies",
+			"uveitis": "Uvéite",
+			"erythema_nodosum": "Érythème noueux",
+			"aphthae": "Aphtes",
+			"fissure": "Fissure",
+			"fistula": "Fistule",
+			"abscess": "Abcès"
+		}
+	},
+	"chartEmpty": "Pas encore de données pour cette période."
+}

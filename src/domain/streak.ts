@@ -44,6 +44,13 @@ export function addDays(d: string, n: number): string {
 	return toYmd(toMs(d) + n * 86_400_000);
 }
 
+/** Liste des local_dates de `start` à `end` inclus (ordre chronologique). */
+export function datesInclusive(start: string, end: string): string[] {
+	const out: string[] = [];
+	for (let d = start; d <= end; d = addDays(d, 1)) out.push(d);
+	return out;
+}
+
 /**
  * Clé de semaine calendaire ISO 8601 ('YYYY-Www', lundi = premier jour).
  * Deux dates de la même semaine ISO partagent la même clé.

@@ -44,6 +44,7 @@ export default function TabsLayout() {
 				name="trends"
 				options={{
 					title: t("tabs.trends"),
+					tabBarButtonTestID: "tab-trends",
 					tabBarIcon: ({ color }) => <TabIcon emoji="📈" color={color} />,
 				}}
 			/>

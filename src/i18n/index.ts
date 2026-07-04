@@ -12,18 +12,20 @@ import { initReactI18next } from "react-i18next";
 import commonEn from "./locales/en/common.json";
 import journalEn from "./locales/en/journal.json";
 import logEn from "./locales/en/log.json";
+import trendsEn from "./locales/en/trends.json";
 import commonFr from "./locales/fr/common.json";
 import journalFr from "./locales/fr/journal.json";
 import logFr from "./locales/fr/log.json";
+import trendsFr from "./locales/fr/trends.json";
 
 export const defaultNS = "common";
-export const namespaces = ["common", "log", "journal"] as const;
+export const namespaces = ["common", "log", "journal", "trends"] as const;
 export const supportedLanguages = ["fr", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export const resources = {
-	fr: { common: commonFr, log: logFr, journal: journalFr },
-	en: { common: commonEn, log: logEn, journal: journalEn },
+	fr: { common: commonFr, log: logFr, journal: journalFr, trends: trendsFr },
+	en: { common: commonEn, log: logEn, journal: journalEn, trends: trendsEn },
 } as const;
 
 /** Langue du device réduite à une langue supportée (défaut fr). */

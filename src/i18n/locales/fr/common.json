@@ -71,11 +71,6 @@
 		"longest_one": "Plus longue série : {{count}} jour",
 		"longest_other": "Plus longue série : {{count}} jours"
 	},
-	"trends": {
-		"title": "Tendances",
-		"soon": "Vos courbes et associations arrivent bientôt.",
-		"soonHint": "Continuez à documenter : chaque jour enrichit votre bilan."
-	},
 	"settings": {
 		"title": "Réglages",
 		"dataSection": "Vos données",

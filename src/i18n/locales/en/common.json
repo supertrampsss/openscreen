@@ -71,11 +71,6 @@
 		"longest_one": "Longest streak: {{count}} day",
 		"longest_other": "Longest streak: {{count}} days"
 	},
-	"trends": {
-		"title": "Trends",
-		"soon": "Your charts and associations are coming soon.",
-		"soonHint": "Keep documenting: every day enriches your report."
-	},
 	"settings": {
 		"title": "Settings",
 		"dataSection": "Your data",
