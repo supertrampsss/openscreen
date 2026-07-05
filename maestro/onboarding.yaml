@@ -1,0 +1,67 @@
+# Exécutable après dev build — voir docs/RELEASE.md §Maestro.
+# Onboarding (§4) : parcours minimal du funnel 16 écrans → arrive aux tabs.
+# clearState force un état vierge pour toujours démarrer sur le funnel.
+appId: app.crohnicle
+---
+- launchApp:
+    clearState: true
+# Écran 1 : splash + animation → Commencer.
+- tapOn:
+    id: "onboarding-continue"
+# Écran 2 : diagnostic (requis) → Crohn.
+- tapOn:
+    id: "onb-opt-crohn"
+- tapOn:
+    id: "onboarding-continue"
+# Écran 3 : année → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 4 : état (requis) → rémission.
+- tapOn:
+    id: "onb-opt-remission"
+- tapOn:
+    id: "onboarding-continue"
+# Écran 5 : fréquence de selles (requis) → 3-5.
+- tapOn:
+    id: "onb-opt-3-5"
+- tapOn:
+    id: "onboarding-continue"
+# Écran 6 : symptômes → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 7 : traitement → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 8 : interstitiel preuve → Continuer.
+- tapOn:
+    id: "onboarding-continue"
+# Écran 9 : objectifs → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 10 : obstacles → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 11 : attribution → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 12 : notifications → Plus tard.
+- tapOn:
+    id: "onboarding-notif-later"
+# Écran 13 : Apple Health / Fit → Passer.
+- tapOn:
+    id: "onboarding-skip"
+# Écran 14 : calcul animé (~2,5 s) → écran 15 : plan prêt.
+- extendedWaitUntil:
+    visible:
+      id: "onboarding-continue"
+    timeout: 15000
+- tapOn:
+    id: "onboarding-continue"
+# Écran 16 : paywall SOFT — « Continuer gratuitement » (§4.16 contractuel).
+- assertVisible:
+    id: "premium-continue-free"
+- tapOn:
+    id: "premium-continue-free"
+# → tabs, onboarding terminé.
+- assertVisible:
+    id: "fab-add"
