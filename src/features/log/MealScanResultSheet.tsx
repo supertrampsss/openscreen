@@ -251,6 +251,13 @@ export function MealScanResultSheet({
 							{confidence === "low" ? ` · ${t("result.checkIngredients")}` : ""}
 						</Text>
 					</View>
+					{/* Disclaimer IA (§G9) : estimation à vérifier, jamais un avis médical. */}
+					<Text
+						testID="scan-ai-disclaimer"
+						style={[theme.typography.caption, { color: theme.colors.textFaint }]}
+					>
+						{t("result.aiDisclaimer")}
+					</Text>
 				</View>
 			</View>
 

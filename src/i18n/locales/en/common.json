@@ -137,6 +137,8 @@
 		"privacyTitle": "Your data stays with you",
 		"privacyBody": "Your entries stay on your device. Only the photos and notes you choose to analyze are sent, for the duration of the analysis, to our AI service — which does not store them. Your data and its export will stay free forever.",
 		"disclaimer": "Crohnicle is a personal tracking tool, not a medical device.",
+		"privacyLink": "Privacy policy",
+		"termsLink": "Terms of use",
 		"replayOnboarding": "Replay the intro",
 		"version": "Version {{version}}"
 	}

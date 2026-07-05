@@ -9,6 +9,7 @@ import { getLocales } from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+import aiConsentEn from "./locales/en/aiConsent.json";
 import commonEn from "./locales/en/common.json";
 import exportEn from "./locales/en/export.json";
 import journalEn from "./locales/en/journal.json";
@@ -20,6 +21,7 @@ import treatmentsEn from "./locales/en/treatments.json";
 import trendsEn from "./locales/en/trends.json";
 import urgenceEn from "./locales/en/urgence.json";
 import voiceEn from "./locales/en/voice.json";
+import aiConsentFr from "./locales/fr/aiConsent.json";
 import commonFr from "./locales/fr/common.json";
 import exportFr from "./locales/fr/export.json";
 import journalFr from "./locales/fr/journal.json";
@@ -45,6 +47,7 @@ export const namespaces = [
 	"treatments",
 	"urgence",
 	"voice",
+	"aiConsent",
 ] as const;
 export const supportedLanguages = ["fr", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
@@ -62,6 +65,7 @@ export const resources = {
 		treatments: treatmentsFr,
 		urgence: urgenceFr,
 		voice: voiceFr,
+		aiConsent: aiConsentFr,
 	},
 	en: {
 		common: commonEn,
@@ -75,6 +79,7 @@ export const resources = {
 		treatments: treatmentsEn,
 		urgence: urgenceEn,
 		voice: voiceEn,
+		aiConsent: aiConsentEn,
 	},
 } as const;
 

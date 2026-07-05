@@ -23,9 +23,15 @@
 		"annualEquivalent": "soit {{price}} / mois"
 	},
 	"noCommitment": "Sans engagement — annulez en 2 taps.",
+	"autoRenewDisclosure": "Abonnement à renouvellement automatique. Le paiement est débité de votre compte App Store ou Google Play à la confirmation. L'abonnement se renouvelle automatiquement sauf annulation au moins 24 h avant la fin de la période en cours. Gérez ou annulez à tout moment dans les réglages de votre store.",
+	"manageSubscription": "Gérer mon abonnement",
 	"continue": "Continuer",
 	"restore": "Restaurer mes achats",
 	"refund": "Un remboursement, une question ? Écrivez à un humain : {{email}}",
+	"links": {
+		"privacy": "Confidentialité",
+		"terms": "Conditions (EULA)"
+	},
 	"status": {
 		"free": "Gratuit",
 		"premium": "Premium ✓"

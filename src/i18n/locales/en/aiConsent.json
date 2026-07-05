@@ -1,0 +1,10 @@
+{
+	"title": "AI analysis",
+	"body": "To analyze your photo, it is sent encrypted to our service and then to the Claude AI model (Anthropic, a third party). It is neither stored nor used to train models. The same handling applies to voice notes and AI insights. Your other health data stays on your device.",
+	"privacyLink": "Privacy policy",
+	"accept": "Accept and continue",
+	"cancel": "Cancel",
+	"enableTitle": "Weekly AI insight",
+	"enableBody": "Enable AI analysis to generate your weekly insight from anonymous aggregates.",
+	"enableCta": "Enable AI analysis"
+}

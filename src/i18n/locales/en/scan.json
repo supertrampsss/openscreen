@@ -19,6 +19,7 @@
 		"correctPlaceholder": "e.g. it's couscous, not rice",
 		"correctButton": "Re-analyze",
 		"aiDisclosure": "For analysis, your photo is sent to our AI service, which does not keep it.",
+		"aiDisclaimer": "AI estimate — check and correct if needed. Not a substitute for medical advice.",
 		"confirm": "Looks good",
 		"checkIngredients": "Check the ingredients",
 		"remove": "Remove {{name}}",
