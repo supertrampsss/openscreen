@@ -199,11 +199,17 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 
 	const save = async () => {
 		if (items.length === 0) return;
-		await persist(items, name, occurred);
-		await commitDraft(mealId);
-		snackbar.show({ message: t("meal.saved") });
-		onSaved();
-		onClose();
+		try {
+			await persist(items, name, occurred);
+			await commitDraft(mealId);
+			snackbar.show({ message: t("meal.saved") });
+			onSaved();
+			onClose();
+		} catch {
+			// Échec jamais silencieux (loi 2) : le brouillon est déjà persisté, on
+			// garde la feuille ouverte pour réessayer — même contrat que les autres.
+			snackbar.show({ message: t("saveError") });
+		}
 	};
 
 	const showCreateCustom = query.trim().length > 0 && results.length === 0;
