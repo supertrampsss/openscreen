@@ -181,6 +181,27 @@ export async function parseVoice(
 // ---------------------------------------------------------------------------
 
 /**
+ * Ids stables par brouillon (loi 2). `commitVoiceDrafts` peut être rappelée sur
+ * le MÊME lot après un échec en cours de route (la feuille reste ouverte pour
+ * réessayer) : sans ids stables, un second passage recréerait de nouvelles
+ * lignes pour les brouillons déjà commités → doublons qui fausseraient les
+ * scores. On mémorise donc les ids alloués par objet brouillon (identité
+ * préservée entre deux tentatives) ; un re-commit réutilise les mêmes ids, donc
+ * upsert+commit sont idempotents (aucune ligne en double).
+ */
+const draftIds = new WeakMap<VoiceDraft, string[]>();
+
+function idsForDraft(draft: VoiceDraft, count: number): string[] {
+	let ids = draftIds.get(draft);
+	if (!ids) {
+		const make = draft.type === "meal" ? newMealId : newEntryId;
+		ids = Array.from({ length: count }, () => make());
+		draftIds.set(draft, ids);
+	}
+	return ids;
+}
+
+/**
  * Committe les brouillons voix confirmés. Une entrée « selle » de compte N crée
  * N selles (chacune une ligne, comme si l'utilisateur les avait saisies une à
  * une). Renvoie le nombre d'entrées effectivement enregistrées.
@@ -189,8 +210,9 @@ export async function commitVoiceDrafts(drafts: VoiceDraft[]): Promise<number> {
 	let saved = 0;
 	for (const draft of drafts) {
 		if (draft.type === "stool") {
+			const ids = idsForDraft(draft, draft.count);
 			for (let i = 0; i < draft.count; i++) {
-				const id = newEntryId();
+				const id = ids[i];
 				await upsertSymptomDraft({
 					id,
 					kind: "stool",
@@ -205,7 +227,7 @@ export async function commitVoiceDrafts(drafts: VoiceDraft[]): Promise<number> {
 				saved += 1;
 			}
 		} else if (draft.type === "symptom") {
-			const id = newEntryId();
+			const id = idsForDraft(draft, 1)[0];
 			await upsertSymptomDraft({
 				id,
 				kind: "symptom",
@@ -219,7 +241,7 @@ export async function commitVoiceDrafts(drafts: VoiceDraft[]): Promise<number> {
 			await commitSymptomDraft(id);
 			saved += 1;
 		} else {
-			const id = newMealId();
+			const id = idsForDraft(draft, 1)[0];
 			await upsertMealDraft({
 				id,
 				occurredAt: draft.occurredAt.epochMs,
