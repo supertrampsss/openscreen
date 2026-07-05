@@ -8,6 +8,15 @@ appId: app.crohnicle
     id: "fab-add"
 - tapOn:
     id: "add-action-photo"
+# Premier scan sur un appareil vierge : la feuille de consentement IA (App Store
+# 5.1.2(i)) s'affiche AVANT le sélecteur — on accepte si elle est présente.
+- runFlow:
+    when:
+      visible:
+        id: "ai-consent-accept"
+    commands:
+      - tapOn:
+          id: "ai-consent-accept"
 # → le sélecteur natif (galerie / appareil photo) s'ouvre : choisir une photo de
 #   repas. Cette étape est hors de la hiérarchie de vues de l'app (UI système,
 #   dépendante de l'OS) → laissée manuelle ; le flow reprend dès le brouillon.
