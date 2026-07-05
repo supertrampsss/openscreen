@@ -269,3 +269,60 @@ Crohnicle n'est pas un dispositif médical et ne remplace pas un avis médical. 
       the doctor PDF export, the Home ring, Tendances (curves + associations).
 - [ ] Ask for an App Store review **after the first successful PDF export** (already
       wired — a real moment of value, not mid-onboarding).
+
+---
+
+## 12. Vitrine web (GitHub Pages)
+
+The public landing page lives in [`website/`](../website) (pure HTML/CSS, zero
+framework, zero external resource) and deploys automatically via
+[`.github/workflows/pages.yml`](../.github/workflows/pages.yml).
+
+### Activation (one click, once)
+
+- [ ] **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+      That is the only manual step. The next push to `main` (or a manual
+      **Actions → Deploy website → Run workflow**) publishes the site.
+
+### Resulting URL
+
+The repo is named `openscreen`, so Pages serves it under the project sub-path:
+
+```
+https://supertrampsss.github.io/openscreen/
+```
+
+All paths in `website/` are **relative**, so the sub-path just works. FR is the
+root; English is at `/openscreen/en/`.
+
+### Updating the site
+
+Edit anything under `website/` and push to `main` — the workflow rebuilds and
+redeploys automatically (it triggers only on `website/**` changes, so app-only
+pushes don't redeploy the site).
+
+### Why the web app demo is NOT on Pages (honest decision, tested)
+
+The landing links to a **local** demo (`npm run web`) instead of a hosted one.
+Reason, verified locally before shipping: the web app persists data with
+`expo-sqlite` on top of **wa-sqlite + OPFS**, which requires
+`crossOriginIsolated` (SharedArrayBuffer) and therefore the response headers
+`Cross-Origin-Opener-Policy: same-origin` + `Cross-Origin-Embedder-Policy:
+require-corp` on every response (see `scripts/serve-web.mjs`). **GitHub Pages
+cannot set custom HTTP headers.** Served under `/openscreen/app/` without them,
+the app boots straight into its error boundary ("Redémarrez l'application") —
+the SQLite warmup fails. Shipping that would be a broken public demo, which
+violates product law 3. So Pages serves the landing only; the E2E `expo export`
+build stays covered by `ci.yml`.
+
+> If a hosted demo is wanted later: serve the `expo export` output from a host
+> that allows COOP/COEP headers (Cloudflare Pages `_headers`, Netlify
+> `_headers`, or a small Worker), then point the landing's "démo web" link there.
+
+### Renaming the repo (`openscreen` → `crohnicle`)
+
+Optional but recommended for branding before launch. Renaming the repo changes
+the Pages URL to `https://supertrampsss.github.io/crohnicle/`. Because every
+path in `website/` is relative and the workflow assembles the site from the repo
+root, **nothing else needs to change** — the new URL just works. Update the
+README badge/link and any external references (afa, socials) to the new URL.
