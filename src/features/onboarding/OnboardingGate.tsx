@@ -13,6 +13,7 @@ import { useRouter, useSegments } from "expo-router";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { get as getSetting, set as setSetting } from "@/repositories/settingsRepo";
+import { AI_CONSENT_KEY } from "@/services/aiConsent";
 import { MOCK_PREMIUM_KEY } from "@/services/entitlements";
 
 export const ONBOARDING_DONE_KEY = "onboarding_done";
@@ -60,6 +61,20 @@ function detectE2EPremium(): boolean {
 	}
 }
 
+/**
+ * `?noaiconsent=1` : NE PAS pré-accorder le consentement IA (pour la spec qui
+ * vérifie l'apparition du dialogue au 1er envoi IA). Sans ce paramètre, le semis
+ * l'accorde pour ne pas casser les smokes scan/voix/insight existants.
+ */
+function detectE2ESkipAiConsent(): boolean {
+	if (!E2E_ENABLED || Platform.OS !== "web") return false;
+	try {
+		return new URLSearchParams(window.location.search).has("noaiconsent");
+	} catch {
+		return false;
+	}
+}
+
 export function OnboardingGate({ children }: { children: ReactNode }) {
 	const [done, setDone] = useState<boolean | null>(null);
 	const segments = useSegments();
@@ -70,6 +85,10 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
 		(async () => {
 			if (detectE2ESeed()) {
 				await setSetting(ONBOARDING_DONE_KEY, true);
+				// Pré-accorde le consentement IA pour ne pas casser les smokes scan/voix/
+				// insight (le dialogue de consentement s'afficherait sinon au 1er envoi IA).
+				// `?noaiconsent=1` le laisse à false pour tester justement ce dialogue.
+				if (!detectE2ESkipAiConsent()) await setSetting(AI_CONSENT_KEY, true);
 				if (detectE2EPremium()) await setSetting(MOCK_PREMIUM_KEY, true);
 				if (alive) setDone(true);
 				return;

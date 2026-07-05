@@ -2,8 +2,10 @@ import { useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
-import { Card } from "@/components/ui";
+import { Card, PillButton } from "@/components/ui";
 import { buildInsightAggregates, type InsightAggregatesInput } from "@/domain/insightAggregates";
+import { AiConsentSheet } from "@/features/log/AiConsentSheet";
+import { hasAiConsent } from "@/services/aiConsent";
 import { useEntitlements } from "@/services/entitlements";
 import { getWeeklyInsight, type WeeklyInsight } from "@/services/weeklyInsightService";
 import { useTheme } from "@/theme";
@@ -16,12 +18,16 @@ import { useTheme } from "@/theme";
  */
 export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) {
 	const { t, i18n } = useTranslation("trends");
+	const { t: tc } = useTranslation("aiConsent");
 	const theme = useTheme();
 	const router = useRouter();
 	const { status } = useEntitlements();
 
 	const [insight, setInsight] = useState<WeeklyInsight | null>(null);
 	const [loading, setLoading] = useState(false);
+	// Consentement IA tierce (§2 loi 4) requis avant d'envoyer les agrégats.
+	const [needsConsent, setNeedsConsent] = useState(false);
+	const [consentOpen, setConsentOpen] = useState(false);
 
 	const agg = useMemo(() => buildInsightAggregates(input), [input]);
 	const lang = i18n.language === "en" ? "en" : "fr";
@@ -46,9 +52,20 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 				return;
 			}
 			setLoading(true);
-			getWeeklyInsight({ aggregates: agg, lang, demoFallback, force })
-				.then(setInsight)
-				.finally(() => setLoading(false));
+			// Ne rien transmettre à l'IA tierce sans consentement explicite (§2 loi 4) :
+			// on affiche alors une invite plutôt que d'envoyer les agrégats.
+			hasAiConsent().then((consented) => {
+				if (!consented) {
+					setNeedsConsent(true);
+					setInsight(null);
+					setLoading(false);
+					return;
+				}
+				setNeedsConsent(false);
+				getWeeklyInsight({ aggregates: agg, lang, demoFallback, force })
+					.then(setInsight)
+					.finally(() => setLoading(false));
+			});
 		},
 		[status.premium, agg, lang, demoFallback],
 	);
@@ -103,6 +120,19 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 				<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 					{t("insight.empty")}
 				</Text>
+			) : needsConsent ? (
+				<>
+					<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+						{tc("enableBody")}
+					</Text>
+					<PillButton
+						label={tc("enableCta")}
+						accessibilityLabel={tc("enableCta")}
+						variant="secondary"
+						onPress={() => setConsentOpen(true)}
+						testID="insight-enable-ai"
+					/>
+				</>
 			) : loading && !insight ? (
 				<View style={styles.loadingRow}>
 					<ActivityIndicator color={theme.colors.meal} />
@@ -127,6 +157,14 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 					{t("insight.empty")}
 				</Text>
 			)}
+			<AiConsentSheet
+				visible={consentOpen}
+				onClose={() => setConsentOpen(false)}
+				onAccept={() => {
+					setConsentOpen(false);
+					run(true);
+				}}
+			/>
 		</Card>
 	);
 }

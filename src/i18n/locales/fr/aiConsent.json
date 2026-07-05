@@ -1,0 +1,10 @@
+{
+	"title": "Analyses par IA",
+	"body": "Pour analyser votre photo, elle est envoyée de façon chiffrée à notre service puis au modèle d'IA Claude (Anthropic, société tierce). Elle n'est ni conservée ni utilisée pour entraîner des modèles. Le même traitement s'applique aux notes vocales et aux bilans IA. Vos autres données de santé restent sur votre appareil.",
+	"privacyLink": "Politique de confidentialité",
+	"accept": "Accepter et continuer",
+	"cancel": "Annuler",
+	"enableTitle": "Insight IA hebdomadaire",
+	"enableBody": "Activez les analyses par IA pour générer votre bilan hebdomadaire à partir d'agrégats anonymes.",
+	"enableCta": "Activer les analyses IA"
+}

@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	ActivityIndicator,
@@ -44,6 +44,7 @@ import { daysBetweenLocalDates } from "@/domain/treatments";
 import type { VoiceDraft } from "@/domain/voiceEntries";
 import { FlareBanner } from "@/features/flare/FlareBanner";
 import { type AddAction, AddSheet } from "@/features/log/AddSheet";
+import { AiConsentSheet } from "@/features/log/AiConsentSheet";
 import { MealScanResultSheet } from "@/features/log/MealScanResultSheet";
 import { MealSheet } from "@/features/log/MealSheet";
 import { MealTriggerChips } from "@/features/log/MealTriggerChips";
@@ -69,6 +70,7 @@ import {
 	upsertDraft as upsertSymptomDraft,
 } from "@/repositories/symptomRepo";
 import { listActive as listActiveTreatments } from "@/repositories/treatmentRepo";
+import { hasAiConsent } from "@/services/aiConsent";
 import { currentEntitlementToken } from "@/services/entitlements";
 import {
 	analyzeMeal,
@@ -145,6 +147,9 @@ export default function HomeScreen() {
 	const [premiumMeal, setPremiumMeal] = useState<Meal | null>(null);
 	// Note vocale (§5.4, §6.1) — Premium.
 	const [voiceOpen, setVoiceOpen] = useState(false);
+	// Consentement IA tierce (§2 loi 4) : feuille + action IA en attente.
+	const [aiConsentOpen, setAiConsentOpen] = useState(false);
+	const pendingAiAction = useRef<(() => void) | null>(null);
 
 	const today = nowEntryTimestamp().localDate;
 
@@ -360,6 +365,28 @@ export default function HomeScreen() {
 		runAnalysis(meal);
 	}, [pickImage, runAnalysis, reload, t]);
 
+	/**
+	 * Gate de consentement IA tierce (§2 loi 4, App Store §5.1.2) : n'exécute une
+	 * action qui transmet des données à l'IA (scan photo, note vocale) qu'après un
+	 * consentement explicite. Consentement déjà accordé → action immédiate ; sinon
+	 * on mémorise l'action et on ouvre la feuille (elle poursuit à l'acceptation).
+	 */
+	const runWithAiConsent = useCallback(async (action: () => void) => {
+		if (await hasAiConsent()) {
+			action();
+			return;
+		}
+		pendingAiAction.current = action;
+		setAiConsentOpen(true);
+	}, []);
+
+	const onAiConsentAccept = useCallback(() => {
+		setAiConsentOpen(false);
+		const action = pendingAiAction.current;
+		pendingAiAction.current = null;
+		action?.();
+	}, []);
+
 	/** Bascule vers le repas manuel avec la photo attachée (§5.4.5 fallback). */
 	const scanToManual = useCallback((meal: Meal) => {
 		setScanResult(null);
@@ -373,8 +400,8 @@ export default function HomeScreen() {
 		setResume(null);
 		if (action === "stool") setStoolOpen(true);
 		else if (action === "symptom") setSymptomOpen(true);
-		else if (action === "photo") startPhotoScan();
-		else if (action === "voice") setVoiceOpen(true);
+		else if (action === "photo") void runWithAiConsent(startPhotoScan);
+		else if (action === "voice") void runWithAiConsent(() => setVoiceOpen(true));
 		else {
 			setResumeMeal(null);
 			setMealOpen(true);
@@ -427,9 +454,9 @@ export default function HomeScreen() {
 			setResume(null);
 			setStoolOpen(true);
 		} else if (q === "photo") {
-			startPhotoScan();
+			void runWithAiConsent(startPhotoScan);
 		}
-	}, [quickParams.quick, router, startPhotoScan]);
+	}, [quickParams.quick, router, startPhotoScan, runWithAiConsent]);
 
 	const goToDay = (date: string) => {
 		router.push({ pathname: "/journal", params: { date } });
@@ -723,6 +750,14 @@ export default function HomeScreen() {
 				onManual={() => {
 					if (premiumMeal) scanToManual(premiumMeal);
 				}}
+			/>
+			<AiConsentSheet
+				visible={aiConsentOpen}
+				onClose={() => {
+					setAiConsentOpen(false);
+					pendingAiAction.current = null;
+				}}
+				onAccept={onAiConsentAccept}
 			/>
 		</View>
 	);
