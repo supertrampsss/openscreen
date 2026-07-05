@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://supertrampsss.github.io/openscreen/sitemap.xml
