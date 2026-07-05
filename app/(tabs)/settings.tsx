@@ -2,10 +2,11 @@ import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
+import { PRIVACY_URL, TERMS_URL } from "@/constants/branding";
 import { BackupError } from "@/domain/backup";
 import { useFlare } from "@/features/flare/FlareContext";
 import { FlareToggle } from "@/features/flare/FlareToggle";
@@ -220,6 +221,28 @@ export default function SettingsScreen() {
 					<Text style={[theme.typography.body, { color: theme.colors.textMuted, marginTop: 8 }]}>
 						{t("settings.privacyBody")}
 					</Text>
+					<Pressable
+						accessibilityRole="link"
+						accessibilityLabel={t("settings.privacyLink")}
+						testID="settings-privacy-link"
+						onPress={() => Linking.openURL(PRIVACY_URL).catch(() => undefined)}
+						style={styles.legalLink}
+					>
+						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+							{t("settings.privacyLink")}
+						</Text>
+					</Pressable>
+					<Pressable
+						accessibilityRole="link"
+						accessibilityLabel={t("settings.termsLink")}
+						testID="settings-terms-link"
+						onPress={() => Linking.openURL(TERMS_URL).catch(() => undefined)}
+						style={styles.legalLink}
+					>
+						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+							{t("settings.termsLink")}
+						</Text>
+					</Pressable>
 				</Card>
 
 				<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
@@ -250,4 +273,5 @@ const styles = StyleSheet.create({
 	premiumRow: { flexDirection: "row", alignItems: "center", gap: 14 },
 	premiumEmoji: { fontSize: 24 },
 	premiumBody: { flex: 1, gap: 2 },
+	legalLink: { paddingVertical: 8 },
 });

@@ -19,6 +19,7 @@
 		"correctPlaceholder": "Ex. c'est du couscous, pas du riz",
 		"correctButton": "Ré-analyser",
 		"aiDisclosure": "Pour l'analyse, votre photo est envoyée à notre service d'IA, qui ne la conserve pas.",
+		"aiDisclaimer": "Estimation par IA — vérifiez et corrigez si besoin. Ne remplace pas un avis médical.",
 		"confirm": "C'est bon",
 		"checkIngredients": "Vérifiez les ingrédients",
 		"remove": "Retirer {{name}}",

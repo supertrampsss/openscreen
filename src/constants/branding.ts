@@ -41,6 +41,14 @@ export function storeReviewUrl(): string {
 }
 
 /**
+ * Pages légales publiques (vitrine GitHub Pages) — requises par l'App Store
+ * (fiche « App Privacy ») et liées in-app (Réglages, paywall, consentement IA).
+ * Chemins relatifs côté site ; ici en absolu pour `Linking.openURL`.
+ */
+export const PRIVACY_URL = "https://supertrampsss.github.io/openscreen/privacy.html";
+export const TERMS_URL = "https://supertrampsss.github.io/openscreen/terms.html";
+
+/**
  * Ressources toilettes/urgence (§5.10) — la Carte Urgence Toilettes officielle de
  * l'afa (association François Aupetit) + apps communautaires complémentaires FR.
  */

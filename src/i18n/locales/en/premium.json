@@ -23,9 +23,15 @@
 		"annualEquivalent": "that's {{price}} / month"
 	},
 	"noCommitment": "No commitment — cancel in 2 taps.",
+	"autoRenewDisclosure": "Auto-renewing subscription. Payment is charged to your App Store or Google Play account on confirmation. The subscription renews automatically unless cancelled at least 24 h before the end of the current period. Manage or cancel anytime in your store settings.",
+	"manageSubscription": "Manage my subscription",
 	"continue": "Continue",
 	"restore": "Restore my purchases",
 	"refund": "A refund or a question? Write to a human: {{email}}",
+	"links": {
+		"privacy": "Privacy",
+		"terms": "Terms (EULA)"
+	},
 	"status": {
 		"free": "Free",
 		"premium": "Premium ✓"

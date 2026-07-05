@@ -17,10 +17,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
+import { Linking, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { Card, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
-import { SUPPORT_EMAIL } from "@/constants/branding";
+import { PRIVACY_URL, SUPPORT_EMAIL, TERMS_URL } from "@/constants/branding";
 import {
 	getEntitlementsProvider,
 	type Offerings,
@@ -114,6 +114,16 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 		Linking.openURL(`mailto:${SUPPORT_EMAIL}`).catch(() => undefined);
 	}, []);
 
+	// Gestion de l'abonnement (§3.1.2 App Store / G10) : ouvre la page abonnements
+	// du store. Sur web (ni iOS ni Android), on pointe la page Google Play.
+	const openManageSubscription = useCallback(() => {
+		const url =
+			Platform.OS === "ios"
+				? "itms-apps://apps.apple.com/account/subscriptions"
+				: "https://play.google.com/store/account/subscriptions";
+		Linking.openURL(url).catch(() => undefined);
+	}, []);
+
 	return (
 		<View style={styles.flex}>
 			{/* Bandeau d'engagement — TOUT EN HAUT, mis en avant (§8). */}
@@ -204,6 +214,26 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				{t("noCommitment")}
 			</Text>
 
+			{/* Divulgation légale (§3.1.2) : abonnement auto-renouvelable, adjacente à
+			    l'achat. Petit corps gris, jamais un piège. */}
+			<Text
+				testID="premium-autorenew"
+				style={[theme.typography.caption, styles.disclosure, { color: theme.colors.textMuted }]}
+			>
+				{t("autoRenewDisclosure")}
+			</Text>
+			<Pressable
+				accessibilityRole="link"
+				accessibilityLabel={t("manageSubscription")}
+				testID="premium-manage-sub"
+				onPress={openManageSubscription}
+				style={styles.textBtn}
+			>
+				<Text style={[theme.typography.label, styles.centered, { color: theme.colors.meal }]}>
+					{t("manageSubscription")}
+				</Text>
+			</Pressable>
+
 			{/* CTA — dépend du mode. */}
 			{mode === "onboarding" ? (
 				<View style={styles.ctaStack}>
@@ -262,6 +292,33 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 					{t("refund", { email: SUPPORT_EMAIL })}
 				</Text>
 			</Pressable>
+
+			{/* Liens légaux discrets : confidentialité · conditions (EULA). */}
+			<View style={styles.legalRow}>
+				<Pressable
+					accessibilityRole="link"
+					accessibilityLabel={t("links.privacy")}
+					testID="premium-privacy-link"
+					onPress={() => Linking.openURL(PRIVACY_URL).catch(() => undefined)}
+					hitSlop={8}
+				>
+					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+						{t("links.privacy")}
+					</Text>
+				</Pressable>
+				<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>·</Text>
+				<Pressable
+					accessibilityRole="link"
+					accessibilityLabel={t("links.terms")}
+					testID="premium-terms-link"
+					onPress={() => Linking.openURL(TERMS_URL).catch(() => undefined)}
+					hitSlop={8}
+				>
+					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+						{t("links.terms")}
+					</Text>
+				</Pressable>
+			</View>
 		</View>
 	);
 }
@@ -347,7 +404,15 @@ const styles = StyleSheet.create({
 	},
 	planBadgeText: { color: "#052E1B", fontSize: 12, fontWeight: "700" },
 	centered: { textAlign: "center" },
+	disclosure: { textAlign: "center", paddingHorizontal: 4 },
 	ctaStack: { gap: 10 },
 	textBtn: { alignItems: "center", paddingVertical: 8 },
 	footer: { paddingVertical: 4, paddingHorizontal: 8 },
+	legalRow: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		gap: 8,
+		paddingVertical: 4,
+	},
 });
