@@ -135,6 +135,68 @@ Checklist:
 
 ---
 
+## App Store : App Privacy (nutrition labels) & conformité
+
+Les libellés **App Privacy** (App Store Connect) et le **data-safety** Google Play
+doivent refléter EXACTEMENT ce que l'app collecte. Crohnicle ne stocke aucune
+donnée de santé côté serveur ; seules les fonctions IA optionnelles transmettent
+des données à un tiers (Anthropic Claude via notre proxy), toujours après
+consentement explicite (`src/services/aiConsent.ts` + `AiConsentSheet`).
+
+### Déclarations à saisir dans App Store Connect (« App Privacy »)
+
+| Catégorie | Type de donnée | Collectée | Liée à l'identité | Suivi (tracking) | Finalité |
+| --------- | -------------- | --------- | ----------------- | ---------------- | -------- |
+| User Content → **Photos** | Meal photos | Oui | Non | Non | App Functionality |
+| Identifiers → **Device ID** | UUID anonyme (quota d'essai / anti-abus) | Oui | Non | Non | App Functionality |
+| Health & Fitness → **Health** | Agrégats hebdomadaires anonymes (Premium uniquement) | Oui | Non | Non | App Functionality |
+| **Tout le reste** | — | **Data Not Collected** | — | — | — |
+
+- **Aucun tracking** → répondre « No » à « Tracking » ⇒ **pas d'ATT**
+  (`App Tracking Transparency`) à implémenter. `NSPrivacyTracking` est `false`
+  dans `app.json`.
+- Les données de santé du journal (selles, symptômes, repas, traitements, scores)
+  ne quittent JAMAIS l'appareil ⇒ elles ne figurent PAS dans « Health » collecté ;
+  seuls les **agrégats anonymes** du bilan hebdo Premium sont déclarés.
+- La note vocale : l'audio n'est jamais envoyé (STT on-device), seul le texte
+  transite ⇒ pas de déclaration « Audio Data ».
+
+### URLs à renseigner sur la fiche
+
+- **Privacy Policy URL** : `https://supertrampsss.github.io/openscreen/privacy.html`
+- **Terms of Use (EULA) URL** : `https://supertrampsss.github.io/openscreen/terms.html`
+  (aussi liée in-app : Réglages, paywall, feuille de consentement IA — voir
+  `PRIVACY_URL` / `TERMS_URL` dans `src/constants/branding.ts`).
+
+### Privacy manifest & RevenueCat
+
+- [ ] Vérifier le **`PrivacyInfo.xcprivacy`** généré au build EAS : il doit
+      reprendre le bloc `ios.privacyManifests` de `app.json`
+      (`NSPrivacyAccessedAPITypes` : UserDefaults `CA92.1`, FileTimestamp
+      `C617.1`, SystemBootTime `35F9.1`, DiskSpace `E174.1` ; `NSPrivacyCollectedDataTypes` :
+      PhotosorVideos, DeviceID, Health — tous *linked=false*, *tracking=false*,
+      *AppFunctionality*).
+- [ ] Au branchement **RevenueCat** (voir §1) : vérifier que le manifest de
+      confidentialité **signé** fourni par le SDK `react-native-purchases` est bien
+      inclus, et compléter les libellés App Privacy si RevenueCat collecte un
+      identifiant d'achat (Purchase History → App Functionality, Not linked).
+
+### Checklist pré-soumission (conformité)
+
+- [ ] Remplacer `SUPPORT_EMAIL` (`support@crohnicle.app`) par une adresse réelle
+      **surveillée** (remboursements humains, §8) — `src/constants/branding.ts`.
+- [ ] Remplacer les `STORE_URLS` placeholders par les vrais identifiants de fiche.
+- [ ] `eas init` pour écrire le `projectId` (`extra.eas.projectId` dans `app.json`).
+- [ ] Bundle id / package confirmés : **`app.crohnicle`** (iOS `bundleIdentifier`,
+      Android `package`), `buildNumber`/`versionCode` incrémentés à chaque build.
+- [ ] Captures d'écran stores (scan + confiance, export médecin, anneau Accueil,
+      Tendances) sur un build device.
+- [ ] Notes de revue : **pas un dispositif médical** (disclaimers in-app + IA),
+      abonnement auto-renouvelable divulgué (paywall, §3.1.2), consentement IA
+      tierce explicite avant tout envoi.
+
+---
+
 ## 6. Branding (before public launch)
 
 - [x] Name **Crohnicle** confirmed — centralised in `app.json` +
