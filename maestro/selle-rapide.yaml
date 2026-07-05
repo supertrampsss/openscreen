@@ -1,0 +1,22 @@
+# Exécutable après dev build — voir docs/RELEASE.md §Maestro.
+# Selle rapide (§5.2) : le log le plus fréquent, cible 3 taps / <5 s.
+# Suppose l'onboarding déjà terminé (pas de clearState → réutilise l'état).
+appId: app.crohnicle
+---
+- launchApp
+- tapOn:
+    id: "fab-add"
+- tapOn:
+    id: "add-action-stool"
+- tapOn:
+    id: "bristol-4"
+- tapOn:
+    id: "stool-save"
+# La feuille se referme → le bouton « + » redevient visible.
+- assertVisible:
+    id: "fab-add"
+# La selle apparaît dans le Journal.
+- tapOn:
+    id: "tab-journal"
+- assertVisible:
+    id: "journal-entry"

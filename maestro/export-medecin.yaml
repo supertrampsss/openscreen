@@ -1,0 +1,20 @@
+# Exécutable après dev build — voir docs/RELEASE.md §Maestro.
+# Export médecin (§5.8) : Réglages → Export → choisir la période → Générer le PDF.
+# Suppose l'onboarding déjà terminé et au moins une entrée documentée.
+appId: app.crohnicle
+---
+- launchApp
+- tapOn:
+    id: "tab-settings"
+- tapOn:
+    id: "settings-export"
+# Sélecteur de période (1 mois par défaut).
+- assertVisible:
+    id: "export-period-1"
+- tapOn:
+    id: "export-period-1"
+# Génère le PDF puis ouvre la feuille de partage native.
+- assertVisible:
+    id: "export-generate"
+- tapOn:
+    id: "export-generate"

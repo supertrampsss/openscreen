@@ -181,26 +181,26 @@ Step by step:
 
 Playwright covers the **web** export (fast, deterministic, in CI). Native-only
 paths (camera capture, real notifications, quick actions, RevenueCat) need a
-device flow. Write [Maestro](https://maestro.mobile.dev) flows against a dev
-build (`.maestro/*.yaml`), e.g.:
+device flow. [Maestro](https://maestro.mobile.dev) flows live in
+[`maestro/`](../maestro), reuse the same `testID`s as the Playwright specs, and
+target the app's bundle id `app.crohnicle` (from `app.json`):
 
-```yaml
-# .maestro/quick-stool.yaml — 3-tap stool log under 5 s
-appId: app.crohnicle
----
-- launchApp
-- tapOn: { id: "fab-add" }
-- tapOn: { id: "add-action-stool" }
-- tapOn: { id: "bristol-6" }
-- tapOn: { id: "stool-save" }
-- assertVisible: { id: "fab-add" }
+- [`maestro/selle-rapide.yaml`](../maestro/selle-rapide.yaml) — 3-tap stool log, `<5 s`.
+- [`maestro/scan-demo.yaml`](../maestro/scan-demo.yaml) — meal photo scan in demo mode (result sheet → confirm).
+- [`maestro/export-medecin.yaml`](../maestro/export-medecin.yaml) — Settings → Export → generate the doctor PDF.
+- [`maestro/onboarding.yaml`](../maestro/onboarding.yaml) — minimal funnel walk to the tabs (`clearState`).
+
+Run all of them on a running dev build:
+
+```sh
+maestro test maestro/
 ```
 
-Flows worth adding (they mirror the Playwright specs, reusing the same `testID`s):
-quick stool, meal photo scan (with a fixture image + Fix Results), doctor PDF
-export + share sheet, onboarding funnel, ethical paywall (prices shown, no second
-flow), **voice note** (dictation → interpreted entries → save all), **weekly
-insight** (premium). Run with `maestro test .maestro/`.
+Notes: these run **against a dev/production build**, not Expo Go or web. The scan
+flow's photo pick happens in the native gallery (system UI, OS-specific) and is
+left as a manual step; the flow resumes at the analysis shimmer. Flows still
+worth adding later: **voice note** (dictation → interpreted entries → save all)
+and **weekly insight** (premium).
 
 ## 9. Home-screen widgets & quick actions (roadmap)
 

@@ -1,0 +1,33 @@
+# Exécutable après dev build — voir docs/RELEASE.md §Maestro.
+# Scan photo repas en MODE DÉMO (§5.4) : sans URL de proxy IA configurée, la
+# réponse est simulée et marquée « démo ». Suppose l'onboarding déjà terminé.
+appId: app.crohnicle
+---
+- launchApp
+- tapOn:
+    id: "fab-add"
+- tapOn:
+    id: "add-action-photo"
+# → le sélecteur natif (galerie / appareil photo) s'ouvre : choisir une photo de
+#   repas. Cette étape est hors de la hiérarchie de vues de l'app (UI système,
+#   dépendante de l'OS) → laissée manuelle ; le flow reprend dès le brouillon.
+- extendedWaitUntil:
+    visible:
+      id: "scan-shimmer"
+    timeout: 30000
+# ~1,5 s plus tard : la feuille de résultat démo s'ouvre.
+- extendedWaitUntil:
+    visible:
+      id: "scan-confirm"
+    timeout: 15000
+- assertVisible:
+    id: "scan-demo-banner"
+- tapOn:
+    id: "scan-confirm"
+- assertVisible:
+    id: "fab-add"
+# Le repas photo confirmé apparaît dans le Journal.
+- tapOn:
+    id: "tab-journal"
+- assertVisible:
+    id: "journal-meal"

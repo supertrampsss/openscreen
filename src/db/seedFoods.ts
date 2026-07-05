@@ -15,7 +15,6 @@
  * customs. On ré-exécute l'insert (no-op sur l'existant) quand la version monte.
  */
 
-import seedData from "@/data/foods.seed.json";
 import { db } from "@/db/client";
 import { newId } from "@/db/id";
 import { foods } from "@/db/schema";
@@ -38,9 +37,6 @@ export interface FoodSeedItem {
 	triggers: FoodTriggers;
 }
 
-/** Le seed typé (JSON importé). */
-export const foodSeed = seedData as FoodSeedItem[];
-
 /** Taille de lot des inserts (limite bien en-deçà du plafond de variables SQLite). */
 const CHUNK = 100;
 
@@ -54,6 +50,13 @@ const CHUNK = 100;
 export async function seedFoods(): Promise<number> {
 	const stored = (await settingsRepo.get<number>(FOODS_SEED_VERSION_KEY)) ?? 0;
 	if (stored >= FOODS_SEED_VERSION) return 0;
+
+	// Chargement PARESSEUX du JSON du seed (~110 Ko) : il n'est nécessaire qu'au
+	// tout premier lancement (ou à une montée de version). Le sortir de l'entrée
+	// via un import dynamique retire ce poids du bundle web parsé à CHAQUE
+	// démarrage déjà seedé (quick win d'audit — voir docs/PERF.md).
+	const seedData = (await import("@/data/foods.seed.json")).default;
+	const foodSeed = seedData as unknown as FoodSeedItem[];
 
 	const values = foodSeed.map((item) => ({
 		id: newId(),
