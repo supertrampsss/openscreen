@@ -4,8 +4,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](./LICENSE)
 [![Not a medical device](https://img.shields.io/badge/⚕️-not%20a%20medical%20device-lightgrey.svg)](#avertissement-médical)
 [![Expo SDK 57](https://img.shields.io/badge/Expo-SDK%2057-000.svg)](https://expo.dev)
+[![Site web](https://img.shields.io/badge/Site%20web-crohnicle-8B5CF6.svg)](https://supertrampsss.github.io/openscreen/)
 
 **Le compagnon MICI de référence francophone.** Documenter sa maladie en quelques secondes par jour, comprendre ses déclencheurs, et arriver armé chez son gastro-entérologue. — *« Votre compagnon MICI »*
+
+**Site web** : [supertrampsss.github.io/openscreen](https://supertrampsss.github.io/openscreen/) — vitrine publique (landing FR/EN, `website/`, déployée sur GitHub Pages). Voir [`docs/RELEASE.md` § Vitrine web](./docs/RELEASE.md#12-vitrine-web-github-pages).
 
 Crohnicle est une application mobile (iOS / Android / Web) destinée aux personnes atteintes d'une maladie inflammatoire chronique de l'intestin (MICI — maladie de Crohn et rectocolite hémorragique). Elle transforme le suivi quotidien des symptômes, des repas et des traitements en un geste rapide et sans anxiété, puis restitue des tendances et un export lisible pour la consultation médicale.
 
