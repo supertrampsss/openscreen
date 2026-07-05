@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Crohnicle — Politique de confidentialité</title>
+		<meta
+			name="description"
+			content="Politique de confidentialité de Crohnicle : vos données de santé restent sur votre appareil, jamais vendues, aucun traqueur. Détail honnête des fonctions IA optionnelles."
+		/>
+		<meta name="theme-color" content="#F7F7F8" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0F0F10" media="(prefers-color-scheme: dark)" />
+		<meta name="robots" content="index,follow" />
+		<link rel="icon" href="./assets/favicon.png" />
+		<link rel="apple-touch-icon" href="./assets/icon.png" />
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="wrap">
+				<a class="brand" href="./">
+					<img src="./assets/icon.png" alt="" />
+					<span>Crohnicle</span>
+				</a>
+				<nav class="nav-links">
+					<a class="hide-sm" href="./#fonctions">Fonctions</a>
+					<a class="hide-sm" href="./#prix">Prix</a>
+					<a href="./terms.html">Conditions</a>
+				</nav>
+			</div>
+		</header>
+
+		<main>
+			<section>
+				<div class="wrap">
+					<article style="max-width: 720px; margin: 0 auto">
+						<div class="section-head" style="margin-bottom: 24px">
+							<p class="kicker" style="color: var(--stool)">Vos données chez vous</p>
+							<h2>Politique de confidentialité</h2>
+							<p>Dernière mise à jour : 5 juillet 2026.</p>
+						</div>
+
+						<p style="color: var(--text-muted); font-size: 17px">
+							Crohnicle est conçu autour d'une règle simple : vos données de santé vous
+							appartiennent et restent chez vous. Cette page décrit, sans jargon, ce que
+							l'application stocke, ce qui peut être transmis, et vos droits.
+						</p>
+
+						<h3 style="margin-top: 32px">1. Ce qui reste sur votre appareil</h3>
+						<p style="color: var(--text-muted)">
+							Toutes vos données de santé — selles, symptômes, repas, traitements, scores
+							d'activité (HBI/SCCAI), notes et préférences — sont stockées
+							<strong>exclusivement en local</strong> sur votre appareil, dans une base de
+							données SQLite. Elles ne sont <strong>jamais transmises à nos serveurs</strong>,
+							jamais vendues, jamais partagées à des fins publicitaires.
+						</p>
+						<ul style="color: var(--text-muted)">
+							<li>Aucun compte, aucune inscription, aucune connexion.</li>
+							<li>Aucune publicité, aucun traqueur ni service d'analytics tiers.</li>
+							<li>Aucun profil marketing, aucune revente de données.</li>
+						</ul>
+
+						<h3 style="margin-top: 32px">2. Fonctions d'intelligence artificielle (optionnelles)</h3>
+						<p style="color: var(--text-muted)">
+							Les fonctions d'IA — analyse de photo de repas, interprétation de note vocale et
+							bilan hebdomadaire — sont <strong>optionnelles</strong> (essai gratuit puis
+							Premium) et ne s'activent qu'à votre demande explicite, après votre consentement.
+						</p>
+						<ul style="color: var(--text-muted)">
+							<li>
+								<strong>Photo de repas :</strong> l'image est transmise de façon chiffrée
+								(HTTPS) à notre service relais (proxy), puis au modèle d'IA Claude d'Anthropic
+								(société tierce) pour analyse. Elle <strong>n'est pas conservée</strong> par
+								notre proxy et <strong>n'est pas utilisée pour entraîner des modèles</strong>.
+							</li>
+							<li>
+								<strong>Note vocale :</strong> la reconnaissance vocale se fait sur votre
+								appareil ; seul le <strong>texte</strong> obtenu suit le même chemin chiffré que
+								la photo. Aucun fichier audio n'est envoyé.
+							</li>
+							<li>
+								<strong>Bilan hebdomadaire :</strong> seuls des <strong>agrégats anonymes</strong>
+								(des nombres et des libellés génériques, sans note libre ni date précise) sont
+								transmis pour générer un court résumé.
+							</li>
+							<li>
+								Un <strong>identifiant d'appareil anonyme</strong> (UUID généré localement) est
+								transmis uniquement pour gérer le quota d'essai gratuit et prévenir les abus. Il
+								n'est relié à aucune identité, aucun nom, aucune adresse e-mail.
+							</li>
+						</ul>
+
+						<h3 style="margin-top: 32px">3. Sauvegardes</h3>
+						<p style="color: var(--text-muted)">
+							Vous pouvez exporter une sauvegarde de vos données sous forme de fichier JSON
+							local. Ce fichier reste entièrement sous votre contrôle : vous décidez où le
+							stocker et avec qui le partager. Crohnicle n'y a aucun accès.
+						</p>
+
+						<h3 style="margin-top: 32px">4. Vos droits (RGPD)</h3>
+						<p style="color: var(--text-muted)">
+							Vos données étant stockées sur votre appareil, vous en gardez la maîtrise directe.
+							Pour supprimer l'ensemble de vos données, il vous suffit d'effacer les données de
+							l'application depuis les réglages de votre téléphone, ou de désinstaller
+							l'application. Aucune donnée de santé ne subsiste sur nos serveurs, puisqu'aucune
+							n'y est stockée.
+						</p>
+						<p style="color: var(--text-muted)">
+							Pour toute question relative à la confidentialité, écrivez-nous :
+							<a href="mailto:support@crohnicle.app" style="color: var(--meal); font-weight: 500"
+								>support@crohnicle.app</a
+							>.
+						</p>
+
+						<h3 style="margin-top: 32px">5. Ce que Crohnicle n'est pas</h3>
+						<p style="color: var(--text-muted)">
+							Crohnicle est un outil de suivi personnel et de préparation à la consultation.
+							<strong>Ce n'est pas un dispositif médical</strong> et l'application ne remplace pas
+							l'avis d'un professionnel de santé. En cas de symptôme préoccupant, consultez un
+							médecin.
+						</p>
+
+						<p style="margin-top: 40px">
+							<a class="btn btn-secondary" href="./">← Retour à l'accueil</a>
+						</p>
+					</article>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<p class="footer-disclaimer">
+					⚕️ Crohnicle n'est pas un dispositif médical et ne remplace pas un avis médical.
+					En cas de symptôme préoccupant, consultez un professionnel de santé.
+				</p>
+				<nav class="footer-links">
+					<a href="mailto:support@crohnicle.app">support@crohnicle.app</a>
+					<a href="./privacy.html">Confidentialité</a>
+					<a href="./terms.html">Conditions</a>
+					<a href="./">Accueil</a>
+				</nav>
+				<p class="footer-meta">
+					Crohnicle — le compagnon MICI francophone. Vos données restent chez vous.
+					Distribué sous licence MIT.
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>
