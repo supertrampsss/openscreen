@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Icon, type IconName } from "@/components/Icon";
 import { DraftSheet } from "@/components/ui";
+import type { ThemeColors } from "@/theme";
 import { useTheme } from "@/theme";
 
 export type AddAction = "stool" | "symptom" | "meal" | "photo" | "voice";
@@ -12,18 +14,33 @@ interface AddSheetProps {
 }
 
 interface Row {
-	emoji: string;
+	icon: IconName;
+	/** Teinte de la pastille d'avatar (couleur pleine + fond *Soft). */
+	tint: keyof ThemeColors;
+	soft: keyof ThemeColors;
 	labelKey: string;
 	action?: AddAction;
 	badgeKey?: string;
 }
 
 const ROWS: Row[] = [
-	{ emoji: "📸", labelKey: "addMenu.photo", action: "photo" },
-	{ emoji: "💩", labelKey: "addMenu.stool", action: "stool" },
-	{ emoji: "🤕", labelKey: "addMenu.symptoms", action: "symptom" },
-	{ emoji: "🍽️", labelKey: "addMenu.mealManual", action: "meal" },
-	{ emoji: "🎙️", labelKey: "addMenu.voice", action: "voice" },
+	{ icon: "camera", tint: "brand", soft: "brandSoft", labelKey: "addMenu.photo", action: "photo" },
+	{ icon: "stool", tint: "stool", soft: "stoolSoft", labelKey: "addMenu.stool", action: "stool" },
+	{
+		icon: "thermometer",
+		tint: "pain",
+		soft: "painSoft",
+		labelKey: "addMenu.symptoms",
+		action: "symptom",
+	},
+	{
+		icon: "utensils",
+		tint: "meal",
+		soft: "mealSoft",
+		labelKey: "addMenu.mealManual",
+		action: "meal",
+	},
+	{ icon: "mic", tint: "brand", soft: "brandSoft", labelKey: "addMenu.voice", action: "voice" },
 ];
 
 /** Bottom-sheet des 5 actions du bouton « + » (§5.1). */
@@ -56,7 +73,9 @@ export function AddSheet({ visible, onClose, onPick }: AddSheetProps) {
 								},
 							]}
 						>
-							<Text style={styles.emoji}>{row.emoji}</Text>
+							<View style={[styles.avatar, { backgroundColor: theme.colors[row.soft] }]}>
+								<Icon name={row.icon} size={22} color={theme.colors[row.tint]} strokeWidth={1.8} />
+							</View>
 							<Text
 								style={[theme.typography.subheading, styles.label, { color: theme.colors.text }]}
 							>
@@ -85,8 +104,12 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		minHeight: 60,
 	},
-	emoji: {
-		fontSize: 24,
+	avatar: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	label: {
 		flex: 1,

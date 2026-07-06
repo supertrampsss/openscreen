@@ -7,6 +7,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { useTheme } from "@/theme";
 
 const CHIPS = ["FODMAP", "Lactose", "Gluten", "Friture"];
@@ -76,7 +77,7 @@ export function ScanAnimation() {
 				]}
 			>
 				<View style={[styles.photo, { backgroundColor: theme.colors.surface }]}>
-					<Text style={styles.photoEmoji}>🍽️</Text>
+					<Icon name="utensils" size={48} color={theme.colors.textFaint} strokeWidth={1.6} />
 					<Animated.View
 						style={[
 							styles.scanLine,
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		overflow: "hidden",
 	},
-	photoEmoji: { fontSize: 52 },
 	scanLine: {
 		position: "absolute",
 		top: 10,

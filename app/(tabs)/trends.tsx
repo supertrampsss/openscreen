@@ -11,6 +11,7 @@ import {
 	View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon } from "@/components/Icon";
 import { Card, type ChartBand, ChipTrigger, LineChart } from "@/components/ui";
 import { localDateDaysAgo, nowEntryTimestamp } from "@/domain/dates";
 import type { InsightAggregatesInput } from "@/domain/insightAggregates";
@@ -262,7 +263,9 @@ export default function TrendsScreen() {
 					onPress={() => router.push("/export")}
 				>
 					<Card style={styles.exportCard}>
-						<Text style={styles.exportEmoji}>🩺</Text>
+						<View style={[styles.exportIcon, { backgroundColor: theme.colors.brandSoft }]}>
+							<Icon name="stethoscope" size={22} color={theme.colors.brand} strokeWidth={1.8} />
+						</View>
 						<View style={styles.exportBody}>
 							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
 								{tx("card.trendsTitle")}
@@ -271,7 +274,7 @@ export default function TrendsScreen() {
 								{tx("card.trendsBody")}
 							</Text>
 						</View>
-						<Text style={[theme.typography.heading, { color: theme.colors.textFaint }]}>›</Text>
+						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 					</Card>
 				</Pressable>
 
@@ -525,7 +528,13 @@ const styles = StyleSheet.create({
 	assocRow: { flexDirection: "row", alignItems: "center", gap: 10 },
 	assocText: { flex: 1, gap: 2 },
 	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
-	exportEmoji: { fontSize: 26 },
+	exportIcon: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
 	exportBody: { flex: 1, gap: 2 },
 	legend: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
 	legendItem: { flexDirection: "row", alignItems: "center", gap: 5 },

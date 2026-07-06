@@ -5,6 +5,7 @@
 
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { useTheme } from "@/theme";
 import { useFlare } from "./FlareContext";
 
@@ -28,7 +29,7 @@ export function FlareBanner() {
 				},
 			]}
 		>
-			<Text style={styles.emoji}>🌙</Text>
+			<Icon name="moon" size={18} color={theme.colors.pain} strokeWidth={1.9} />
 			<Text style={[theme.typography.label, styles.text, { color: theme.colors.pain }]}>
 				{t("flare.banner")}
 			</Text>
@@ -45,6 +46,5 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		borderWidth: StyleSheet.hairlineWidth,
 	},
-	emoji: { fontSize: 18 },
 	text: { flex: 1 },
 });

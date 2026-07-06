@@ -1,6 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import type { DataColorKey } from "@/theme";
+import type { DataColorKey, ThemeColors } from "@/theme";
 import { useTheme } from "@/theme";
+
+/** Fond doux (pastille « tag ») associé à chaque teinte de donnée. */
+const SOFT_KEY: Partial<Record<DataColorKey, keyof ThemeColors>> = {
+	stool: "stoolSoft",
+	meal: "mealSoft",
+	pain: "painSoft",
+	energy: "energySoft",
+};
 
 interface ChipTriggerProps {
 	label: string;
@@ -25,8 +33,24 @@ export function ChipTrigger({
 }: ChipTriggerProps) {
 	const theme = useTheme();
 	const tintColor = theme.colors[tint];
+	const softColor = theme.colors[SOFT_KEY[tint] ?? "surface"];
 	const interactive = typeof onPress === "function";
 	const isSelected = selected ?? true;
+
+	// Chip d'AFFICHAGE (non tapable) = pastille douce « tag » (fond *Soft, texte
+	// teinté) façon maquette. Chip INTERACTIF = plein quand sélectionné.
+	const bg = interactive ? (isSelected ? tintColor : theme.colors.surface) : softColor;
+	const border = interactive ? (isSelected ? tintColor : theme.colors.border) : "transparent";
+	const labelColor = interactive
+		? isSelected
+			? theme.colors.ctaText
+			: theme.colors.text
+		: tintColor;
+	const levelColor = interactive
+		? isSelected
+			? theme.colors.ctaText
+			: theme.colors.textMuted
+		: tintColor;
 
 	const content = (
 		<View
@@ -34,8 +58,8 @@ export function ChipTrigger({
 				styles.chip,
 				{
 					borderRadius: theme.radii.pill,
-					backgroundColor: isSelected ? tintColor : theme.colors.surface,
-					borderColor: isSelected ? tintColor : theme.colors.border,
+					backgroundColor: bg,
+					borderColor: border,
 					paddingHorizontal: theme.spacing.md,
 				},
 			]}
@@ -43,23 +67,13 @@ export function ChipTrigger({
 			<Text
 				style={[
 					theme.typography.caption,
-					{
-						color: isSelected ? theme.colors.ctaText : theme.colors.text,
-						fontWeight: theme.fontWeight.medium,
-					},
+					{ color: labelColor, fontWeight: theme.fontWeight.medium },
 				]}
 			>
 				{label}
 			</Text>
 			{level ? (
-				<Text
-					style={[
-						theme.typography.caption,
-						{ color: isSelected ? theme.colors.ctaText : theme.colors.textMuted },
-					]}
-				>
-					{level}
-				</Text>
+				<Text style={[theme.typography.caption, { color: levelColor }]}>{level}</Text>
 			) : null}
 		</View>
 	);

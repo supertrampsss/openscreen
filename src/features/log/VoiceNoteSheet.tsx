@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Icon, type IconName } from "@/components/Icon";
 import { DraftSheet, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { VoiceDraft } from "@/domain/voiceEntries";
@@ -13,6 +14,7 @@ import {
 	VoiceError,
 	voiceBaseTimestamp,
 } from "@/services/voiceService";
+import type { DataColorKey } from "@/theme";
 import { useTheme } from "@/theme";
 
 interface Props {
@@ -25,13 +27,22 @@ interface Props {
 	onSeePremium: () => void;
 }
 
-const EMOJI: Record<VoiceDraft["type"], string> = { stool: "💩", symptom: "🤕", meal: "🍽️" };
+const ICONS: Record<VoiceDraft["type"], IconName> = {
+	stool: "stool",
+	symptom: "thermometer",
+	meal: "utensils",
+};
+const TINTS: Record<VoiceDraft["type"], DataColorKey> = {
+	stool: "stool",
+	symptom: "pain",
+	meal: "meal",
+};
 
 /**
  * Note vocale (§5.4, §6.1, §7) — Premium. Deux phases dans le DraftSheet commun :
  *   1) saisie : gros champ texte (dictée clavier système = STT on-device) +
  *      bouton micro si l'API Web Speech est dispo → « Interpréter » ;
- *   2) revue : chips par type éditables (tap = sheet pré-rempli, ✕ = retire) →
+ *   2) revue : chips par type éditables (tap = sheet pré-rempli, × = retire) →
  *      « Tout enregistrer » committe chaque entrée via les repos existants.
  * Si non-Premium : teaser (jamais imposé, pas de second flow).
  */
@@ -216,7 +227,7 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 					<View style={styles.actions}>
 						{recognizer.available ? (
 							<PillButton
-								label={listening ? t("micStop") : `🎙️ ${t("mic")}`}
+								label={listening ? t("micStop") : t("mic")}
 								accessibilityLabel={listening ? t("micStop") : t("mic")}
 								variant="secondary"
 								fullWidth={false}
@@ -263,7 +274,12 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 										onPress={() => editAt(index)}
 										style={styles.rowMain}
 									>
-										<Text style={styles.emoji}>{EMOJI[draft.type]}</Text>
+										<Icon
+											name={ICONS[draft.type]}
+											size={20}
+											color={theme.colors[TINTS[draft.type]]}
+											strokeWidth={1.8}
+										/>
 										<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
 											{label}
 										</Text>
@@ -276,7 +292,7 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 										hitSlop={8}
 										style={styles.remove}
 									>
-										<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>✕</Text>
+										<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>×</Text>
 									</Pressable>
 								</View>
 							);
@@ -310,6 +326,5 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 	},
 	rowMain: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
-	emoji: { fontSize: 22 },
 	remove: { paddingHorizontal: 4, paddingVertical: 8 },
 });

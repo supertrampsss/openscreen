@@ -127,7 +127,7 @@ export default function ExportScreen() {
 						hitSlop={12}
 						style={[styles.close, { backgroundColor: theme.colors.surface }]}
 					>
-						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>✕</Text>
+						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>×</Text>
 					</Pressable>
 				</View>
 

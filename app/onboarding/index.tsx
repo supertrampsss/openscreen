@@ -11,6 +11,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from "react-i18next";
 import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon } from "@/components/Icon";
 import { Card, Confetti, PillButton, TapRow } from "@/components/ui";
 import type { Profile } from "@/db/schema";
 import { useFlare } from "@/features/flare/FlareContext";
@@ -493,7 +494,7 @@ export default function OnboardingScreen() {
 					<StepIntro
 						title={t("notifications.title")}
 						subtitle={t("notifications.body")}
-						media={<Text style={styles.bigEmoji}>🔔</Text>}
+						media={<Icon name="bell" size={72} color={theme.colors.brand} strokeWidth={1.5} />}
 					/>
 				);
 			case 12:
@@ -648,7 +649,6 @@ const styles = StyleSheet.create({
 	},
 	introMedia: { alignItems: "center", justifyContent: "center" },
 	center: { textAlign: "center" },
-	bigEmoji: { fontSize: 72, textAlign: "center" },
 	healthToggle: {
 		flexDirection: "row",
 		alignItems: "center",

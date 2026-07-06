@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon } from "@/components/Icon";
 import { Card, PillButton } from "@/components/ui";
 import {
 	AFA_URGENCY_CARD_URL,
@@ -114,7 +115,7 @@ export default function ToiletsTab() {
 					onPress={() => router.push("/urgence")}
 					style={[styles.bigButton, { backgroundColor: theme.colors.text }]}
 				>
-					<Text style={styles.bigEmoji}>🆘</Text>
+					<Icon name="lifebuoy" size={38} color={theme.colors.background} strokeWidth={1.8} />
 					<Text style={[styles.bigLabel, { color: theme.colors.background }]}>
 						{t("card.openButton")}
 					</Text>
@@ -198,7 +199,9 @@ export default function ToiletsTab() {
 								onPress={() => openDirections(item)}
 							>
 								<Card padding="md" style={styles.row}>
-									<Text style={styles.rowEmoji}>🚻</Text>
+									<View style={[styles.avatar, { backgroundColor: theme.colors.brandSoft }]}>
+										<Icon name="pin" size={20} color={theme.colors.brand} strokeWidth={1.8} />
+									</View>
 									<View style={styles.rowBody}>
 										<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
 											{item.name ?? t("toilets.unnamed")}
@@ -209,7 +212,7 @@ export default function ToiletsTab() {
 											{item.fee ? ` · ${t("toilets.fee")}` : ""}
 										</Text>
 									</View>
-									<Text style={[theme.typography.subheading, { color: theme.colors.meal }]}>→</Text>
+									<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 								</Card>
 							</Pressable>
 						))}
@@ -269,12 +272,17 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		paddingVertical: 28,
 		alignItems: "center",
-		gap: 6,
+		gap: 8,
 	},
-	bigEmoji: { fontSize: 40 },
 	bigLabel: { fontSize: 22, fontWeight: "800", letterSpacing: 0.5 },
 	row: { flexDirection: "row", alignItems: "center", gap: 12 },
-	rowEmoji: { fontSize: 22 },
+	avatar: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
 	rowBody: { flex: 1, gap: 2 },
 	complements: { flexDirection: "row", flexWrap: "wrap", gap: 16, marginTop: 4 },
 });

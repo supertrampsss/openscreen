@@ -1,7 +1,7 @@
 /**
  * Flamme de streak (§5.1, §7) — top bar Home.
  *
- * Affiche la série « jours documentés ». Gelée en poussée → flamme grisée + ❄️.
+ * Affiche la série « jours documentés ». Gelée en poussée → flamme grisée + flocon.
  * Tap → petit sheet explicatif, copy bienveillant orienté dossier médical (§7),
  * jamais culpabilisant.
  */
@@ -9,6 +9,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { DraftSheet } from "@/components/ui";
 import type { StreakResult } from "@/domain/streak";
 import { useTheme } from "@/theme";
@@ -34,9 +35,12 @@ export function StreakFlame({ streak }: { streak: StreakResult | null }) {
 					{ backgroundColor: theme.colors.surface, borderRadius: theme.radii.pill },
 				]}
 			>
-				<Text style={[styles.emoji, frozen ? styles.frozenEmoji : null]}>
-					{frozen ? "❄️" : "🔥"}
-				</Text>
+				<Icon
+					name={frozen ? "snowflake" : "flame"}
+					size={17}
+					color={frozen ? theme.colors.textFaint : theme.colors.pain}
+					strokeWidth={1.9}
+				/>
 				<Text
 					style={[
 						theme.typography.subheading,
@@ -84,6 +88,4 @@ const styles = StyleSheet.create({
 		paddingVertical: 6,
 		minHeight: 40,
 	},
-	emoji: { fontSize: 18 },
-	frozenEmoji: { opacity: 0.9 },
 });

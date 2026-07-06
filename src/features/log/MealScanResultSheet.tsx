@@ -317,7 +317,7 @@ export function MealScanResultSheet({
 								hitSlop={8}
 								style={styles.remove}
 							>
-								<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>✕</Text>
+								<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>×</Text>
 							</Pressable>
 						</View>
 					))

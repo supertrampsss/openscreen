@@ -22,33 +22,35 @@ export const fontWeight = {
  * mesures affichées au centre des anneaux et cartes.
  */
 export const typography = {
-	/** Très gros chiffre central (anneau « Aujourd'hui »). */
+	/** Très gros chiffre central (anneau, grosses mesures). */
 	dataXL: {
-		fontSize: 48,
+		fontSize: 38,
 		fontWeight: fontWeight.bold,
-		letterSpacing: -1,
+		letterSpacing: -1.1,
 	},
-	/** Gros chiffre de carte. */
+	/** Gros chiffre de carte / stat tile. */
 	dataLg: {
-		fontSize: 34,
+		fontSize: 27,
 		fontWeight: fontWeight.bold,
-		letterSpacing: -0.5,
+		letterSpacing: -0.6,
 	},
 	/** Titre d'écran. */
 	title: {
 		fontSize: 28,
 		fontWeight: fontWeight.bold,
-		letterSpacing: -0.3,
+		letterSpacing: -0.4,
 	},
 	/** En-tête de section / titre de carte. */
 	heading: {
-		fontSize: 20,
+		fontSize: 19,
 		fontWeight: fontWeight.semibold,
+		letterSpacing: -0.2,
 	},
 	/** Sous-titre. */
 	subheading: {
 		fontSize: 17,
 		fontWeight: fontWeight.semibold,
+		letterSpacing: -0.1,
 	},
 	/** Corps de texte. */
 	body: {
@@ -64,6 +66,13 @@ export const typography = {
 	caption: {
 		fontSize: 13,
 		fontWeight: fontWeight.regular,
+	},
+	/** Micro-label capitale (en-têtes de section, unités). */
+	overline: {
+		fontSize: 12,
+		fontWeight: fontWeight.semibold,
+		letterSpacing: 0.6,
+		textTransform: "uppercase",
 	},
 } as const satisfies Record<string, TextStyle>;
 
