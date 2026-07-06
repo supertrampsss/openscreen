@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, SectionList, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
-import { Card } from "@/components/ui";
+import { Card, FadeInView } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { SymptomEntry } from "@/db/schema";
 import {
@@ -27,6 +27,7 @@ import {
 	softDelete as softDeleteMeal,
 } from "@/repositories/mealRepo";
 import { listAll, restore, softDelete } from "@/repositories/symptomRepo";
+import { haptics } from "@/services/haptics";
 import type { DataColorKey } from "@/theme";
 import { useTheme } from "@/theme";
 
@@ -136,12 +137,14 @@ export default function JournalScreen() {
 	}, [anchorDate, sections]);
 
 	const openEntry = (entry: SymptomEntry) => {
+		haptics.selection();
 		setResume(entry);
 		if (entry.kind === "stool") setStoolOpen(true);
 		else setSymptomOpen(true);
 	};
 
 	const openMeal = (meal: MealWithItems) => {
+		haptics.selection();
 		setResumeMeal(meal);
 		setMealOpen(true);
 	};
@@ -196,7 +199,7 @@ export default function JournalScreen() {
 				stickySectionHeadersEnabled={false}
 				ListHeaderComponent={header}
 				ListEmptyComponent={
-					<View style={styles.emptyInline}>
+					<FadeInView style={styles.emptyInline}>
 						<View style={[styles.emptyIcon, { backgroundColor: theme.colors.brandSoft }]}>
 							<Icon name="journal" size={30} color={theme.colors.brand} strokeWidth={1.7} />
 						</View>
@@ -206,7 +209,7 @@ export default function JournalScreen() {
 						<Text style={[theme.typography.body, styles.center, { color: theme.colors.textMuted }]}>
 							{t("emptyHint")}
 						</Text>
-					</View>
+					</FadeInView>
 				}
 				renderSectionHeader={({ section }) => {
 					const s = section as Section;
@@ -387,7 +390,10 @@ function DeleteButton({ onDelete }: { onDelete: () => void }) {
 		<Pressable
 			accessibilityRole="button"
 			accessibilityLabel={t("actions.delete")}
-			onPress={onDelete}
+			onPress={() => {
+				haptics.selection();
+				onDelete();
+			}}
 			hitSlop={8}
 			style={styles.delete}
 		>

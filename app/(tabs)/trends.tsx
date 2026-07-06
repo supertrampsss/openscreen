@@ -16,6 +16,7 @@ import {
 	Card,
 	type ChartBand,
 	ChipTrigger,
+	FadeInView,
 	LineChart,
 	Segmented,
 	type SegmentedOption,
@@ -45,8 +46,13 @@ import {
 	loadAssociations,
 	topAssociations,
 } from "@/services/correlationService";
+import { haptics } from "@/services/haptics";
 import { documentedLocalDates } from "@/services/streakService";
 import { useTheme } from "@/theme";
+
+/** Décalage d'apparition en cascade (§3, plafonné pour rester calme). */
+const STAGGER = 40;
+const staggerDelay = (i: number) => Math.min(i, 7) * STAGGER;
 
 const COMPLICATION_KEYS = [
 	"arthralgia",
@@ -265,170 +271,202 @@ export default function TrendsScreen() {
 					gap: theme.spacing.lg,
 				}}
 			>
-				<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("title")}</Text>
+				<FadeInView delay={staggerDelay(0)}>
+					<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("title")}</Text>
+				</FadeInView>
 
 				{/* Préparer ma consultation → écran Export médecin (§5.8). */}
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={tx("card.trendsTitle")}
-					testID="trends-export"
-					onPress={() => router.push("/export")}
-				>
-					<Card style={styles.exportCard}>
-						<View style={[styles.exportIcon, { backgroundColor: theme.colors.brandSoft }]}>
-							<Icon name="stethoscope" size={22} color={theme.colors.brand} strokeWidth={1.8} />
-						</View>
-						<View style={styles.exportBody}>
-							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-								{tx("card.trendsTitle")}
-							</Text>
-							<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-								{tx("card.trendsBody")}
-							</Text>
-						</View>
-						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
-					</Card>
-				</Pressable>
+				<FadeInView delay={staggerDelay(1)}>
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel={tx("card.trendsTitle")}
+						accessibilityHint={tx("card.trendsBody")}
+						testID="trends-export"
+						onPress={() => {
+							haptics.selection();
+							router.push("/export");
+						}}
+					>
+						<Card style={styles.exportCard}>
+							<View style={[styles.exportIcon, { backgroundColor: theme.colors.brandSoft }]}>
+								<Icon name="stethoscope" size={22} color={theme.colors.brand} strokeWidth={1.8} />
+							</View>
+							<View style={styles.exportBody}>
+								<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+									{tx("card.trendsTitle")}
+								</Text>
+								<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+									{tx("card.trendsBody")}
+								</Text>
+							</View>
+							<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
+						</Card>
+					</Pressable>
+				</FadeInView>
 
 				{/* Sélecteur de période 30 / 90 j. */}
-				<Segmented
-					options={periodOptions}
-					value={String(period)}
-					onChange={(v) => setPeriod(v === "90" ? 90 : 30)}
-					accessibilityLabel={t("title")}
-				/>
+				<FadeInView delay={staggerDelay(2)}>
+					<Segmented
+						options={periodOptions}
+						value={String(period)}
+						onChange={(v) => setPeriod(v === "90" ? 90 : 30)}
+						accessibilityLabel={t("title")}
+					/>
+				</FadeInView>
 
 				{/* --- Résumé de la semaine. --- */}
-				<SectionHeader label={t("sections.summary")} />
+				<FadeInView delay={staggerDelay(3)}>
+					<SectionHeader label={t("sections.summary")} />
+				</FadeInView>
 
 				{/* Bilan « Votre semaine ». */}
-				<Card testID="trends-week" style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-						{t("week.title")}
-					</Text>
-					<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-						{t("week.days", { count: data.digest.documentedDays })} ·{" "}
-						{t("week.stools", { count: data.digest.totalStools })}
-					</Text>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-						{t(`week.notable.${data.digest.notable.kind}`, {
-							count: data.digest.notable.count ?? 0,
-						})}
-					</Text>
-				</Card>
+				<FadeInView delay={staggerDelay(4)}>
+					<Card testID="trends-week" style={{ gap: theme.spacing.sm }}>
+						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+							{t("week.title")}
+						</Text>
+						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+							{t("week.days", { count: data.digest.documentedDays })} ·{" "}
+							{t("week.stools", { count: data.digest.totalStools })}
+						</Text>
+						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+							{t(`week.notable.${data.digest.notable.kind}`, {
+								count: data.digest.notable.count ?? 0,
+							})}
+						</Text>
+					</Card>
+				</FadeInView>
 
 				{/* Insight IA de la semaine (§7) — Premium (sinon teaser discret). */}
-				<WeeklyInsightCard input={data.insightInput} />
+				<FadeInView delay={staggerDelay(5)}>
+					<WeeklyInsightCard input={data.insightInput} />
+				</FadeInView>
 
 				{/* --- Courbes. --- */}
-				<SectionHeader label={t("sections.charts")} />
+				<FadeInView delay={staggerDelay(6)}>
+					<SectionHeader label={t("sections.charts")} />
+				</FadeInView>
 
 				{/* Score HBI / SCCAI. */}
-				<Card style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-						{data.scoreKind === "sccai" ? t("score.titleSccai") : t("score.titleHbi")}
-					</Text>
-					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-						{data.scoreKind === "sccai" ? t("score.captionSccai") : t("score.captionHbi")}
-					</Text>
-					{data.undiagnosed ? (
-						<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-							{t("score.undiagnosedNote")}
+				<FadeInView delay={staggerDelay(7)}>
+					<Card style={{ gap: theme.spacing.sm }}>
+						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+							{data.scoreKind === "sccai" ? t("score.titleSccai") : t("score.titleHbi")}
 						</Text>
-					) : null}
-					{hasScore ? (
-						<>
-							<LineChart
-								testID="chart-score"
-								data={data.scoreSeries}
-								color={theme.colors.text}
-								width={chartWidth}
-								min={0}
-								max={scoreMax}
-								bands={scoreBands}
-							/>
-							<BandLegend kind={data.scoreKind} />
-						</>
-					) : (
-						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-							{t("score.empty")}
+						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+							{data.scoreKind === "sccai" ? t("score.captionSccai") : t("score.captionHbi")}
 						</Text>
-					)}
-				</Card>
+						{data.undiagnosed ? (
+							<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+								{t("score.undiagnosedNote")}
+							</Text>
+						) : null}
+						{hasScore ? (
+							<>
+								<LineChart
+									testID="chart-score"
+									data={data.scoreSeries}
+									color={theme.colors.text}
+									width={chartWidth}
+									min={0}
+									max={scoreMax}
+									bands={scoreBands}
+								/>
+								<BandLegend kind={data.scoreKind} />
+							</>
+						) : (
+							<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+								{t("score.empty")}
+							</Text>
+						)}
+					</Card>
+				</FadeInView>
 
-				<ChartCard
-					title={t("stools.title")}
-					data={data.stoolsPerDay}
-					color={theme.colors.stool}
-					width={chartWidth}
-				/>
-				<ChartCard
-					title={t("pain.title")}
-					data={data.painPerDay}
-					color={theme.colors.pain}
-					width={chartWidth}
-					max={3}
-				/>
-				<ChartCard
-					title={t("fatigue.title")}
-					data={data.fatiguePerDay}
-					color={theme.colors.energy}
-					width={chartWidth}
-					max={3}
-				/>
+				<FadeInView delay={staggerDelay(7)}>
+					<ChartCard
+						title={t("stools.title")}
+						data={data.stoolsPerDay}
+						color={theme.colors.stool}
+						width={chartWidth}
+					/>
+				</FadeInView>
+				<FadeInView delay={staggerDelay(7)}>
+					<ChartCard
+						title={t("pain.title")}
+						data={data.painPerDay}
+						color={theme.colors.pain}
+						width={chartWidth}
+						max={3}
+					/>
+				</FadeInView>
+				<FadeInView delay={staggerDelay(7)}>
+					<ChartCard
+						title={t("fatigue.title")}
+						data={data.fatiguePerDay}
+						color={theme.colors.energy}
+						width={chartWidth}
+						max={3}
+					/>
+				</FadeInView>
 
 				{/* --- Analyse. --- */}
-				<SectionHeader label={t("sections.analysis")} />
+				<FadeInView delay={staggerDelay(7)}>
+					<SectionHeader label={t("sections.analysis")} />
+				</FadeInView>
 
 				{/* Associations alimentaires — corrélations réelles + garde-fous (§5.7). */}
-				<Card testID="trends-correlations" style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-						{t("correlations.title")}
-					</Text>
-					{data.countdown > 0 ? (
-						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-							{t("correlations.countdown", { count: data.countdown })}
+				<FadeInView delay={staggerDelay(7)}>
+					<Card testID="trends-correlations" style={{ gap: theme.spacing.sm }}>
+						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+							{t("correlations.title")}
 						</Text>
-					) : data.associations.length === 0 ? (
-						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-							{t("correlations.empty")}
+						{data.countdown > 0 ? (
+							<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+								{t("correlations.countdown", { count: data.countdown })}
+							</Text>
+						) : data.associations.length === 0 ? (
+							<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+								{t("correlations.empty")}
+							</Text>
+						) : (
+							<View style={{ gap: theme.spacing.md }}>
+								{data.associations.map((a) => (
+									<AssociationRow
+										key={`${a.kind}-${a.key}-${a.signal}`}
+										assoc={a}
+										maxLift={Math.max(...data.associations.map((x) => x.lift), 1)}
+									/>
+								))}
+							</View>
+						)}
+						<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+							{t("correlations.footer")}
 						</Text>
-					) : (
-						<View style={{ gap: theme.spacing.md }}>
-							{data.associations.map((a) => (
-								<AssociationRow
-									key={`${a.kind}-${a.key}-${a.signal}`}
-									assoc={a}
-									maxLift={Math.max(...data.associations.map((x) => x.lift), 1)}
+					</Card>
+				</FadeInView>
+
+				{/* Complications du jour (édite daily_extras). */}
+				<FadeInView delay={staggerDelay(7)}>
+					<Card style={{ gap: theme.spacing.sm }}>
+						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+							{t("complications.title")}
+						</Text>
+						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+							{t("complications.hint")}
+						</Text>
+						<View style={styles.chipWrap}>
+							{COMPLICATION_KEYS.map((key) => (
+								<ChipTrigger
+									key={key}
+									label={t(`complications.labels.${key}`)}
+									tint="stool"
+									selected={data.todayComplications.includes(key)}
+									onPress={() => toggleComplication(key)}
 								/>
 							))}
 						</View>
-					)}
-					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-						{t("correlations.footer")}
-					</Text>
-				</Card>
-
-				{/* Complications du jour (édite daily_extras). */}
-				<Card style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-						{t("complications.title")}
-					</Text>
-					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-						{t("complications.hint")}
-					</Text>
-					<View style={styles.chipWrap}>
-						{COMPLICATION_KEYS.map((key) => (
-							<ChipTrigger
-								key={key}
-								label={t(`complications.labels.${key}`)}
-								tint="stool"
-								selected={data.todayComplications.includes(key)}
-								onPress={() => toggleComplication(key)}
-							/>
-						))}
-					</View>
-				</Card>
+					</Card>
+				</FadeInView>
 			</ScrollView>
 		</View>
 	);

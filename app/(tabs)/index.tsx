@@ -15,10 +15,17 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
+import Animated, {
+	useAnimatedProps,
+	useReducedMotion,
+	useSharedValue,
+	withTiming,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
+import { Wordmark } from "@/components/brand/Wordmark";
 import { Icon, type IconName } from "@/components/Icon";
-import { Card, Sparkline, type WeekDay, WeekStrip } from "@/components/ui";
+import { Card, FadeInView, Sparkline, type WeekDay, WeekStrip } from "@/components/ui";
 import { PillButton } from "@/components/ui/PillButton";
 import type { Meal, SymptomEntry } from "@/db/schema";
 import {
@@ -73,6 +80,7 @@ import {
 import { listActive as listActiveTreatments } from "@/repositories/treatmentRepo";
 import { hasAiConsent } from "@/services/aiConsent";
 import { currentEntitlementToken } from "@/services/entitlements";
+import { haptics } from "@/services/haptics";
 import {
 	analyzeMeal,
 	persistPhoto,
@@ -81,6 +89,12 @@ import {
 } from "@/services/mealScanService";
 import { useStreak } from "@/services/streakService";
 import { useTheme } from "@/theme";
+
+/** Cercle SVG dont le remplissage (strokeDashoffset) s'anime en douceur. */
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+/** Jalons de série (§7) où l'on marque le passage d'un petit retour haptique. */
+const STREAK_MILESTONES = new Set([7, 14, 30, 50, 100, 200, 365]);
 
 interface HomeData {
 	recent: SymptomEntry[];
@@ -241,6 +255,23 @@ export default function HomeScreen() {
 		reload();
 		reloadStreak();
 	}, [reload, reloadStreak]);
+
+	// Jalon de série franchi (§7) : petit succès haptique quand la série atteint
+	// un palier (7, 14, 30…). Comparaison au précédent, jamais au premier chargement.
+	const prevStreak = useRef<number | null>(null);
+	useEffect(() => {
+		const current = streak?.current ?? null;
+		const previous = prevStreak.current;
+		if (
+			previous != null &&
+			current != null &&
+			current > previous &&
+			STREAK_MILESTONES.has(current)
+		) {
+			haptics.success();
+		}
+		prevStreak.current = current;
+	}, [streak?.current]);
 
 	// Flux « Récemment loggé » : entrées symptômes + repas fusionnés par heure.
 	type FeedItem =
@@ -488,61 +519,65 @@ export default function HomeScreen() {
 				}}
 			>
 				<View style={styles.topBar}>
-					<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("appName")}</Text>
+					<Wordmark />
 					<StreakFlame streak={streak} />
 				</View>
 
 				<FlareBanner />
 
-				<WeekStrip days={weekDays} onSelectDay={goToDay} />
+				<FadeInView delay={0}>
+					<WeekStrip days={weekDays} onSelectDay={goToDay} />
+				</FadeInView>
 
 				{/* Échéance de traitement qui approche (§5.9) : carte discrète, ambre pâle
 				    jamais rouge, tap → écran Traitements. */}
 				{data.dueTreatment ? (
-					<Pressable
-						accessibilityRole="button"
-						testID="home-treatment-due"
-						accessibilityLabel={
-							data.dueTreatment.days <= 0
-								? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
-								: ttr("homeCard.dueInDays", {
-										name: data.dueTreatment.name,
-										count: data.dueTreatment.days,
-									})
-						}
-						onPress={() => router.push("/treatments")}
-					>
-						<Card
-							padding="md"
-							style={[
-								styles.recentCard,
-								{
-									backgroundColor: theme.colors.flareBackground,
-									borderColor: theme.colors.flareBorder,
-									borderWidth: StyleSheet.hairlineWidth,
-								},
-							]}
+					<FadeInView delay={40}>
+						<Pressable
+							accessibilityRole="button"
+							testID="home-treatment-due"
+							accessibilityLabel={
+								data.dueTreatment.days <= 0
+									? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
+									: ttr("homeCard.dueInDays", {
+											name: data.dueTreatment.name,
+											count: data.dueTreatment.days,
+										})
+							}
+							onPress={() => router.push("/treatments")}
 						>
-							<View style={[styles.avatar, { backgroundColor: theme.colors.painSoft }]}>
-								<Icon name="capsule" size={20} color={theme.colors.pain} strokeWidth={1.8} />
-							</View>
-							<View style={styles.recentBody}>
-								<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
-									{data.dueTreatment.days <= 0
-										? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
-										: ttr("homeCard.dueInDays", {
-												name: data.dueTreatment.name,
-												count: data.dueTreatment.days,
-											})}
-								</Text>
-							</View>
-							<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
-						</Card>
-					</Pressable>
+							<Card
+								padding="md"
+								style={[
+									styles.recentCard,
+									{
+										backgroundColor: theme.colors.flareBackground,
+										borderColor: theme.colors.flareBorder,
+										borderWidth: StyleSheet.hairlineWidth,
+									},
+								]}
+							>
+								<View style={[styles.avatar, { backgroundColor: theme.colors.painSoft }]}>
+									<Icon name="capsule" size={20} color={theme.colors.pain} strokeWidth={1.8} />
+								</View>
+								<View style={styles.recentBody}>
+									<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
+										{data.dueTreatment.days <= 0
+											? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
+											: ttr("homeCard.dueInDays", {
+													name: data.dueTreatment.name,
+													count: data.dueTreatment.days,
+												})}
+									</Text>
+								</View>
+								<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
+							</Card>
+						</Pressable>
+					</FadeInView>
 				) : null}
 
 				{/* Hero swipeable : page 1 = anneau complétude, page 2 = courbe score. */}
-				<View>
+				<FadeInView delay={80}>
 					<ScrollView
 						horizontal
 						pagingEnabled
@@ -620,9 +655,9 @@ export default function HomeScreen() {
 							</Card>
 						</View>
 					</ScrollView>
-				</View>
+				</FadeInView>
 
-				<View style={styles.miniRow}>
+				<FadeInView delay={120} style={styles.miniRow}>
 					<MiniCard
 						testID="mini-pain"
 						label={t("home.miniPain")}
@@ -647,11 +682,13 @@ export default function HomeScreen() {
 						tint={theme.colors.meal}
 						soft={theme.colors.mealSoft}
 					/>
-				</View>
+				</FadeInView>
 
-				<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-					{t("home.recentTitle")}
-				</Text>
+				<FadeInView delay={160}>
+					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+						{t("home.recentTitle")}
+					</Text>
+				</FadeInView>
 				{recentFeed.length === 0 ? (
 					<Card>
 						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
@@ -660,29 +697,32 @@ export default function HomeScreen() {
 					</Card>
 				) : (
 					<View style={{ gap: theme.spacing.sm }}>
-						{recentFeed.map((f) => {
+						{recentFeed.map((f, i) => {
+							// Cascade douce (~40 ms/rangée), plafonnée pour ne pas traîner.
+							const delay = Math.min(180 + i * 40, 340);
 							if (f.kind === "entry") {
 								return (
-									<RecentRow key={f.entry.id} entry={f.entry} onPress={() => openFor(f.entry)} />
+									<FadeInView key={f.entry.id} delay={delay}>
+										<RecentRow entry={f.entry} onPress={() => openFor(f.entry)} />
+									</FadeInView>
 								);
 							}
 							if (f.kind === "meal") {
 								return (
-									<MealRecentRow
-										key={f.meal.meal.id}
-										meal={f.meal}
-										onPress={() => openMeal(f.meal)}
-									/>
+									<FadeInView key={f.meal.meal.id} delay={delay}>
+										<MealRecentRow meal={f.meal} onPress={() => openMeal(f.meal)} />
+									</FadeInView>
 								);
 							}
 							return (
-								<ScanRecentCard
-									key={f.draft.meal.id}
-									draft={f.draft}
-									status={scanStates[f.draft.meal.id]?.status}
-									onRetry={() => runAnalysis(f.draft.meal)}
-									onManual={() => scanToManual(f.draft.meal)}
-								/>
+								<FadeInView key={f.draft.meal.id} delay={delay}>
+									<ScanRecentCard
+										draft={f.draft}
+										status={scanStates[f.draft.meal.id]?.status}
+										onRetry={() => runAnalysis(f.draft.meal)}
+										onManual={() => scanToManual(f.draft.meal)}
+									/>
+								</FadeInView>
 							);
 						})}
 					</View>
@@ -693,7 +733,10 @@ export default function HomeScreen() {
 				accessibilityRole="button"
 				accessibilityLabel={t("home.addButton")}
 				testID="fab-add"
-				onPress={() => setAddOpen(true)}
+				onPress={() => {
+					haptics.impact("medium");
+					setAddOpen(true);
+				}}
 				style={[
 					styles.fab,
 					theme.shadows.floating,
@@ -794,12 +837,20 @@ function ScanRecentCard({
 			)}
 			<View style={styles.recentBody}>
 				{analyzing ? (
-					<View style={styles.scanRow} testID="scan-shimmer">
-						<ActivityIndicator color={theme.colors.meal} />
-						<Text style={[theme.typography.subheading, { color: theme.colors.textMuted }]}>
-							{t("card.analyzing")}
-						</Text>
-					</View>
+					<FadeInView rise={false}>
+						<View
+							style={styles.scanRow}
+							testID="scan-shimmer"
+							accessibilityLiveRegion="polite"
+							accessibilityRole="text"
+							accessibilityLabel={t("card.analyzing")}
+						>
+							<ActivityIndicator color={theme.colors.meal} />
+							<Text style={[theme.typography.subheading, { color: theme.colors.textMuted }]}>
+								{t("card.analyzing")}
+							</Text>
+						</View>
+					</FadeInView>
 				) : (
 					<>
 						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
@@ -833,8 +884,12 @@ function ScanRecentCard({
 function MealRecentRow({ meal, onPress }: { meal: MealWithItems; onPress: () => void }) {
 	const { t } = useTranslation(["common", "journal", "log"]);
 	const theme = useTheme();
+	const a11yLabel = `${meal.meal.name ?? t("journal:kinds.meal")} · ${formatClock(
+		meal.meal.occurredAt,
+		meal.meal.tz,
+	)}`;
 	return (
-		<Pressable accessibilityRole="button" onPress={onPress}>
+		<Pressable accessibilityRole="button" accessibilityLabel={a11yLabel} onPress={onPress}>
 			<Card padding="md" style={styles.recentCard}>
 				<View style={[styles.avatar, { backgroundColor: theme.colors.mealSoft }]}>
 					<Icon name="utensils" size={20} color={theme.colors.meal} strokeWidth={1.8} />
@@ -879,7 +934,13 @@ const MiniCard = memo(function MiniCard({
 }) {
 	const theme = useTheme();
 	return (
-		<Card padding="md" style={styles.miniCard} testID={testID}>
+		<Card
+			padding="md"
+			style={styles.miniCard}
+			testID={testID}
+			accessible
+			accessibilityLabel={`${label} : ${value}`}
+		>
 			<View style={styles.miniLab}>
 				<View style={[styles.miniChip, { backgroundColor: soft }]}>
 					<Icon name={icon} size={13} color={tint} strokeWidth={1.9} />
@@ -921,8 +982,15 @@ function RecentRow({ entry, onPress }: { entry: SymptomEntry; onPress: () => voi
 	const theme = useTheme();
 	const isStool = entry.kind === "stool";
 
+	const titleText =
+		(isStool ? t("journal:kinds.stool") : t("journal:kinds.symptom")) +
+		(isStool && entry.bristol ? ` · ${t("journal:entry.bristol", { value: entry.bristol })}` : "");
+	const a11yLabel = `${titleText} · ${formatClock(entry.occurredAt, entry.tz)}${
+		entry.isDraft ? ` · ${t("common:draft")}` : ""
+	}`;
+
 	return (
-		<Pressable accessibilityRole="button" onPress={onPress}>
+		<Pressable accessibilityRole="button" accessibilityLabel={a11yLabel} onPress={onPress}>
 			<Card padding="md" style={styles.recentCard}>
 				<View
 					style={[
@@ -971,6 +1039,18 @@ function CompactRing({ progress, value, unit }: { progress: number; value: numbe
 	const radius = (size - strokeWidth) / 2;
 	const circumference = 2 * Math.PI * radius;
 	const center = size / 2;
+
+	// Remplissage animé à l'apparition (§3) : l'arc « se remplit » jusqu'au niveau
+	// du jour. Désarmé en reduced-motion (valeur posée directement).
+	const reduced = useReducedMotion();
+	const fill = useSharedValue(reduced ? clamped : 0);
+	useEffect(() => {
+		fill.value = reduced ? clamped : withTiming(clamped, { duration: 700 });
+	}, [clamped, reduced, fill]);
+	const arcProps = useAnimatedProps(() => ({
+		strokeDashoffset: circumference * (1 - fill.value),
+	}));
+
 	return (
 		<View style={{ width: size, height: size }}>
 			<Svg width={size} height={size}>
@@ -982,7 +1062,7 @@ function CompactRing({ progress, value, unit }: { progress: number; value: numbe
 					strokeWidth={strokeWidth}
 					fill="none"
 				/>
-				<Circle
+				<AnimatedCircle
 					cx={center}
 					cy={center}
 					r={radius}
@@ -991,7 +1071,7 @@ function CompactRing({ progress, value, unit }: { progress: number; value: numbe
 					strokeLinecap="round"
 					fill="none"
 					strokeDasharray={circumference}
-					strokeDashoffset={circumference * (1 - clamped)}
+					animatedProps={arcProps}
 					transform={`rotate(-90 ${center} ${center})`}
 				/>
 			</Svg>

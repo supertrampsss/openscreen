@@ -31,6 +31,7 @@ import {
 	PLACEHOLDER_OFFERINGS,
 	type PurchasePlan,
 } from "@/services/entitlements";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 
 interface Props {
@@ -80,6 +81,7 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 		try {
 			const res = await getEntitlementsProvider().purchase(plan);
 			if (res.premium) {
+				haptics.success();
 				snackbar.show({ message: t("toasts.purchased") });
 				onPurchased?.();
 				return;
@@ -88,8 +90,10 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				snackbar.show({ message: t("toasts.cancelled") });
 				return;
 			}
+			haptics.warning();
 			snackbar.show({ message: t("toasts.error") });
 		} catch {
+			haptics.warning();
 			snackbar.show({ message: t("toasts.error") });
 		} finally {
 			setBusy(false);
@@ -102,12 +106,14 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 		try {
 			const res = await getEntitlementsProvider().restore();
 			if (res.premium) {
+				haptics.success();
 				snackbar.show({ message: t("toasts.restored") });
 				onPurchased?.();
 			} else {
 				snackbar.show({ message: t("toasts.restoreNone") });
 			}
 		} catch {
+			haptics.warning();
 			snackbar.show({ message: t("toasts.error") });
 		} finally {
 			setBusy(false);
@@ -404,7 +410,10 @@ function PlanCard({
 			accessibilityState={{ selected }}
 			accessibilityLabel={`${label} ${price}`}
 			testID={testID}
-			onPress={onPress}
+			onPress={() => {
+				haptics.selection();
+				onPress();
+			}}
 			style={({ pressed }) => [
 				styles.planCard,
 				{

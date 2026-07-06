@@ -66,6 +66,8 @@ function Migrator() {
 					<Stack
 						screenOptions={{
 							headerShown: false,
+							// Transition d'écran douce (§3) — fondu clinique calme, jamais tape-à-l'œil.
+							animation: "fade",
 							contentStyle: { backgroundColor: theme.colors.background },
 						}}
 					>

@@ -7,6 +7,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useReducedMotion } from "react-native-reanimated";
 import { Icon } from "@/components/Icon";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 
 export interface Choice {
@@ -37,7 +38,10 @@ export function ChoiceList({ options, selected, onToggle, multi = false }: Props
 						accessibilityState={multi ? { checked: isSel } : { selected: isSel }}
 						accessibilityLabel={opt.label}
 						testID={opt.testID}
-						onPress={() => onToggle(opt.value)}
+						onPress={() => {
+							haptics.selection();
+							onToggle(opt.value);
+						}}
 						style={({ pressed }) => [
 							styles.row,
 							{

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
-import { Card, Confetti, DraftSheet, PillButton, Segmented } from "@/components/ui";
+import { Card, Confetti, DraftSheet, FadeInView, PillButton, Segmented } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { storeReviewUrl } from "@/constants/branding";
 import type { ReportData } from "@/domain/exportReport";
@@ -17,6 +17,7 @@ import {
 	periodDaysFor,
 	setIdentity,
 } from "@/services/exportService";
+import { haptics } from "@/services/haptics";
 import {
 	markExportDone,
 	recordReviewDeclined,
@@ -24,6 +25,10 @@ import {
 	shouldPromptReview,
 } from "@/services/reviewPrompt";
 import { useTheme } from "@/theme";
+
+/** Décalage d'apparition en cascade (§3, plafonné pour rester calme). */
+const STAGGER = 40;
+const staggerDelay = (i: number) => Math.min(i, 7) * STAGGER;
 
 export default function ExportScreen() {
 	const { t } = useTranslation("export");
@@ -67,6 +72,7 @@ export default function ExportScreen() {
 		setBusy(true);
 		try {
 			await generatePdf(report);
+			haptics.success();
 			const { firstExport } = await markExportDone();
 			if (firstExport) {
 				setConfetti(true);
@@ -76,6 +82,7 @@ export default function ExportScreen() {
 				setReviewOpen(true);
 			}
 		} catch {
+			haptics.warning();
 			snackbar.show({
 				message: t("error.message"),
 				actionLabel: t("error.retry"),
@@ -113,7 +120,7 @@ export default function ExportScreen() {
 				}}
 			>
 				{/* En-tête + fermeture. */}
-				<View style={styles.header}>
+				<FadeInView delay={staggerDelay(0)} style={styles.header}>
 					<View style={styles.headerText}>
 						<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("title")}</Text>
 						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
@@ -124,16 +131,19 @@ export default function ExportScreen() {
 						accessibilityRole="button"
 						accessibilityLabel={t("common:actions.close", { defaultValue: "Fermer" })}
 						testID="export-close"
-						onPress={() => router.back()}
+						onPress={() => {
+							haptics.selection();
+							router.back();
+						}}
 						hitSlop={12}
 						style={[styles.close, { backgroundColor: theme.colors.surface }]}
 					>
 						<Icon name="x" size={18} color={theme.colors.text} strokeWidth={1.9} />
 					</Pressable>
-				</View>
+				</FadeInView>
 
 				{/* Sélecteur de période. */}
-				<View style={{ gap: theme.spacing.sm }}>
+				<FadeInView delay={staggerDelay(1)} style={{ gap: theme.spacing.sm }}>
 					<Text
 						style={[
 							theme.typography.overline,
@@ -153,10 +163,10 @@ export default function ExportScreen() {
 							testID: `export-period-${m}`,
 						}))}
 					/>
-				</View>
+				</FadeInView>
 
 				{/* Identité optionnelle. */}
-				<View style={{ gap: theme.spacing.sm }}>
+				<FadeInView delay={staggerDelay(2)} style={{ gap: theme.spacing.sm }}>
 					<Text
 						style={[
 							theme.typography.overline,
@@ -188,15 +198,17 @@ export default function ExportScreen() {
 					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
 						{t("identity.hint")}
 					</Text>
-				</View>
+				</FadeInView>
 
 				{/* Aperçu natif : points à consulter + dernière semaine. */}
-				<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
-					{t("preview.heading")}
-				</Text>
+				<FadeInView delay={staggerDelay(3)}>
+					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+						{t("preview.heading")}
+					</Text>
+				</FadeInView>
 
 				{hasData ? (
-					<>
+					<FadeInView delay={staggerDelay(4)} style={{ gap: theme.spacing.lg }}>
 						<Card testID="export-consult" style={{ gap: theme.spacing.md }}>
 							<View style={styles.cardHead}>
 								<View style={[styles.cardHeadIcon, { backgroundColor: theme.colors.brandSoft }]}>
@@ -256,27 +268,33 @@ export default function ExportScreen() {
 						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
 							{t("preview.pdfNote")}
 						</Text>
-					</>
+					</FadeInView>
 				) : (
-					<Card>
-						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-							{t("preview.empty")}
-						</Text>
-					</Card>
+					<FadeInView delay={staggerDelay(4)}>
+						<Card>
+							<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+								{t("preview.empty")}
+							</Text>
+						</Card>
+					</FadeInView>
 				)}
 
-				<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-					{t("freeForever")}
-				</Text>
+				<FadeInView delay={staggerDelay(5)}>
+					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+						{t("freeForever")}
+					</Text>
+				</FadeInView>
 
-				<PillButton
-					label={busy ? t("generating") : t("generate")}
-					testID="export-generate"
-					onPress={onGenerate}
-					loading={busy}
-					disabled={!hasData}
-					accessibilityLabel={t("generate")}
-				/>
+				<FadeInView delay={staggerDelay(6)}>
+					<PillButton
+						label={busy ? t("generating") : t("generate")}
+						testID="export-generate"
+						onPress={onGenerate}
+						loading={busy}
+						disabled={!hasData}
+						accessibilityLabel={t("generate")}
+					/>
+				</FadeInView>
 			</ScrollView>
 
 			{/* Demande d'avis (§7) — sheet maison bienveillant, deux issues. */}

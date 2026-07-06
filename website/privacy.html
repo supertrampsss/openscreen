@@ -8,8 +8,8 @@
 			name="description"
 			content="Politique de confidentialité de Crohnicle : vos données de santé restent sur votre appareil, jamais vendues, aucun traqueur. Détail honnête des fonctions IA optionnelles."
 		/>
-		<meta name="theme-color" content="#F7F7F8" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#0F0F10" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#F4F4F7" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0E0E12" media="(prefers-color-scheme: dark)" />
 		<meta name="robots" content="index,follow" />
 		<link rel="icon" href="./assets/favicon.png" />
 		<link rel="apple-touch-icon" href="./assets/icon.png" />
@@ -18,8 +18,21 @@
 	<body>
 		<header class="site-header">
 			<div class="wrap">
-				<a class="brand" href="./">
-					<img src="./assets/icon.png" alt="" />
+				<a class="brand" href="./" aria-label="Crohnicle — accueil">
+					<svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+						<circle
+							cx="20"
+							cy="20"
+							r="14"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="4.2"
+							stroke-linecap="round"
+							stroke-dasharray="76 12"
+							transform="rotate(-65 20 20)"
+						/>
+						<circle cx="20" cy="6" r="3.4" fill="currentColor" />
+					</svg>
 					<span>Crohnicle</span>
 				</a>
 				<nav class="nav-links">
@@ -131,8 +144,14 @@
 		<footer class="site-footer">
 			<div class="wrap">
 				<p class="footer-disclaimer">
-					⚕️ Crohnicle n'est pas un dispositif médical et ne remplace pas un avis médical.
-					En cas de symptôme préoccupant, consultez un professionnel de santé.
+					<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="9" />
+						<path d="M12 8v8M8 12h8" />
+					</svg>
+					<span>
+						Crohnicle n'est pas un dispositif médical et ne remplace pas un avis médical.
+						En cas de symptôme préoccupant, consultez un professionnel de santé.
+					</span>
 				</p>
 				<nav class="footer-links">
 					<a href="mailto:support@crohnicle.app">support@crohnicle.app</a>

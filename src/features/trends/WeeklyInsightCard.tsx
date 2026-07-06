@@ -8,6 +8,7 @@ import { buildInsightAggregates, type InsightAggregatesInput } from "@/domain/in
 import { AiConsentSheet } from "@/features/log/AiConsentSheet";
 import { hasAiConsent } from "@/services/aiConsent";
 import { useEntitlements } from "@/services/entitlements";
+import { haptics } from "@/services/haptics";
 import { getWeeklyInsight, type WeeklyInsight } from "@/services/weeklyInsightService";
 import { useTheme } from "@/theme";
 
@@ -85,7 +86,10 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 				accessibilityRole="button"
 				accessibilityLabel={t("insight.teaser")}
 				testID="insight-teaser"
-				onPress={() => router.push("/premium")}
+				onPress={() => {
+					haptics.selection();
+					router.push("/premium");
+				}}
 			>
 				<Card padding="md" style={styles.teaser}>
 					<Icon name="sparkles" size={18} color={theme.colors.brand} strokeWidth={1.7} />
@@ -110,7 +114,10 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 						accessibilityRole="button"
 						accessibilityLabel={t("insight.regenerate")}
 						testID="insight-regenerate"
-						onPress={() => run(true)}
+						onPress={() => {
+							haptics.selection();
+							run(true);
+						}}
 						hitSlop={8}
 					>
 						<Icon name="refresh" size={18} color={theme.colors.brand} />

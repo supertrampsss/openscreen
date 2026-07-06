@@ -11,6 +11,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from "react-i18next";
 import { Animated, Easing, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Wordmark } from "@/components/brand/Wordmark";
 import { Icon } from "@/components/Icon";
 import { Card, Confetti, PillButton, TapRow } from "@/components/ui";
 import type { Profile } from "@/db/schema";
@@ -236,7 +237,11 @@ export default function OnboardingScreen() {
 					) : (
 						<View style={styles.backSpacer} />
 					)}
-					<View style={[styles.track, { backgroundColor: theme.colors.border }]}>
+					<View
+						accessibilityRole="progressbar"
+						accessibilityValue={{ min: 1, max: TOTAL, now: step + 1 }}
+						style={[styles.track, { backgroundColor: theme.colors.border }]}
+					>
 						<Animated.View
 							style={[
 								styles.fill,
@@ -344,6 +349,7 @@ export default function OnboardingScreen() {
 			case 0:
 				return (
 					<StepIntro
+						brand
 						title={t("welcome.title")}
 						subtitle={t("welcome.subtitle")}
 						media={<ScanAnimation />}
@@ -559,15 +565,23 @@ function StepIntro({
 	subtitle,
 	media,
 	footnote,
+	brand = false,
 }: {
 	title: string;
 	subtitle: string;
 	media: ReactNode;
 	footnote?: string;
+	/** Affiche la marque Crohnicle en tête (écran d'accueil, §2). */
+	brand?: boolean;
 }) {
 	const theme = useTheme();
 	return (
 		<View style={styles.introWrap}>
+			{brand ? (
+				<View style={styles.introBrand}>
+					<Wordmark />
+				</View>
+			) : null}
 			<View style={styles.introMedia}>{media}</View>
 			<View style={styles.introText}>
 				<Text style={[theme.typography.title, styles.center, { color: theme.colors.text }]}>
@@ -724,6 +738,7 @@ const styles = StyleSheet.create({
 		gap: 14,
 		paddingVertical: 24,
 	},
+	introBrand: { alignItems: "center", marginBottom: 4 },
 	introMedia: { alignItems: "center", justifyContent: "center" },
 	introText: { gap: 10, alignItems: "center", alignSelf: "stretch" },
 	center: { textAlign: "center" },

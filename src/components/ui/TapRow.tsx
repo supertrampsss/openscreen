@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { haptics } from "@/services/haptics";
 import type { DataColorKey } from "@/theme";
 import { useTheme } from "@/theme";
 
@@ -64,7 +65,10 @@ export function TapRow<T extends string | number>({
 							accessibilityState={{ selected }}
 							accessibilityLabel={opt.accessibilityLabel ?? opt.label}
 							testID={opt.testID}
-							onPress={() => onChange(opt.value)}
+							onPress={() => {
+								haptics.selection();
+								onChange(opt.value);
+							}}
 							style={({ pressed }) => [
 								styles.cell,
 								{

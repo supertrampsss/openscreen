@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { haptics } from "@/services/haptics";
 import type { DataColorKey, ThemeColors } from "@/theme";
 import { useTheme } from "@/theme";
 
@@ -80,7 +81,14 @@ export function ChipTrigger({
 			accessibilityRole="button"
 			accessibilityState={{ selected: isSelected }}
 			accessibilityLabel={accessibilityLabel ?? `${label}${level ? ` ${level}` : ""}`}
-			onPress={onPress}
+			onPress={
+				onPress
+					? () => {
+							haptics.selection();
+							onPress();
+						}
+					: undefined
+			}
 			style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
 		>
 			{content}

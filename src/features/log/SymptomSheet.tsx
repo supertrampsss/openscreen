@@ -9,6 +9,7 @@ import { type EntryTimestamp, nowEntryTimestamp } from "@/domain/dates";
 import { useFlare } from "@/features/flare/FlareContext";
 import { setComplications } from "@/repositories/dailyExtrasRepo";
 import { commitDraft, type DraftInput, newEntryId, upsertDraft } from "@/repositories/symptomRepo";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 import { Eyebrow, SheetIntro } from "./sheetKit";
 
@@ -135,6 +136,8 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 			if (complications.length > 0) {
 				await setComplications(occurred.localDate, complications);
 			}
+			// Loi 2 : commit OK → petit succès haptique (jamais sur échec).
+			haptics.success();
 			snackbar.show({ message: t("symptom.saved") });
 			onSaved();
 			onClose();

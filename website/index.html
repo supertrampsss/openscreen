@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Crohnicle — Votre compagnon MICI</title>
+		<title>Crohnicle — Documentez votre MICI en secondes par jour</title>
 		<meta
 			name="description"
-			content="Crohnicle : l'app MICI (Crohn et RCH) francophone. Documentez votre maladie en secondes, comprenez vos déclencheurs, arrivez armé·e chez votre gastro. Gratuit à vie, données sur votre appareil."
+			content="Crohnicle : l'app MICI (Crohn et RCH) francophone. Documentez votre maladie en quelques secondes par jour, comprenez vos déclencheurs, arrivez armé·e chez votre gastro. Gratuit à vie, données sur votre appareil."
 		/>
-		<meta name="theme-color" content="#F7F7F8" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#0F0F10" media="(prefers-color-scheme: dark)" />
-		<meta property="og:title" content="Crohnicle — Votre compagnon MICI" />
+		<meta name="theme-color" content="#F4F4F7" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0E0E12" media="(prefers-color-scheme: dark)" />
+		<meta property="og:title" content="Crohnicle — Documentez votre MICI en secondes par jour" />
 		<meta
 			property="og:description"
 			content="Documentez votre maladie en secondes. Comprenez vos déclencheurs. Arrivez armé·e chez votre gastro."
@@ -24,8 +24,21 @@
 	<body>
 		<header class="site-header">
 			<div class="wrap">
-				<a class="brand" href="./">
-					<img src="./assets/icon.png" alt="" />
+				<a class="brand" href="./" aria-label="Crohnicle — accueil">
+					<svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+						<circle
+							cx="20"
+							cy="20"
+							r="14"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="4.2"
+							stroke-linecap="round"
+							stroke-dasharray="76 12"
+							transform="rotate(-65 20 20)"
+						/>
+						<circle cx="20" cy="6" r="3.4" fill="currentColor" />
+					</svg>
 					<span>Crohnicle</span>
 				</a>
 				<nav class="nav-links">
@@ -43,10 +56,10 @@
 				<div class="wrap">
 					<div class="hero-copy">
 						<span class="eyebrow">Crohn &amp; RCH · en français</span>
-						<h1>Votre compagnon MICI</h1>
+						<h1>Documentez votre MICI en secondes par jour</h1>
 						<p class="tagline">
-							Documentez votre maladie en secondes. Comprenez vos déclencheurs. Arrivez
-							armé·e chez votre gastro.
+							Un geste, quelques secondes. Comprenez vos déclencheurs et arrivez armé·e
+							chez votre gastro.
 						</p>
 						<div class="cta-row">
 							<span class="btn btn-store" aria-disabled="true" title="Bientôt disponible">
@@ -61,8 +74,11 @@
 							</span>
 						</div>
 						<p class="cta-note">
-							<a href="#demo">Voir la démo web</a> · Aucun compte requis, aucune donnée
-							envoyée.
+							<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+								<rect x="5" y="11" width="14" height="9" rx="2" />
+								<path d="M8 11V8a4 4 0 0 1 8 0v3" />
+							</svg>
+							Aucun compte requis · Aucune donnée de santé ne quitte votre appareil.
 						</p>
 					</div>
 					<div class="phone">
@@ -71,7 +87,8 @@
 								src="./assets/home.png"
 								width="390"
 								height="844"
-								alt="Écran d'accueil de Crohnicle : anneau de complétude du jour, série « jours documentés », journal récent."
+								loading="eager"
+								alt="Écran d'accueil de Crohnicle : anneau du jour « 4 selles », tuiles douleur, énergie, repas, et journal récent."
 							/>
 						</div>
 					</div>
@@ -89,12 +106,19 @@
 										src="./assets/journal.png"
 										width="390"
 										height="844"
-										alt="Journal de Crohnicle : timeline des logs regroupés par jour."
+										loading="lazy"
+										alt="Journal de Crohnicle : les logs du jour regroupés — repas, symptômes, selles avec leur type Bristol."
 									/>
 								</div>
 							</div>
 						</div>
 						<div class="feature-body" style="--accent: var(--stool)">
+							<span class="feature-icon" aria-hidden="true">
+								<svg class="ico" viewBox="0 0 24 24">
+									<circle cx="12" cy="13" r="7.5" />
+									<path d="M12 13V9M9.5 3h5M18 7l1.4-1.4" />
+								</svg>
+							</span>
 							<h3>3 taps, 5 secondes</h3>
 							<p>
 								Le geste le plus fréquent est le plus rapide. Une selle se note en trois
@@ -121,15 +145,22 @@
 							<div class="phone">
 								<div class="phone-screen">
 									<img
-										src="./assets/home.png"
+										src="./assets/premium.png"
 										width="390"
 										height="844"
-										alt="Repas analysé dans Crohnicle avec ses attributs déclencheurs."
+										loading="lazy"
+										alt="Écran Premium de Crohnicle : analyses photo de repas illimitées, 10 analyses offertes sans carte bancaire."
 									/>
 								</div>
 							</div>
 						</div>
 						<div class="feature-body" style="--accent: var(--meal)">
+							<span class="feature-icon" aria-hidden="true">
+								<svg class="ico" viewBox="0 0 24 24">
+									<path d="M4 8h3l1.4-2h7.2L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+									<circle cx="12" cy="13" r="3.4" />
+								</svg>
+							</span>
 							<h3>Une photo, vos déclencheurs</h3>
 							<p>
 								Prenez votre assiette en photo. L'analyse détecte les
@@ -142,8 +173,50 @@
 								<li>Jamais d'échec silencieux : hors-ligne, on bascule sur la saisie manuelle.</li>
 							</ul>
 							<span class="privacy-note">
-								🔒 Votre photo est analysée puis oubliée — jamais stockée.
+								<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+									<rect x="5" y="11" width="14" height="9" rx="2" />
+									<path d="M8 11V8a4 4 0 0 1 8 0v3" />
+								</svg>
+								Votre photo est analysée puis oubliée — jamais stockée.
 							</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ───────── Tendances ───────── -->
+			<section>
+				<div class="wrap">
+					<div class="feature">
+						<div class="feature-media">
+							<div class="phone">
+								<div class="phone-screen">
+									<img
+										src="./assets/trends.png"
+										width="390"
+										height="844"
+										loading="lazy"
+										alt="Écran Tendances de Crohnicle : résumé de la semaine, insight IA et courbe du score HBI estimé."
+									/>
+								</div>
+							</div>
+						</div>
+						<div class="feature-body" style="--accent: var(--energy)">
+							<span class="feature-icon" aria-hidden="true">
+								<svg class="ico" viewBox="0 0 24 24">
+									<path d="M4 19V5M4 19h16M7 15l3.5-4 3 2.5L20 8" />
+								</svg>
+							</span>
+							<h3>Vos tendances, sans anxiété</h3>
+							<p>
+								Semaine après semaine, Crohnicle relie vos logs en tendances lisibles. Des
+								courbes claires, jamais un score anxiogène.
+							</p>
+							<ul class="feature-list">
+								<li>Score d'activité HBI (Crohn) ou SCCAI (RCH), auto-évalué.</li>
+								<li>Résumé « votre semaine » et associations alimentaires probables.</li>
+								<li>Série gelée pendant les poussées : on ne culpabilise jamais.</li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -152,7 +225,7 @@
 			<!-- ───────── Export médecin ───────── -->
 			<section>
 				<div class="wrap">
-					<div class="feature">
+					<div class="feature reverse">
 						<div class="feature-media">
 							<div class="phone">
 								<div class="phone-screen">
@@ -160,12 +233,19 @@
 										src="./assets/export.png"
 										width="390"
 										height="844"
-										alt="Export médecin de Crohnicle : aperçu du rapport et points à aborder avec le gastro."
+										loading="lazy"
+										alt="Export médecin de Crohnicle : période, 3 points à aborder avec le gastro et résumé de la dernière semaine."
 									/>
 								</div>
 							</div>
 						</div>
-						<div class="feature-body" style="--accent: var(--energy)">
+						<div class="feature-body" style="--accent: var(--brand)">
+							<span class="feature-icon" aria-hidden="true">
+								<svg class="ico" viewBox="0 0 24 24">
+									<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+									<path d="M14 3v5h5M9 13h6M9 17h4" />
+								</svg>
+							</span>
 							<h3>Un rapport propre pour votre gastro</h3>
 							<p>
 								La fonction que les patients réclament partout : un PDF clair à remettre en
@@ -173,10 +253,15 @@
 							</p>
 							<ul class="feature-list">
 								<li>Période 1, 3 ou 6 mois, courbes et tableaux semaine par semaine.</li>
-								<li>Score d'activité HBI (Crohn) ou SCCAI (RCH), auto-évalué.</li>
 								<li>« 3 points à aborder avec votre gastro », générés localement.</li>
+								<li>Identité facultative : rien n'est obligatoire, tout reste sur l'appareil.</li>
 							</ul>
-							<span class="privacy-note">✅ Gratuit à vie — l'export ne sera jamais payant.</span>
+							<span class="privacy-note">
+								<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M20 6 9 17l-5-5" />
+								</svg>
+								Gratuit à vie — l'export ne sera jamais payant.
+							</span>
 						</div>
 					</div>
 				</div>
@@ -185,7 +270,7 @@
 			<!-- ───────── Urgence ───────── -->
 			<section>
 				<div class="wrap">
-					<div class="feature reverse">
+					<div class="feature">
 						<div class="feature-media">
 							<div class="phone">
 								<div class="phone-screen">
@@ -193,16 +278,23 @@
 										src="./assets/urgence.png"
 										width="390"
 										height="844"
-										alt="Carte d'urgence toilettes multilingue de Crohnicle, plein écran."
+										loading="lazy"
+										alt="Carte d'urgence toilettes de Crohnicle, plein écran, en 5 langues à montrer pour obtenir un accès."
 									/>
 								</div>
 							</div>
 						</div>
 						<div class="feature-body" style="--accent: var(--pain)">
+							<span class="feature-icon" aria-hidden="true">
+								<svg class="ico" viewBox="0 0 24 24">
+									<path d="M12 21s7-6.4 7-11a7 7 0 0 0-14 0c0 4.6 7 11 7 11z" />
+									<circle cx="12" cy="10" r="2.5" />
+								</svg>
+							</span>
 							<h3>La carte d'urgence, toujours prête</h3>
 							<p>
-								Le sujet n°1 de la communauté francophone. Une carte d'urgence plein écran,
-								à montrer pour obtenir un accès aux toilettes — en 2 taps, même hors-ligne.
+								Le sujet n°1 de la communauté francophone. Une carte plein écran à montrer
+								pour obtenir un accès aux toilettes — en 2 taps, même hors-ligne.
 							</p>
 							<ul class="feature-list">
 								<li>5 langues : français, anglais, espagnol, allemand, italien.</li>
@@ -218,13 +310,18 @@
 			<section id="lois" style="background: var(--surface)">
 				<div class="wrap">
 					<div class="section-head">
-						<p class="kicker" style="color: var(--energy)">Nos engagements</p>
+						<p class="kicker">Nos engagements</p>
 						<h2>Nos 4 lois</h2>
 						<p>Chaque décision de Crohnicle se tranche dans cet ordre. La confiance est le produit.</p>
 					</div>
 					<div class="laws">
 						<div class="law-card privacy">
-							<span class="law-num">🔒</span>
+							<span class="law-num" aria-hidden="true">
+								<svg class="ico" viewBox="0 0 24 24">
+									<rect x="5" y="11" width="14" height="9" rx="2" />
+									<path d="M8 11V8a4 4 0 0 1 8 0v3" />
+								</svg>
+							</span>
 							<h3>Vos données restent chez vous</h3>
 							<p>
 								Vos données de santé restent sur votre appareil. Pas de compte obligatoire,
@@ -254,7 +351,7 @@
 			<section id="prix">
 				<div class="wrap">
 					<div class="section-head">
-						<p class="kicker" style="color: var(--stool)">Prix honnête</p>
+						<p class="kicker">Prix honnête</p>
 						<h2>Le cœur est gratuit. À vie.</h2>
 						<p>Prix affichés d'emblée, sans engagement, jamais de second flux d'achat.</p>
 					</div>
@@ -264,12 +361,30 @@
 							<div class="price-amount">0 €<span class="per"> / pour toujours</span></div>
 							<p class="price-sub muted">Le suivi complet, sans limite de temps.</p>
 							<ul class="plan-list">
-								<li>Tous les logs : selles, symptômes, repas, traitements</li>
-								<li>Journal, tendances, scores HBI / SCCAI</li>
-								<li>Associations alimentaires</li>
-								<li>Export médecin PDF</li>
-								<li>Sauvegarde &amp; restauration de vos données</li>
-								<li>Carte d'urgence toilettes multilingue</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Tous les logs : selles, symptômes, repas, traitements
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Journal, tendances, scores HBI / SCCAI
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Associations alimentaires
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Export médecin PDF
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Sauvegarde &amp; restauration de vos données
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Carte d'urgence toilettes multilingue
+								</li>
 							</ul>
 						</div>
 						<div class="price-card highlight">
@@ -279,12 +394,31 @@
 							</div>
 							<div class="price-amount">4,99 €<span class="per"> / mois</span></div>
 							<p class="price-sub">ou 29,99 € / an — soit 2,50 € / mois</p>
-							<div class="free-trial">🎁 10 analyses photo offertes, sans carte bancaire.</div>
+							<div class="free-trial">
+								<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+									<rect x="4" y="9" width="16" height="4" rx="1" />
+									<path d="M12 9v11M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6" />
+									<path d="M12 9C11 5.5 9 5 7.8 6c-1 .9-.3 3 4.2 3zM12 9c1-3.5 3-4 4.2-3 1 .9.3 3-4.2 3z" />
+								</svg>
+								10 analyses photo offertes, sans carte bancaire.
+							</div>
 							<ul class="plan-list">
-								<li>Analyses photo de repas illimitées</li>
-								<li>Plusieurs photos par repas (assiette + étiquette)</li>
-								<li>Note vocale <span class="soon">bientôt</span></li>
-								<li>Insight IA hebdomadaire <span class="soon">bientôt</span></li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Analyses photo de repas illimitées
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Plusieurs photos par repas (assiette + étiquette)
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Note vocale <span class="soon">bientôt</span>
+								</li>
+								<li>
+									<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+									Insight IA hebdomadaire <span class="soon">bientôt</span>
+								</li>
 							</ul>
 							<div class="foot">
 								<p class="price-sub muted" style="margin: 0">
@@ -294,7 +428,13 @@
 							</div>
 						</div>
 					</div>
-					<p class="pledge">Vos données et leur export resteront gratuits pour toujours.</p>
+					<p class="pledge">
+						<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+							<rect x="5" y="11" width="14" height="9" rx="2" />
+							<path d="M8 11V8a4 4 0 0 1 8 0v3" />
+						</svg>
+						Vos données et leur export resteront gratuits pour toujours.
+					</p>
 				</div>
 			</section>
 
@@ -378,8 +518,14 @@
 		<footer class="site-footer">
 			<div class="wrap">
 				<p class="footer-disclaimer">
-					⚕️ Crohnicle n'est pas un dispositif médical et ne remplace pas un avis médical.
-					En cas de symptôme préoccupant, consultez un professionnel de santé.
+					<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="12" cy="12" r="9" />
+						<path d="M12 8v8M8 12h8" />
+					</svg>
+					<span>
+						Crohnicle n'est pas un dispositif médical et ne remplace pas un avis médical.
+						En cas de symptôme préoccupant, consultez un professionnel de santé.
+					</span>
 				</p>
 				<nav class="footer-links">
 					<a href="mailto:support@crohnicle.app">support@crohnicle.app</a>

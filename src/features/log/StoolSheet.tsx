@@ -15,6 +15,7 @@ import {
 	newEntryId,
 	upsertDraft,
 } from "@/repositories/symptomRepo";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 import { Eyebrow } from "./sheetKit";
 import { TimeChips, type TimeMode } from "./TimeChips";
@@ -142,6 +143,8 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 				pain,
 			});
 			await commitDraft(entryId);
+			// Loi 2 : commit OK → petit succès haptique (jamais sur échec).
+			haptics.success();
 			snackbar.show({ message: t("stool.saved") });
 			onSaved();
 			onClose();

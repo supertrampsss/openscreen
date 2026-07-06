@@ -3,9 +3,11 @@
 /**
  * Génère les assets de marque Crohnicle (§2, §3) — SANS dépendance externe.
  *
- * Monogramme « C » violet (#8B5CF6) sur fond gris clair (#F7F7F8), anti-aliasé
- * par supersampling, encodé PNG à la main (zlib intégré). Reproductible et sans
- * lockfile modifié (aucune lib de rasterisation n'est disponible dans l'env).
+ * Reproduit la marque `LogoMark` : un anneau ouvert violet (« C » de Crohnicle,
+ * gap en haut à droite) accompagné d'un point de continuité, sur un fond doux
+ * `#F4F4F7` (« clinique calme »). Anti-aliasé par supersampling, encodé PNG à la
+ * main (zlib intégré). Reproductible et sans lockfile modifié (aucune lib de
+ * rasterisation n'est disponible dans l'env / le proxy peut bloquer l'install).
  *
  * Usage : node scripts/gen-icons.mjs
  * Produit : assets/images/{icon,splash-icon,favicon,android-icon-foreground,
@@ -16,9 +18,10 @@ import { writeFileSync } from "node:fs";
 import path from "node:path";
 import { deflateSync } from "node:zlib";
 
-const VIOLET = [0x8b, 0x5c, 0xf6];
-const BG = [0xf7, 0xf7, 0xf8];
-const BLACK = [0x0a, 0x0a, 0x0a];
+// Palette « clinique calme » (cf. src/theme/tokens.ts : `brand` / fonds doux).
+const BRAND = [0x6e, 0x63, 0xe6]; // anneau violet
+const BG = [0xf4, 0xf4, 0xf7]; // fond clair, doux
+const MONO = [0x0a, 0x0a, 0x0a]; // gabarit monochrome Android (l'OS applique sa teinte)
 
 // --- CRC32 (pour les chunks PNG) -----------------------------------------
 const CRC_TABLE = (() => {
@@ -71,32 +74,62 @@ function encodePng(size, rgba) {
 }
 
 /**
- * Dessine le monogramme « C » : un arc épais (anneau ouvert à droite) avec des
- * extrémités arrondies. Renvoie la couverture [0,1] d'un point (supersampling).
+ * Renvoie une fonction de couverture [0,1] pour la marque : anneau ouvert
+ * (« C ») avec un gap en haut à droite + un point de continuité, à l'image de
+ * `LogoMark` (path `M20.5 7.2A9 9 0 1 0 23 14` + point (22.4, 7.6)).
+ *
+ * Repère écran : y vers le bas, angle 0 = droite, angles négatifs = vers le haut.
+ * Le gap est centré sur `gapCenterDeg` et fait `2*gapHalfDeg` d'ouverture ; le
+ * point est posé juste au-delà de l'extrémité haute du gap.
  */
 function makeCoverage(size, opts) {
+	const {
+		radius = 0.32, // rayon extérieur (fraction de la taille)
+		stroke = 0.11, // épaisseur du trait (fraction de la taille)
+		gapCenterDeg = -23, // gap en haut à droite (cf. LogoMark)
+		gapHalfDeg = 23,
+	} = opts;
+
 	const cx = size / 2;
 	const cy = size / 2;
-	const outerR = size * opts.radius;
-	const strokeW = size * opts.stroke;
+	const outerR = size * radius;
+	const strokeW = size * stroke;
 	const innerR = outerR - strokeW;
 	const midR = (outerR + innerR) / 2;
-	const gap = (opts.gapDeg * Math.PI) / 180; // demi-angle d'ouverture (à droite)
 	const cap = strokeW / 2;
-	// extrémités de l'arc (à ±gap autour de l'axe droit).
-	const e1 = [cx + midR * Math.cos(gap), cy + midR * Math.sin(gap)];
-	const e2 = [cx + midR * Math.cos(-gap), cy + midR * Math.sin(-gap)];
+
+	const gapCenter = (gapCenterDeg * Math.PI) / 180;
+	const gapHalf = (gapHalfDeg * Math.PI) / 180;
+	// Extrémités de l'arc (bords du gap) → caps arrondis.
+	const aHigh = gapCenter - gapHalf; // extrémité haute (vers le point)
+	const aLow = gapCenter + gapHalf; // extrémité basse (côté droit)
+	const capHigh = [cx + midR * Math.cos(aHigh), cy + midR * Math.sin(aHigh)];
+	const capLow = [cx + midR * Math.cos(aLow), cy + midR * Math.sin(aLow)];
+
+	// Point de continuité : il flotte dans l'ouverture, juste au-delà du bord
+	// extérieur de l'anneau, près de l'extrémité haute (cf. LogoMark : dot à
+	// ~-37°, rayon 10.6 pour un anneau de rayon 9).
+	const dotAng = gapCenter - gapHalf * 0.55;
+	const dotR = outerR + cap * 1.05;
+	const dot = [cx + dotR * Math.cos(dotAng), cy + dotR * Math.sin(dotAng)];
+	const dotRad = cap * 1.05;
+
+	// Distance angulaire signée min entre `ang` et le centre du gap.
+	const inGap = (ang) => {
+		let d = ang - gapCenter;
+		while (d > Math.PI) d -= 2 * Math.PI;
+		while (d < -Math.PI) d += 2 * Math.PI;
+		return Math.abs(d) < gapHalf;
+	};
 
 	const on = (x, y) => {
+		if (Math.hypot(x - dot[0], y - dot[1]) <= dotRad) return true;
 		const dx = x - cx;
 		const dy = y - cy;
 		const d = Math.hypot(dx, dy);
-		if (d >= innerR && d <= outerR) {
-			const ang = Math.atan2(dy, dx); // [-π,π], 0 = droite
-			if (Math.abs(ang) >= gap) return true;
-		}
-		if (Math.hypot(x - e1[0], y - e1[1]) <= cap) return true;
-		if (Math.hypot(x - e2[0], y - e2[1]) <= cap) return true;
+		if (d >= innerR && d <= outerR && !inGap(Math.atan2(dy, dx))) return true;
+		if (Math.hypot(x - capHigh[0], y - capHigh[1]) <= cap) return true;
+		if (Math.hypot(x - capLow[0], y - capLow[1]) <= cap) return true;
 		return false;
 	};
 
@@ -111,9 +144,9 @@ function makeCoverage(size, opts) {
 	};
 }
 
-/** Construit le RGBA : « C » `fg` composé sur `bg` (bg null = transparent). */
-function render(size, { fg, bg, radius = 0.34, stroke = 0.12, gapDeg = 42 }) {
-	const cov = makeCoverage(size, { radius, stroke, gapDeg });
+/** Construit le RGBA : marque `fg` composée sur `bg` (bg null = transparent). */
+function render(size, { fg, bg, ...opts }) {
+	const cov = makeCoverage(size, opts);
 	const rgba = Buffer.alloc(size * size * 4);
 	for (let y = 0; y < size; y++) {
 		for (let x = 0; x < size; x++) {
@@ -154,20 +187,21 @@ const write = (name, buf) => {
 };
 
 console.log("Génération des assets de marque Crohnicle…");
-// Icône app : « C » violet sur fond gris clair (l'OS applique son propre masque).
-write("icon.png", render(1024, { fg: VIOLET, bg: BG }));
-// Splash : « C » violet sur transparent (fond via splash backgroundColor).
-write("splash-icon.png", render(512, { fg: VIOLET, bg: null }));
+// Icône app : marque violette sur fond doux, carré plein (iOS/OS applique son
+// propre masque arrondi). Anneau ~64 % de la zone → marge de sécurité correcte.
+write("icon.png", render(1024, { fg: BRAND, bg: BG }));
+// Splash : marque violette sur transparent (fond via splash backgroundColor).
+write("splash-icon.png", render(512, { fg: BRAND, bg: null }));
 // Favicon web.
-write("favicon.png", render(64, { fg: VIOLET, bg: null }));
-// Android adaptive : premier plan (zone sûre → rayon réduit), fond, monochrome.
+write("favicon.png", render(64, { fg: BRAND, bg: null }));
+// Android adaptive : premier plan (zone sûre → anneau resserré), fond, monochrome.
 write(
 	"android-icon-foreground.png",
-	render(512, { fg: VIOLET, bg: null, radius: 0.3, stroke: 0.11 }),
+	render(512, { fg: BRAND, bg: null, radius: 0.28, stroke: 0.1 }),
 );
 write("android-icon-background.png", solid(512, BG));
 write(
 	"android-icon-monochrome.png",
-	render(512, { fg: BLACK, bg: null, radius: 0.3, stroke: 0.11 }),
+	render(512, { fg: MONO, bg: null, radius: 0.28, stroke: 0.1 }),
 );
 console.log("Terminé.");

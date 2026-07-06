@@ -8,6 +8,7 @@
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FadeInView } from "@/components/ui";
 import { PremiumPaywall } from "@/features/premium/PremiumPaywall";
 import { useTheme } from "@/theme";
 
@@ -29,7 +30,9 @@ export default function PremiumScreen() {
 					paddingBottom: insets.bottom + theme.spacing.xl,
 				}}
 			>
-				<PremiumPaywall mode="modal" onClose={close} onPurchased={close} />
+				<FadeInView>
+					<PremiumPaywall mode="modal" onClose={close} onPurchased={close} />
+				</FadeInView>
 			</ScrollView>
 		</View>
 	);
