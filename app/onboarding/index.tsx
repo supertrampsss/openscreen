@@ -9,7 +9,7 @@
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Animated, Easing, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
 import { Card, Confetti, PillButton, TapRow } from "@/components/ui";
@@ -107,6 +107,17 @@ export default function OnboardingScreen() {
 		anim.setValue(0);
 		Animated.spring(anim, { toValue: 1, useNativeDriver: true, friction: 8, tension: 60 }).start();
 	}, [step, anim]);
+
+	// Barre de progression : remplissage `brand` animé en douceur d'un écran à l'autre.
+	const progress = useRef(new Animated.Value((step + 1) / TOTAL)).current;
+	useEffect(() => {
+		Animated.timing(progress, {
+			toValue: (step + 1) / TOTAL,
+			duration: 420,
+			easing: Easing.out(Easing.cubic),
+			useNativeDriver: false,
+		}).start();
+	}, [step, progress]);
 
 	const setSingle = <K extends keyof Answers>(key: K, value: Answers[K]) =>
 		setAnswers((a) => ({ ...a, [key]: value }));
@@ -226,12 +237,15 @@ export default function OnboardingScreen() {
 						<View style={styles.backSpacer} />
 					)}
 					<View style={[styles.track, { backgroundColor: theme.colors.border }]}>
-						<View
+						<Animated.View
 							style={[
 								styles.fill,
 								{
-									backgroundColor: theme.colors.text,
-									width: `${((step + 1) / TOTAL) * 100}%`,
+									backgroundColor: theme.colors.brand,
+									width: progress.interpolate({
+										inputRange: [0, 1],
+										outputRange: ["0%", "100%"],
+									}),
 								},
 							]}
 						/>
@@ -555,17 +569,28 @@ function StepIntro({
 	return (
 		<View style={styles.introWrap}>
 			<View style={styles.introMedia}>{media}</View>
-			<Text style={[theme.typography.title, styles.center, { color: theme.colors.text }]}>
-				{title}
-			</Text>
-			<Text style={[theme.typography.body, styles.center, { color: theme.colors.textMuted }]}>
-				{subtitle}
-			</Text>
-			{footnote ? (
-				<Text style={[theme.typography.caption, styles.center, { color: theme.colors.textFaint }]}>
-					{footnote}
+			<View style={styles.introText}>
+				<Text style={[theme.typography.title, styles.center, { color: theme.colors.text }]}>
+					{title}
 				</Text>
-			) : null}
+				<Text
+					style={[
+						theme.typography.body,
+						styles.center,
+						styles.lede,
+						{ color: theme.colors.textMuted },
+					]}
+				>
+					{subtitle}
+				</Text>
+				{footnote ? (
+					<Text
+						style={[theme.typography.caption, styles.center, { color: theme.colors.textFaint }]}
+					>
+						{footnote}
+					</Text>
+				) : null}
+			</View>
 		</View>
 	);
 }
@@ -582,10 +607,12 @@ function StepQuestion({
 }) {
 	const theme = useTheme();
 	return (
-		<View style={{ gap: theme.spacing.md }}>
-			<View style={{ gap: theme.spacing.xs }}>
+		<View style={{ gap: theme.spacing.xl }}>
+			<View style={{ gap: theme.spacing.sm }}>
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>{title}</Text>
-				<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>{subtitle}</Text>
+				<Text style={[theme.typography.body, styles.readable, { color: theme.colors.textMuted }]}>
+					{subtitle}
+				</Text>
 			</View>
 			{children}
 		</View>
@@ -596,35 +623,85 @@ function StepQuestion({
 function StepPlan({ baseline }: { baseline: Baseline | null }) {
 	const { t } = useTranslation("onboarding");
 	const theme = useTheme();
-	const rows = [
+	const rows: {
+		icon: "stool" | "refresh" | "sparkles";
+		tint: "stool" | "meal" | "energy";
+		soft: string;
+		label: string;
+		value: string;
+		accent?: boolean;
+	}[] = [
 		{
+			icon: "stool",
+			tint: "stool",
+			soft: theme.colors.stoolSoft,
 			label: t("plan.baselineLabel"),
 			value: baseline ? t("plan.baselineValue", { range: baseline }) : t("plan.baselineUnknown"),
 		},
-		{ label: t("plan.rhythmLabel"), value: t("plan.rhythmValue") },
-		{ label: t("plan.goalLabel"), value: t("plan.goalValue") },
+		{
+			icon: "refresh",
+			tint: "meal",
+			soft: theme.colors.mealSoft,
+			label: t("plan.rhythmLabel"),
+			value: t("plan.rhythmValue"),
+		},
+		{
+			icon: "sparkles",
+			tint: "energy",
+			soft: theme.colors.energySoft,
+			label: t("plan.goalLabel"),
+			value: t("plan.goalValue"),
+			accent: true,
+		},
 	];
 	return (
-		<View style={{ gap: theme.spacing.lg }}>
-			<View style={{ gap: theme.spacing.xs }}>
-				<Text style={[theme.typography.title, { color: theme.colors.text }]}>
-					{t("plan.title")}
-				</Text>
-				<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
-					{t("plan.subtitle")}
-				</Text>
+		<View style={{ gap: theme.spacing.xl }}>
+			{/* En-tête : pastille de marque + titres. */}
+			<View style={styles.planHeader}>
+				<View style={[styles.planCrest, { backgroundColor: theme.colors.brandSoft }]}>
+					<Icon name="check" size={26} color={theme.colors.brand} strokeWidth={2.4} />
+				</View>
+				<View style={{ gap: theme.spacing.xs }}>
+					<Text style={[theme.typography.title, styles.center, { color: theme.colors.text }]}>
+						{t("plan.title")}
+					</Text>
+					<Text
+						style={[
+							theme.typography.body,
+							styles.center,
+							styles.lede,
+							{ color: theme.colors.textMuted },
+						]}
+					>
+						{t("plan.subtitle")}
+					</Text>
+				</View>
 			</View>
-			<Card style={{ gap: theme.spacing.md }}>
-				{rows.map((row) => (
-					<View key={row.label} style={styles.planRow}>
-						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-							{row.label}
-						</Text>
-						<Text
-							style={[theme.typography.subheading, styles.planValue, { color: theme.colors.text }]}
-						>
-							{row.value}
-						</Text>
+			<Card padding="md" style={{ gap: theme.spacing.xs }}>
+				{rows.map((row, i) => (
+					<View key={row.label}>
+						{i > 0 ? (
+							<View style={[styles.planDivider, { backgroundColor: theme.colors.border }]} />
+						) : null}
+						<View style={styles.planRow}>
+							<View style={[styles.planIcon, { backgroundColor: row.soft }]}>
+								<Icon name={row.icon} size={20} color={theme.colors[row.tint]} strokeWidth={1.8} />
+							</View>
+							<View style={styles.planRowText}>
+								<Text style={[theme.typography.overline, { color: theme.colors.textFaint }]}>
+									{row.label}
+								</Text>
+								<Text
+									style={[
+										theme.typography.subheading,
+										styles.planValue,
+										{ color: row.accent ? theme.colors.brand : theme.colors.text },
+									]}
+								>
+									{row.value}
+								</Text>
+							</View>
+						</View>
 					</View>
 				))}
 			</Card>
@@ -648,7 +725,10 @@ const styles = StyleSheet.create({
 		paddingVertical: 24,
 	},
 	introMedia: { alignItems: "center", justifyContent: "center" },
+	introText: { gap: 10, alignItems: "center", alignSelf: "stretch" },
 	center: { textAlign: "center" },
+	lede: { maxWidth: 320 },
+	readable: { maxWidth: 340 },
 	healthToggle: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -660,6 +740,23 @@ const styles = StyleSheet.create({
 		opacity: 0.7,
 	},
 	soonBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
-	planRow: { gap: 2 },
+	planHeader: { alignItems: "center", gap: 16 },
+	planCrest: {
+		width: 56,
+		height: 56,
+		borderRadius: 999,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	planRow: { flexDirection: "row", alignItems: "center", gap: 14, paddingVertical: 12 },
+	planIcon: {
+		width: 40,
+		height: 40,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	planRowText: { flex: 1, gap: 3 },
+	planDivider: { height: StyleSheet.hairlineWidth },
 	planValue: { lineHeight: 22 },
 });

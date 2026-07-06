@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Card, Confetti, DraftSheet, PillButton } from "@/components/ui";
+import { Icon } from "@/components/Icon";
+import { Card, Confetti, DraftSheet, PillButton, Segmented } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { storeReviewUrl } from "@/constants/branding";
 import type { ReportData } from "@/domain/exportReport";
@@ -127,50 +128,42 @@ export default function ExportScreen() {
 						hitSlop={12}
 						style={[styles.close, { backgroundColor: theme.colors.surface }]}
 					>
-						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>×</Text>
+						<Icon name="x" size={18} color={theme.colors.text} strokeWidth={1.9} />
 					</Pressable>
 				</View>
 
 				{/* Sélecteur de période. */}
 				<View style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+					<Text
+						style={[
+							theme.typography.overline,
+							styles.groupLabel,
+							{ color: theme.colors.textFaint },
+						]}
+					>
 						{t("period.heading")}
 					</Text>
-					<View style={styles.segment}>
-						{PERIOD_MONTHS.map((m) => {
-							const active = months === m;
-							return (
-								<Pressable
-									key={m}
-									testID={`export-period-${m}`}
-									accessibilityRole="button"
-									accessibilityState={{ selected: active }}
-									onPress={() => setMonths(m)}
-									style={[
-										styles.segmentCell,
-										{
-											backgroundColor: active ? theme.colors.text : theme.colors.surface,
-											borderRadius: theme.radii.pill,
-										},
-									]}
-								>
-									<Text
-										style={[
-											theme.typography.label,
-											{ color: active ? theme.colors.background : theme.colors.textMuted },
-										]}
-									>
-										{t(`period.${m}`)}
-									</Text>
-								</Pressable>
-							);
-						})}
-					</View>
+					<Segmented
+						accessibilityLabel={t("period.heading")}
+						value={String(months)}
+						onChange={(v) => setMonths(Number(v) as PeriodMonths)}
+						options={PERIOD_MONTHS.map((m) => ({
+							value: String(m),
+							label: t(`period.${m}`),
+							testID: `export-period-${m}`,
+						}))}
+					/>
 				</View>
 
 				{/* Identité optionnelle. */}
 				<View style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+					<Text
+						style={[
+							theme.typography.overline,
+							styles.groupLabel,
+							{ color: theme.colors.textFaint },
+						]}
+					>
 						{t("identity.heading")}
 					</Text>
 					<TextInput
@@ -204,13 +197,24 @@ export default function ExportScreen() {
 
 				{hasData ? (
 					<>
-						<Card testID="export-consult" style={{ gap: theme.spacing.sm }}>
-							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-								{t("preview.consultTitle")}
-							</Text>
+						<Card testID="export-consult" style={{ gap: theme.spacing.md }}>
+							<View style={styles.cardHead}>
+								<View style={[styles.cardHeadIcon, { backgroundColor: theme.colors.brandSoft }]}>
+									<Icon name="stethoscope" size={20} color={theme.colors.brand} strokeWidth={1.8} />
+								</View>
+								<Text
+									style={[
+										theme.typography.subheading,
+										styles.cardHeadTitle,
+										{ color: theme.colors.text },
+									]}
+								>
+									{t("preview.consultTitle")}
+								</Text>
+							</View>
 							{consultLines.map((line) => (
 								<View key={line} style={styles.bulletRow}>
-									<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>•</Text>
+									<View style={[styles.bulletDot, { backgroundColor: theme.colors.brand }]} />
 									<Text
 										style={[theme.typography.body, styles.bulletText, { color: theme.colors.text }]}
 									>
@@ -222,9 +226,20 @@ export default function ExportScreen() {
 
 						{lastWeek ? (
 							<Card style={{ gap: theme.spacing.sm }}>
-								<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-									{t("preview.lastWeekTitle")}
-								</Text>
+								<View style={styles.cardHead}>
+									<View style={[styles.cardHeadIcon, { backgroundColor: theme.colors.stoolSoft }]}>
+										<Icon name="pulse" size={20} color={theme.colors.stool} strokeWidth={1.9} />
+									</View>
+									<Text
+										style={[
+											theme.typography.subheading,
+											styles.cardHeadTitle,
+											{ color: theme.colors.text },
+										]}
+									>
+										{t("preview.lastWeekTitle")}
+									</Text>
+								</View>
 								<StatLine label={t("report.col.stools")} value={String(lastWeek.stools)} />
 								<StatLine label={t("report.col.bloodDays")} value={String(lastWeek.bloodDays)} />
 								<StatLine
@@ -312,19 +327,23 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		marginLeft: 12,
 	},
-	segment: { flexDirection: "row", gap: 8 },
-	segmentCell: {
-		flex: 1,
-		minHeight: 44,
-		alignItems: "center",
-		justifyContent: "center",
-	},
+	groupLabel: { paddingHorizontal: 4 },
 	input: {
 		minHeight: 48,
 		paddingHorizontal: 14,
 		borderWidth: StyleSheet.hairlineWidth,
 	},
-	bulletRow: { flexDirection: "row", gap: 8 },
+	cardHead: { flexDirection: "row", alignItems: "center", gap: 12 },
+	cardHeadIcon: {
+		width: 38,
+		height: 38,
+		borderRadius: 12,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	cardHeadTitle: { flex: 1 },
+	bulletRow: { flexDirection: "row", gap: 10, alignItems: "flex-start" },
+	bulletDot: { width: 6, height: 6, borderRadius: 999, marginTop: 8 },
 	bulletText: { flex: 1 },
 	statLine: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
 });

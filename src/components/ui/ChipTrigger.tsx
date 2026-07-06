@@ -37,20 +37,13 @@ export function ChipTrigger({
 	const interactive = typeof onPress === "function";
 	const isSelected = selected ?? true;
 
-	// Chip d'AFFICHAGE (non tapable) = pastille douce « tag » (fond *Soft, texte
-	// teinté) façon maquette. Chip INTERACTIF = plein quand sélectionné.
-	const bg = interactive ? (isSelected ? tintColor : theme.colors.surface) : softColor;
-	const border = interactive ? (isSelected ? tintColor : theme.colors.border) : "transparent";
-	const labelColor = interactive
-		? isSelected
-			? theme.colors.ctaText
-			: theme.colors.text
-		: tintColor;
-	const levelColor = interactive
-		? isSelected
-			? theme.colors.ctaText
-			: theme.colors.textMuted
-		: tintColor;
+	// Pastille douce « tag » (fond *Soft, texte teinté) quand sélectionnée ou en
+	// AFFICHAGE (non tapable). Chip INTERACTIF non sélectionné = hairline discret.
+	const showSoft = !interactive || isSelected;
+	const bg = showSoft ? softColor : theme.colors.surface;
+	const border = interactive && !isSelected ? theme.colors.border : "transparent";
+	const labelColor = showSoft ? tintColor : theme.colors.text;
+	const levelColor = showSoft ? tintColor : theme.colors.textMuted;
 
 	const content = (
 		<View

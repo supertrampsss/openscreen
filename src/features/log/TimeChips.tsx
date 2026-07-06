@@ -43,12 +43,13 @@ export function TimeChips({ base, mode, value, onChange }: TimeChipsProps) {
 							accessibilityState={{ selected }}
 							accessibilityLabel={chip.label}
 							onPress={() => onChange(chip.key, chip.ts)}
-							style={[
+							style={({ pressed }) => [
 								styles.chip,
 								{
 									borderRadius: theme.radii.pill,
 									backgroundColor: selected ? theme.colors.text : theme.colors.surface,
 									borderColor: selected ? theme.colors.text : theme.colors.border,
+									opacity: pressed && !selected ? 0.7 : 1,
 								},
 							]}
 						>
@@ -81,11 +82,11 @@ function Stepper({ label, onPress }: { label: string; onPress: () => void }) {
 			accessibilityRole="button"
 			accessibilityLabel={label}
 			onPress={onPress}
-			style={[
+			style={({ pressed }) => [
 				styles.stepper,
 				{
 					borderRadius: theme.radii.md,
-					backgroundColor: theme.colors.surface,
+					backgroundColor: pressed ? theme.colors.border : theme.colors.surface,
 					borderColor: theme.colors.border,
 				},
 			]}

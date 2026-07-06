@@ -931,7 +931,7 @@ function RecentRow({ entry, onPress }: { entry: SymptomEntry; onPress: () => voi
 					]}
 				>
 					<Icon
-						name={isStool ? "stool" : "thermometer"}
+						name={isStool ? "stool" : "pulse"}
 						size={20}
 						color={isStool ? theme.colors.stool : theme.colors.pain}
 						strokeWidth={1.8}

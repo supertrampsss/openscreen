@@ -8,10 +8,22 @@ interface CardProps extends ViewProps {
 	flare?: boolean;
 	/** Padding interne (clé de spacing). Défaut : lg. */
 	padding?: "sm" | "md" | "lg" | "xl";
+	/**
+	 * `elevated` (défaut) = hairline + ombre douce.
+	 * `flat` = hairline seule, sans ombre — pour cartes imbriquées.
+	 */
+	variant?: "elevated" | "flat";
 	style?: ViewStyle | ViewStyle[];
 }
 
-export function Card({ children, flare = false, padding = "lg", style, ...rest }: CardProps) {
+export function Card({
+	children,
+	flare = false,
+	padding = "lg",
+	variant = "elevated",
+	style,
+	...rest
+}: CardProps) {
 	const theme = useTheme();
 	return (
 		<View
@@ -19,11 +31,11 @@ export function Card({ children, flare = false, padding = "lg", style, ...rest }
 				styles.base,
 				{
 					backgroundColor: flare ? theme.colors.flareBackground : theme.colors.card,
-					borderRadius: theme.radii.lg,
+					borderRadius: theme.radii.xl,
 					padding: theme.spacing[padding],
 					borderColor: flare ? theme.colors.flareBorder : theme.colors.border,
 				},
-				theme.shadows.card,
+				variant === "elevated" ? theme.shadows.card : null,
 				style,
 			]}
 			{...rest}

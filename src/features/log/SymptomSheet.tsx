@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { ChipTrigger, DraftSheet, TapRow } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { SymptomEntry } from "@/db/schema";
@@ -9,6 +10,7 @@ import { useFlare } from "@/features/flare/FlareContext";
 import { setComplications } from "@/repositories/dailyExtrasRepo";
 import { commitDraft, type DraftInput, newEntryId, upsertDraft } from "@/repositories/symptomRepo";
 import { useTheme } from "@/theme";
+import { Eyebrow, SheetIntro } from "./sheetKit";
 
 interface SymptomSheetProps {
 	visible: boolean;
@@ -162,32 +164,37 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 			confirmTestID="symptom-save"
 			confirmAccessibilityLabel={t("symptom.save")}
 		>
-			<TapRow
-				title={t("symptom.wellbeing")}
-				options={wellbeingLevels}
-				value={wellbeing}
-				onChange={(v) => {
-					setWellbeing(v);
-					persist({ wellbeing: v });
-				}}
-				tint="energy"
-			/>
-			<TapRow
-				title={t("symptom.pain")}
-				options={levels(3)}
-				value={pain}
-				onChange={(v) => {
-					setPain(v);
-					persist({ pain: v });
-				}}
-				tint="pain"
-			/>
+			<SheetIntro icon="pulse" tint="pain" soft="painSoft" text={t("symptom.subtitle")} />
+			<View style={{ gap: theme.spacing.sm }}>
+				<Eyebrow>{t("symptom.wellbeing")}</Eyebrow>
+				<TapRow
+					accessibilityLabel={t("symptom.wellbeing")}
+					options={wellbeingLevels}
+					value={wellbeing}
+					onChange={(v) => {
+						setWellbeing(v);
+						persist({ wellbeing: v });
+					}}
+					tint="energy"
+				/>
+			</View>
+			<View style={{ gap: theme.spacing.sm }}>
+				<Eyebrow>{t("symptom.pain")}</Eyebrow>
+				<TapRow
+					accessibilityLabel={t("symptom.pain")}
+					options={levels(3)}
+					value={pain}
+					onChange={(v) => {
+						setPain(v);
+						persist({ pain: v });
+					}}
+					tint="pain"
+				/>
+			</View>
 			{showExtras ? (
 				<>
 					<View style={{ gap: theme.spacing.sm }}>
-						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-							{t("symptom.painZone")}
-						</Text>
+						<Eyebrow>{t("symptom.painZone")}</Eyebrow>
 						<View style={styles.chipWrap}>
 							{ZONE_KEYS.map((zone) => (
 								<ChipTrigger
@@ -204,20 +211,21 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 							))}
 						</View>
 					</View>
-					<TapRow
-						title={t("symptom.fatigue")}
-						options={levels(3)}
-						value={fatigue}
-						onChange={(v) => {
-							setFatigue(v);
-							persist({ fatigue: v });
-						}}
-						tint="energy"
-					/>
 					<View style={{ gap: theme.spacing.sm }}>
-						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-							{t("symptom.extraIntestinal")}
-						</Text>
+						<Eyebrow>{t("symptom.fatigue")}</Eyebrow>
+						<TapRow
+							accessibilityLabel={t("symptom.fatigue")}
+							options={levels(3)}
+							value={fatigue}
+							onChange={(v) => {
+								setFatigue(v);
+								persist({ fatigue: v });
+							}}
+							tint="energy"
+						/>
+					</View>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Eyebrow>{t("symptom.extraIntestinal")}</Eyebrow>
 						<View style={styles.chipWrap}>
 							{COMPLICATION_KEYS.map((key) => (
 								<ChipTrigger
@@ -251,25 +259,31 @@ export function SymptomSheet({ visible, onClose, onSaved, resume }: SymptomSheet
 								]}
 							/>
 						) : (
-							<Text
+							<Pressable
 								accessibilityRole="button"
 								onPress={() => setNotesOpen(true)}
-								style={[theme.typography.label, { color: theme.colors.meal }]}
+								style={({ pressed }) => [styles.moreRow, { opacity: pressed ? 0.6 : 1 }]}
 							>
-								+ {t("symptom.addNote")}
-							</Text>
+								<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
+								<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+									{t("symptom.addNote")}
+								</Text>
+							</Pressable>
 						)}
 					</View>
 				</>
 			) : (
-				<Text
+				<Pressable
 					accessibilityRole="button"
 					testID="symptom-more"
 					onPress={() => setExpanded(true)}
-					style={[theme.typography.label, { color: theme.colors.meal }]}
+					style={({ pressed }) => [styles.moreRow, { opacity: pressed ? 0.6 : 1 }]}
 				>
-					+ {t("showMore")}
-				</Text>
+					<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
+					<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+						{t("showMore")}
+					</Text>
+				</Pressable>
 			)}
 		</DraftSheet>
 	);
@@ -280,6 +294,13 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		flexWrap: "wrap",
 		gap: 8,
+	},
+	moreRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 6,
+		alignSelf: "flex-start",
+		minHeight: 32,
 	},
 	notes: {
 		minHeight: 80,

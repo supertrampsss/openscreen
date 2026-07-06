@@ -27,7 +27,7 @@ const ROWS: Row[] = [
 	{ icon: "camera", tint: "brand", soft: "brandSoft", labelKey: "addMenu.photo", action: "photo" },
 	{ icon: "stool", tint: "stool", soft: "stoolSoft", labelKey: "addMenu.stool", action: "stool" },
 	{
-		icon: "thermometer",
+		icon: "pulse",
 		tint: "pain",
 		soft: "painSoft",
 		labelKey: "addMenu.symptoms",
@@ -64,11 +64,12 @@ export function AddSheet({ visible, onClose, onPick }: AddSheetProps) {
 							onPress={() => {
 								if (row.action) onPick(row.action);
 							}}
-							style={[
+							style={({ pressed }) => [
 								styles.row,
 								{
-									borderRadius: theme.radii.md,
-									backgroundColor: theme.colors.surface,
+									borderRadius: theme.radii.lg,
+									backgroundColor: pressed ? theme.colors.border : theme.colors.surface,
+									borderColor: theme.colors.border,
 									opacity: disabled ? 0.45 : 1,
 								},
 							]}
@@ -87,7 +88,14 @@ export function AddSheet({ visible, onClose, onPick }: AddSheetProps) {
 										{t(row.badgeKey)}
 									</Text>
 								</View>
-							) : null}
+							) : (
+								<Icon
+									name="chevronRight"
+									size={18}
+									color={theme.colors.textFaint}
+									strokeWidth={1.8}
+								/>
+							)}
 						</Pressable>
 					);
 				})}
@@ -102,7 +110,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		gap: 14,
 		paddingHorizontal: 16,
-		minHeight: 60,
+		minHeight: 64,
+		borderWidth: StyleSheet.hairlineWidth,
 	},
 	avatar: {
 		width: 42,

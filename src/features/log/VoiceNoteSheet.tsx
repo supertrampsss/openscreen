@@ -14,8 +14,9 @@ import {
 	VoiceError,
 	voiceBaseTimestamp,
 } from "@/services/voiceService";
-import type { DataColorKey } from "@/theme";
+import type { DataColorKey, ThemeColors } from "@/theme";
 import { useTheme } from "@/theme";
+import { Eyebrow, RemoveButton } from "./sheetKit";
 
 interface Props {
 	visible: boolean;
@@ -29,13 +30,18 @@ interface Props {
 
 const ICONS: Record<VoiceDraft["type"], IconName> = {
 	stool: "stool",
-	symptom: "thermometer",
+	symptom: "pulse",
 	meal: "utensils",
 };
 const TINTS: Record<VoiceDraft["type"], DataColorKey> = {
 	stool: "stool",
 	symptom: "pain",
 	meal: "meal",
+};
+const SOFTS: Record<VoiceDraft["type"], keyof ThemeColors> = {
+	stool: "stoolSoft",
+	symptom: "painSoft",
+	meal: "mealSoft",
 };
 
 /**
@@ -248,9 +254,7 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 				</>
 			) : (
 				<View style={{ gap: theme.spacing.sm }} testID="voice-review">
-					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-						{t("review.title")}
-					</Text>
+					<Eyebrow>{t("review.title")}</Eyebrow>
 					{drafts.length === 0 ? (
 						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 							{t("review.empty")}
@@ -272,28 +276,33 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 										accessibilityLabel={t("review.edit", { label })}
 										testID={`voice-edit-${index}`}
 										onPress={() => editAt(index)}
-										style={styles.rowMain}
+										style={({ pressed }) => [styles.rowMain, { opacity: pressed ? 0.7 : 1 }]}
 									>
-										<Icon
-											name={ICONS[draft.type]}
-											size={20}
-											color={theme.colors[TINTS[draft.type]]}
-											strokeWidth={1.8}
-										/>
-										<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+										<View
+											style={[styles.avatar, { backgroundColor: theme.colors[SOFTS[draft.type]] }]}
+										>
+											<Icon
+												name={ICONS[draft.type]}
+												size={18}
+												color={theme.colors[TINTS[draft.type]]}
+												strokeWidth={1.8}
+											/>
+										</View>
+										<Text
+											style={[
+												theme.typography.subheading,
+												styles.rowLabel,
+												{ color: theme.colors.text },
+											]}
+										>
 											{label}
 										</Text>
 									</Pressable>
-									<Pressable
-										accessibilityRole="button"
+									<RemoveButton
 										accessibilityLabel={t("review.remove", { label })}
 										testID={`voice-remove-${index}`}
 										onPress={() => removeAt(index)}
-										hitSlop={8}
-										style={styles.remove}
-									>
-										<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>×</Text>
-									</Pressable>
+									/>
 								</View>
 							);
 						})
@@ -303,9 +312,11 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 						accessibilityLabel={t("review.back")}
 						testID="voice-back"
 						onPress={() => setDrafts(null)}
+						style={({ pressed }) => [styles.backRow, { opacity: pressed ? 0.6 : 1 }]}
 					>
+						<Icon name="chevronLeft" size={16} color={theme.colors.meal} strokeWidth={1.8} />
 						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
-							‹ {t("review.back")}
+							{t("review.back")}
 						</Text>
 					</Pressable>
 				</View>
@@ -325,6 +336,21 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 12,
 		paddingVertical: 10,
 	},
-	rowMain: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
-	remove: { paddingHorizontal: 4, paddingVertical: 8 },
+	rowMain: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
+	rowLabel: { flex: 1 },
+	avatar: {
+		width: 34,
+		height: 34,
+		borderRadius: 11,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	backRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 6,
+		alignSelf: "flex-start",
+		minHeight: 32,
+		paddingVertical: 2,
+	},
 });

@@ -2,6 +2,7 @@ import { Image } from "expo-image";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { ChipTrigger, DraftSheet, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { Meal } from "@/db/schema";
@@ -25,6 +26,7 @@ import {
 	type ScanResponse,
 } from "@/services/mealScanService";
 import { useTheme } from "@/theme";
+import { Eyebrow, PortionButton, RemoveButton } from "./sheetKit";
 
 interface EditableItem {
 	key: string;
@@ -199,12 +201,24 @@ export function MealScanResultSheet({
 		}
 	};
 
-	const confBar =
+	const confBadge =
 		confidence === "high"
-			? { color: theme.colors.energy, label: t("result.confidence.high") }
+			? {
+					color: theme.colors.energy,
+					soft: theme.colors.energySoft,
+					label: t("result.confidence.high"),
+				}
 			: confidence === "low"
-				? { color: theme.colors.pain, label: t("result.confidence.low") }
-				: { color: theme.colors.textMuted, label: t("result.confidence.medium") };
+				? {
+						color: theme.colors.pain,
+						soft: theme.colors.painSoft,
+						label: t("result.confidence.low"),
+					}
+				: {
+						color: theme.colors.textMuted,
+						soft: theme.colors.surface,
+						label: t("result.confidence.medium"),
+					};
 
 	const showCreateCustom = query.trim().length > 0 && results.length === 0;
 	const hasFood = items.length > 0;
@@ -235,31 +249,44 @@ export function MealScanResultSheet({
 				{meal.photoUri ? (
 					<Image
 						source={{ uri: meal.photoUri }}
-						style={[styles.thumb, { borderRadius: theme.radii.md }]}
+						style={[styles.thumb, { borderRadius: theme.radii.lg }]}
 						contentFit="cover"
 						testID="scan-thumb"
 					/>
 				) : null}
 				<View style={styles.headerBody}>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+					<Text numberOfLines={2} style={[theme.typography.heading, { color: theme.colors.text }]}>
 						{name || t("result.title")}
 					</Text>
+					{/* Confiance IA (§G9) : toujours visible, pastille douce teintée. */}
 					<View style={styles.confRow}>
-						<View style={[styles.confDot, { backgroundColor: confBar.color }]} />
-						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-							{confBar.label}
-							{confidence === "low" ? ` · ${t("result.checkIngredients")}` : ""}
-						</Text>
+						<View style={[styles.confBadge, { backgroundColor: confBadge.soft }]}>
+							<View style={[styles.confDot, { backgroundColor: confBadge.color }]} />
+							<Text
+								style={[
+									theme.typography.caption,
+									{ color: confBadge.color, fontWeight: theme.fontWeight.semibold },
+								]}
+							>
+								{confBadge.label}
+							</Text>
+						</View>
+						{confidence === "low" ? (
+							<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+								{t("result.checkIngredients")}
+							</Text>
+						) : null}
 					</View>
-					{/* Disclaimer IA (§G9) : estimation à vérifier, jamais un avis médical. */}
-					<Text
-						testID="scan-ai-disclaimer"
-						style={[theme.typography.caption, { color: theme.colors.textFaint }]}
-					>
-						{t("result.aiDisclaimer")}
-					</Text>
 				</View>
 			</View>
+
+			{/* Disclaimer IA (§G9) : estimation à vérifier, jamais un avis médical. */}
+			<Text
+				testID="scan-ai-disclaimer"
+				style={[theme.typography.caption, { color: theme.colors.textFaint }]}
+			>
+				{t("result.aiDisclaimer")}
+			</Text>
 
 			{/* Transparence IA (privacy) : où va la photo, sobre et discret. */}
 			<Text
@@ -271,9 +298,7 @@ export function MealScanResultSheet({
 
 			{/* Ingrédients détectés. */}
 			<View style={{ gap: theme.spacing.sm }} testID="scan-ingredients">
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("result.ingredients")}
-				</Text>
+				<Eyebrow>{t("result.ingredients")}</Eyebrow>
 				{hasFood ? (
 					items.map((item) => (
 						<View
@@ -294,31 +319,18 @@ export function MealScanResultSheet({
 									))}
 								</View>
 							</View>
-							<Pressable
-								accessibilityRole="button"
+							<PortionButton
+								label={t(`log:meal.portion.${item.portion}`)}
 								accessibilityLabel={t("result.cyclePortion", {
 									size: t(`log:meal.portion.${item.portion}`),
 								})}
 								onPress={() => cyclePortion(item.key)}
-								style={[
-									styles.portion,
-									{ borderRadius: theme.radii.pill, borderColor: theme.colors.meal },
-								]}
-							>
-								<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
-									{t(`log:meal.portion.${item.portion}`)}
-								</Text>
-							</Pressable>
-							<Pressable
-								accessibilityRole="button"
+							/>
+							<RemoveButton
 								accessibilityLabel={t("result.remove", { name: item.name })}
-								onLongPress={() => removeItem(item.key)}
 								onPress={() => removeItem(item.key)}
-								hitSlop={8}
-								style={styles.remove}
-							>
-								<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>×</Text>
-							</Pressable>
+								onLongPress={() => removeItem(item.key)}
+							/>
 						</View>
 					))
 				) : (
@@ -354,26 +366,39 @@ export function MealScanResultSheet({
 						accessibilityRole="button"
 						accessibilityLabel={food.displayFr}
 						onPress={() => addFood(food)}
-						style={[
+						style={({ pressed }) => [
 							styles.resultRow,
-							{ borderRadius: theme.radii.sm, backgroundColor: theme.colors.surface },
+							{
+								borderRadius: theme.radii.md,
+								backgroundColor: pressed ? theme.colors.border : theme.colors.surface,
+							},
 						]}
 					>
-						<Text style={[theme.typography.body, { color: theme.colors.text }]}>
+						<Text
+							numberOfLines={1}
+							style={[theme.typography.body, styles.resultLabel, { color: theme.colors.text }]}
+						>
 							{food.displayFr}
 						</Text>
+						<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
 					</Pressable>
 				))}
 				{showCreateCustom ? (
 					<Pressable
 						accessibilityRole="button"
 						onPress={createCustom}
-						style={[
+						style={({ pressed }) => [
 							styles.resultRow,
-							{ borderRadius: theme.radii.sm, backgroundColor: theme.colors.surface },
+							{
+								borderRadius: theme.radii.md,
+								backgroundColor: pressed ? theme.colors.border : theme.colors.surface,
+							},
 						]}
 					>
-						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+						<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
+						<Text
+							style={[theme.typography.label, styles.resultLabel, { color: theme.colors.meal }]}
+						>
 							{t("result.createCustom", { name: query.trim() })}
 						</Text>
 					</Pressable>
@@ -381,10 +406,8 @@ export function MealScanResultSheet({
 			</View>
 
 			{/* « Corriger » : champ libre → ré-analyse. */}
-			<View style={{ gap: theme.spacing.xs }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("result.correctLabel")}
-				</Text>
+			<View style={{ gap: theme.spacing.sm }}>
+				<Eyebrow>{t("result.correctLabel")}</Eyebrow>
 				<TextInput
 					accessibilityLabel={t("result.correctLabel")}
 					testID="scan-correct"
@@ -440,11 +463,19 @@ export function MealScanResultSheet({
 
 const styles = StyleSheet.create({
 	banner: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12 },
-	header: { flexDirection: "row", gap: 12, alignItems: "center" },
-	thumb: { width: 64, height: 64 },
-	headerBody: { flex: 1, gap: 4 },
-	confRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-	confDot: { width: 8, height: 8, borderRadius: 999 },
+	header: { flexDirection: "row", gap: 14, alignItems: "center" },
+	thumb: { width: 72, height: 72 },
+	headerBody: { flex: 1, gap: 8 },
+	confRow: { flexDirection: "row", alignItems: "center", gap: 8, flexWrap: "wrap" },
+	confBadge: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 6,
+		paddingHorizontal: 10,
+		paddingVertical: 4,
+		borderRadius: 999,
+	},
+	confDot: { width: 7, height: 7, borderRadius: 999 },
 	itemRow: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -454,20 +485,14 @@ const styles = StyleSheet.create({
 	},
 	itemMain: { flex: 1, gap: 4 },
 	chips: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 6 },
-	portion: {
-		minWidth: 36,
-		minHeight: 36,
-		alignItems: "center",
-		justifyContent: "center",
-		borderWidth: StyleSheet.hairlineWidth,
-	},
-	remove: { paddingHorizontal: 4, paddingVertical: 8 },
 	input: { minHeight: 48, paddingHorizontal: 14, paddingVertical: 10 },
 	resultRow: {
-		minHeight: 44,
+		minHeight: 46,
 		paddingHorizontal: 12,
 		paddingVertical: 8,
 		flexDirection: "row",
 		alignItems: "center",
+		gap: 8,
 	},
+	resultLabel: { flex: 1 },
 });
