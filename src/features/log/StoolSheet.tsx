@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { BristolIcon, type BristolType } from "@/components/BristolIcon";
+import { Icon } from "@/components/Icon";
 import { DraftSheet, TapRow } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { SymptomEntry } from "@/db/schema";
@@ -15,6 +16,7 @@ import {
 	upsertDraft,
 } from "@/repositories/symptomRepo";
 import { useTheme } from "@/theme";
+import { Eyebrow } from "./sheetKit";
 import { TimeChips, type TimeMode } from "./TimeChips";
 
 interface StoolSheetProps {
@@ -173,13 +175,15 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 			confirmTestID="stool-save"
 		>
 			<View style={{ gap: theme.spacing.sm }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("stool.bristol")}
-				</Text>
+				<Eyebrow>{t("stool.bristol")}</Eyebrow>
 				<ScrollView
 					horizontal
 					showsHorizontalScrollIndicator={false}
-					contentContainerStyle={{ gap: theme.spacing.sm, paddingVertical: 2 }}
+					contentContainerStyle={{
+						gap: theme.spacing.sm,
+						paddingVertical: 2,
+						paddingHorizontal: 1,
+					}}
 				>
 					{BRISTOL_TYPES.map((type) => {
 						const selected = bristol === type;
@@ -191,12 +195,14 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 								accessibilityLabel={t("stool.bristolType", { n: type })}
 								testID={`bristol-${type}`}
 								onPress={() => chooseBristol(type)}
-								style={[
+								style={({ pressed }) => [
 									styles.bristolCell,
 									{
-										borderRadius: theme.radii.md,
-										backgroundColor: selected ? theme.colors.surface : "transparent",
+										borderRadius: theme.radii.lg,
+										backgroundColor: selected ? theme.colors.stoolSoft : theme.colors.card,
 										borderColor: selected ? theme.colors.stool : theme.colors.border,
+										borderWidth: selected ? 1.5 : StyleSheet.hairlineWidth,
+										opacity: pressed && !selected ? 0.7 : 1,
 									},
 								]}
 							>
@@ -204,7 +210,10 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 								<Text
 									style={[
 										theme.typography.caption,
-										{ color: selected ? theme.colors.stool : theme.colors.textMuted },
+										{
+											color: selected ? theme.colors.stool : theme.colors.textMuted,
+											fontWeight: selected ? theme.fontWeight.semibold : theme.fontWeight.regular,
+										},
 									]}
 								>
 									{type}
@@ -217,53 +226,63 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 
 			{showExtras ? (
 				<>
-					<TapRow
-						title={t("stool.urgency")}
-						options={levelOptions("urgencyLevels", 3, "urgency")}
-						value={urgency}
-						onChange={(v) => {
-							setUrgency(v);
-							persist({ urgency: v });
-						}}
-						tint="pain"
-					/>
-					<TapRow
-						title={t("stool.blood")}
-						options={levelOptions("bloodLevels", 2, "blood")}
-						value={blood}
-						onChange={(v) => {
-							setBlood(v);
-							persist({ blood: v });
-						}}
-						tint="blood"
-					/>
-					<TapRow
-						title={t("stool.pain")}
-						options={levelOptions("painLevels", 3, "pain")}
-						value={pain}
-						onChange={(v) => {
-							setPain(v);
-							persist({ pain: v });
-						}}
-						tint="pain"
-					/>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Eyebrow>{t("stool.urgency")}</Eyebrow>
+						<TapRow
+							accessibilityLabel={t("stool.urgency")}
+							options={levelOptions("urgencyLevels", 3, "urgency")}
+							value={urgency}
+							onChange={(v) => {
+								setUrgency(v);
+								persist({ urgency: v });
+							}}
+							tint="pain"
+						/>
+					</View>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Eyebrow>{t("stool.blood")}</Eyebrow>
+						<TapRow
+							accessibilityLabel={t("stool.blood")}
+							options={levelOptions("bloodLevels", 2, "blood")}
+							value={blood}
+							onChange={(v) => {
+								setBlood(v);
+								persist({ blood: v });
+							}}
+							tint="blood"
+						/>
+					</View>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Eyebrow>{t("stool.pain")}</Eyebrow>
+						<TapRow
+							accessibilityLabel={t("stool.pain")}
+							options={levelOptions("painLevels", 3, "pain")}
+							value={pain}
+							onChange={(v) => {
+								setPain(v);
+								persist({ pain: v });
+							}}
+							tint="pain"
+						/>
+					</View>
 
-					<View style={{ gap: theme.spacing.xs }}>
-						<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-							{t("stool.time")}
-						</Text>
+					<View style={{ gap: theme.spacing.sm }}>
+						<Eyebrow>{t("stool.time")}</Eyebrow>
 						<TimeChips base={base} mode={timeMode} value={occurred} onChange={chooseTime} />
 					</View>
 				</>
 			) : (
-				<Text
+				<Pressable
 					accessibilityRole="button"
 					testID="stool-more"
 					onPress={() => setExpanded(true)}
-					style={[theme.typography.label, { color: theme.colors.meal }]}
+					style={({ pressed }) => [styles.moreRow, { opacity: pressed ? 0.6 : 1 }]}
 				>
-					+ {t("showMore")}
-				</Text>
+					<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
+					<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+						{t("showMore")}
+					</Text>
+				</Pressable>
 			)}
 		</DraftSheet>
 	);
@@ -271,11 +290,17 @@ export function StoolSheet({ visible, onClose, onSaved, resume }: StoolSheetProp
 
 const styles = StyleSheet.create({
 	bristolCell: {
-		width: 56,
-		minHeight: 72,
+		width: 60,
+		minHeight: 76,
 		alignItems: "center",
 		justifyContent: "center",
-		gap: 4,
-		borderWidth: StyleSheet.hairlineWidth,
+		gap: 6,
+	},
+	moreRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 6,
+		alignSelf: "flex-start",
+		minHeight: 32,
 	},
 });

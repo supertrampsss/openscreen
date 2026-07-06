@@ -20,6 +20,18 @@ import { useTheme } from "@/theme";
 /** Nombre de long-press sur la version qui bascule le Premium simulé (dev). */
 const DEV_TOGGLE_TAPS = 5;
 
+/** En-tête de section discret (overline capitale, « Clinique calme »). */
+function SectionLabel({ children }: { children: string }) {
+	const theme = useTheme();
+	return (
+		<Text
+			style={[theme.typography.overline, styles.sectionLabel, { color: theme.colors.textFaint }]}
+		>
+			{children}
+		</Text>
+	);
+}
+
 export default function SettingsScreen() {
 	const { t } = useTranslation("common");
 	const { t: tx } = useTranslation("export");
@@ -91,35 +103,13 @@ export default function SettingsScreen() {
 				contentContainerStyle={{
 					padding: theme.spacing.lg,
 					paddingTop: insets.top + theme.spacing.md,
+					paddingBottom: insets.bottom + 24,
 					gap: theme.spacing.lg,
 				}}
 			>
 				<Text style={[theme.typography.title, { color: theme.colors.text }]}>
 					{t("settings.title")}
 				</Text>
-
-				{/* Traitements (§5.9) : rappels biothérapie, observance, effets secondaires. */}
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={ttr("settingsCard.title")}
-					testID="settings-treatments"
-					onPress={() => router.push("/treatments")}
-				>
-					<Card style={styles.premiumRow}>
-						<View style={[styles.rowIcon, { backgroundColor: theme.colors.brandSoft }]}>
-							<Icon name="capsule" size={22} color={theme.colors.brand} strokeWidth={1.8} />
-						</View>
-						<View style={styles.premiumBody}>
-							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-								{ttr("settingsCard.title")}
-							</Text>
-							<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-								{ttr("settingsCard.body")}
-							</Text>
-						</View>
-						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
-					</Card>
-				</Pressable>
 
 				{/* Carte mise en avant : export médecin (§5.8, gratuit à vie). */}
 				<Pressable
@@ -129,8 +119,10 @@ export default function SettingsScreen() {
 					onPress={() => router.push("/export")}
 				>
 					<Card style={[styles.exportCard, { backgroundColor: theme.colors.text }]}>
-						<Icon name="stethoscope" size={26} color={theme.colors.background} strokeWidth={1.8} />
-						<View style={styles.exportBody}>
+						<View style={[styles.exportIcon, { backgroundColor: theme.colors.ctaText }]}>
+							<Icon name="stethoscope" size={24} color={theme.colors.text} strokeWidth={1.8} />
+						</View>
+						<View style={styles.rowBody}>
 							<Text style={[theme.typography.subheading, { color: theme.colors.background }]}>
 								{tx("card.settingsTitle")}
 							</Text>
@@ -138,45 +130,75 @@ export default function SettingsScreen() {
 								{tx("card.settingsBody")}
 							</Text>
 						</View>
-						<Icon name="chevronRight" size={20} color={theme.colors.background} />
-					</Card>
-				</Pressable>
-
-				{/* Crohnicle Premium (§8) : statut + accès au paywall éthique. */}
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={tp("settingsRow")}
-					testID="settings-premium"
-					onPress={() => router.push("/premium")}
-				>
-					<Card style={styles.premiumRow}>
-						<View style={[styles.rowIcon, { backgroundColor: theme.colors.brandSoft }]}>
-							<Icon name="sparkles" size={22} color={theme.colors.brand} strokeWidth={1.7} />
-						</View>
-						<View style={styles.premiumBody}>
-							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-								{tp("settingsRow")}
-							</Text>
-							<Text
-								testID="settings-premium-status"
-								style={[
-									theme.typography.caption,
-									{ color: entitlement.premium ? theme.colors.energy : theme.colors.textMuted },
-								]}
-							>
-								{entitlement.premium ? tp("status.premium") : tp("status.free")}
-							</Text>
-						</View>
 						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 					</Card>
 				</Pressable>
 
+				<View style={styles.section}>
+					<SectionLabel>{t("settings.sections.care")}</SectionLabel>
+
+					{/* Traitements (§5.9) : rappels biothérapie, observance, effets secondaires. */}
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel={ttr("settingsCard.title")}
+						testID="settings-treatments"
+						onPress={() => router.push("/treatments")}
+					>
+						<Card style={styles.row}>
+							<View style={[styles.rowIcon, { backgroundColor: theme.colors.brandSoft }]}>
+								<Icon name="capsule" size={22} color={theme.colors.brand} strokeWidth={1.8} />
+							</View>
+							<View style={styles.rowBody}>
+								<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+									{ttr("settingsCard.title")}
+								</Text>
+								<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+									{ttr("settingsCard.body")}
+								</Text>
+							</View>
+							<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
+						</Card>
+					</Pressable>
+
+					{/* Crohnicle Premium (§8) : statut + accès au paywall éthique. */}
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel={tp("settingsRow")}
+						testID="settings-premium"
+						onPress={() => router.push("/premium")}
+					>
+						<Card
+							style={[
+								styles.row,
+								{ backgroundColor: theme.colors.brandSoft, borderColor: theme.colors.brand },
+							]}
+						>
+							<View style={[styles.rowIcon, { backgroundColor: theme.colors.card }]}>
+								<Icon name="sparkles" size={22} color={theme.colors.brand} strokeWidth={1.7} />
+							</View>
+							<View style={styles.rowBody}>
+								<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+									{tp("settingsRow")}
+								</Text>
+								<Text
+									testID="settings-premium-status"
+									style={[
+										theme.typography.caption,
+										{ color: entitlement.premium ? theme.colors.energy : theme.colors.textMuted },
+									]}
+								>
+									{entitlement.premium ? tp("status.premium") : tp("status.free")}
+								</Text>
+							</View>
+							<Icon name="chevronRight" size={20} color={theme.colors.brand} />
+						</Card>
+					</Pressable>
+				</View>
+
 				<NotificationsSettings />
 
-				<View style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-						{t("flare.sectionTitle")}
-					</Text>
+				<View style={styles.section}>
+					<SectionLabel>{t("flare.sectionTitle")}</SectionLabel>
 					<Card style={{ gap: theme.spacing.md }}>
 						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 							{t("flare.sectionBody")}
@@ -190,10 +212,8 @@ export default function SettingsScreen() {
 					</Card>
 				</View>
 
-				<View style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-						{t("settings.dataSection")}
-					</Text>
+				<View style={styles.section}>
+					<SectionLabel>{t("settings.dataSection")}</SectionLabel>
 					<Card style={{ gap: theme.spacing.md }}>
 						<PillButton
 							label={t("settings.backup")}
@@ -208,63 +228,80 @@ export default function SettingsScreen() {
 							disabled={busy}
 							accessibilityLabel={t("settings.restore")}
 						/>
+						<PillButton
+							label={t("settings.replayOnboarding")}
+							variant="secondary"
+							onPress={() => void replay()}
+							accessibilityLabel={t("settings.replayOnboarding")}
+							testID="settings-replay-onboarding"
+						/>
 					</Card>
 				</View>
 
-				<PillButton
-					label={t("settings.replayOnboarding")}
-					variant="secondary"
-					onPress={() => void replay()}
-					accessibilityLabel={t("settings.replayOnboarding")}
-					testID="settings-replay-onboarding"
-				/>
+				<View style={styles.section}>
+					<SectionLabel>{t("settings.sections.about")}</SectionLabel>
+					<Card style={{ gap: theme.spacing.sm }}>
+						<View style={styles.privacyHead}>
+							<View style={[styles.rowIcon, { backgroundColor: theme.colors.energySoft }]}>
+								<Icon name="check" size={20} color={theme.colors.energy} strokeWidth={1.9} />
+							</View>
+							<Text
+								style={[
+									theme.typography.subheading,
+									styles.privacyTitle,
+									{ color: theme.colors.text },
+								]}
+							>
+								{t("settings.privacyTitle")}
+							</Text>
+						</View>
+						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
+							{t("settings.privacyBody")}
+						</Text>
+						<View style={styles.legalLinks}>
+							<Pressable
+								accessibilityRole="link"
+								accessibilityLabel={t("settings.privacyLink")}
+								testID="settings-privacy-link"
+								onPress={() => Linking.openURL(PRIVACY_URL).catch(() => undefined)}
+								style={styles.legalLink}
+							>
+								<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+									{t("settings.privacyLink")}
+								</Text>
+							</Pressable>
+							<Pressable
+								accessibilityRole="link"
+								accessibilityLabel={t("settings.termsLink")}
+								testID="settings-terms-link"
+								onPress={() => Linking.openURL(TERMS_URL).catch(() => undefined)}
+								style={styles.legalLink}
+							>
+								<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+									{t("settings.termsLink")}
+								</Text>
+							</Pressable>
+						</View>
+					</Card>
 
-				<Card>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-						{t("settings.privacyTitle")}
-					</Text>
-					<Text style={[theme.typography.body, { color: theme.colors.textMuted, marginTop: 8 }]}>
-						{t("settings.privacyBody")}
-					</Text>
-					<Pressable
-						accessibilityRole="link"
-						accessibilityLabel={t("settings.privacyLink")}
-						testID="settings-privacy-link"
-						onPress={() => Linking.openURL(PRIVACY_URL).catch(() => undefined)}
-						style={styles.legalLink}
+					<Text
+						style={[theme.typography.caption, styles.aboutFoot, { color: theme.colors.textFaint }]}
 					>
-						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
-							{t("settings.privacyLink")}
+						{t("settings.disclaimer")}
+					</Text>
+
+					<Pressable
+						accessibilityRole="text"
+						accessibilityLabel={t("settings.version", { version: appVersion })}
+						testID="settings-version"
+						onLongPress={onVersionLongPress}
+						delayLongPress={350}
+					>
+						<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+							{t("settings.version", { version: appVersion })}
 						</Text>
 					</Pressable>
-					<Pressable
-						accessibilityRole="link"
-						accessibilityLabel={t("settings.termsLink")}
-						testID="settings-terms-link"
-						onPress={() => Linking.openURL(TERMS_URL).catch(() => undefined)}
-						style={styles.legalLink}
-					>
-						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
-							{t("settings.termsLink")}
-						</Text>
-					</Pressable>
-				</Card>
-
-				<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-					{t("settings.disclaimer")}
-				</Text>
-
-				<Pressable
-					accessibilityRole="text"
-					accessibilityLabel={t("settings.version", { version: appVersion })}
-					testID="settings-version"
-					onLongPress={onVersionLongPress}
-					delayLongPress={350}
-				>
-					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-						{t("settings.version", { version: appVersion })}
-					</Text>
-				</Pressable>
+				</View>
 			</ScrollView>
 		</View>
 	);
@@ -272,9 +309,17 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
 	flex: { flex: 1 },
+	section: { gap: 10 },
+	sectionLabel: { paddingHorizontal: 4 },
 	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
-	exportBody: { flex: 1, gap: 2 },
-	premiumRow: { flexDirection: "row", alignItems: "center", gap: 14 },
+	exportIcon: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	row: { flexDirection: "row", alignItems: "center", gap: 14 },
 	rowIcon: {
 		width: 42,
 		height: 42,
@@ -282,6 +327,10 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	premiumBody: { flex: 1, gap: 2 },
+	rowBody: { flex: 1, gap: 2 },
+	privacyHead: { flexDirection: "row", alignItems: "center", gap: 12 },
+	privacyTitle: { flex: 1 },
+	legalLinks: { marginTop: 4 },
 	legalLink: { paddingVertical: 8 },
+	aboutFoot: { paddingHorizontal: 4, lineHeight: 18 },
 });

@@ -81,6 +81,7 @@
 	},
 	"symptom": {
 		"title": "Symptoms",
+		"subtitle": "A quick end-of-day check-in, in a few taps.",
 		"pain": "Pain",
 		"painZone": "Location",
 		"fatigue": "Fatigue",

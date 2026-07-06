@@ -19,7 +19,7 @@ interface TapRowProps<T> {
 	onChange: (value: T) => void;
 	/** Titre optionnel de la rangée. */
 	title?: string;
-	/** Teinte de la sélection (clé de donnée). Défaut : neutre (texte). */
+	/** Teinte de la sélection (clé de donnée). Défaut : accent `brand`. */
 	tint?: DataColorKey;
 	/** Libellé accessible du groupe entier. */
 	accessibilityLabel?: string;
@@ -39,7 +39,7 @@ export function TapRow<T extends string | number>({
 }: TapRowProps<T>) {
 	const theme = useTheme();
 	const tintColor = useMemo(
-		() => (tint ? theme.colors[tint] : theme.colors.text),
+		() => (tint ? theme.colors[tint] : theme.colors.brand),
 		[tint, theme.colors],
 	);
 

@@ -125,6 +125,10 @@
 	},
 	"settings": {
 		"title": "Settings",
+		"sections": {
+			"care": "Care",
+			"about": "About"
+		},
 		"dataSection": "Your data",
 		"backup": "Export a backup",
 		"restore": "Restore a backup",

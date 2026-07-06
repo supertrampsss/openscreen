@@ -1,9 +1,11 @@
 /**
- * Liste de choix verticale pleine largeur (§4) — un écran = une question,
- * gros boutons ≥56 px. Mono-select (radiogroup) ou multi-select (checkboxes).
+ * Liste de choix verticale pleine largeur (§4) — un écran = une question.
+ * Rangées cartes ≥56 px, hairline au repos, sélection = fond `brandSoft` +
+ * bordure `brand` + coche `brand`. Mono-select (radiogroup) ou multi (checkboxes).
  */
 
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useReducedMotion } from "react-native-reanimated";
 import { Icon } from "@/components/Icon";
 import { useTheme } from "@/theme";
 
@@ -23,6 +25,7 @@ interface Props {
 
 export function ChoiceList({ options, selected, onToggle, multi = false }: Props) {
 	const theme = useTheme();
+	const reduceMotion = useReducedMotion();
 	return (
 		<View accessibilityRole={multi ? undefined : "radiogroup"} style={{ gap: theme.spacing.sm }}>
 			{options.map((opt) => {
@@ -39,23 +42,36 @@ export function ChoiceList({ options, selected, onToggle, multi = false }: Props
 							styles.row,
 							{
 								borderRadius: theme.radii.md,
-								backgroundColor: isSel ? theme.colors.text : theme.colors.card,
-								borderColor: isSel ? theme.colors.text : theme.colors.border,
-								opacity: pressed ? 0.9 : 1,
+								backgroundColor: isSel ? theme.colors.brandSoft : theme.colors.card,
+								borderColor: isSel ? theme.colors.brand : theme.colors.border,
+								borderWidth: isSel ? 1.5 : StyleSheet.hairlineWidth,
+								opacity: pressed ? 0.92 : 1,
+								transform: pressed && !reduceMotion ? [{ scale: 0.99 }] : undefined,
 							},
 						]}
 					>
 						<Text
 							style={[
 								theme.typography.subheading,
-								{ color: isSel ? theme.colors.ctaText : theme.colors.text, flex: 1 },
+								{ color: isSel ? theme.colors.brand : theme.colors.text, flex: 1 },
 							]}
 						>
 							{opt.label}
 						</Text>
-						{isSel ? (
-							<Icon name="check" size={20} color={theme.colors.ctaText} strokeWidth={2.2} />
-						) : null}
+						<View
+							style={[
+								styles.mark,
+								multi ? styles.markSquare : styles.markRound,
+								{
+									backgroundColor: isSel ? theme.colors.brand : "transparent",
+									borderColor: isSel ? theme.colors.brand : theme.colors.border,
+								},
+							]}
+						>
+							{isSel ? (
+								<Icon name="check" size={15} color={theme.colors.card} strokeWidth={2.6} />
+							) : null}
+						</View>
 					</Pressable>
 				);
 			})}
@@ -65,12 +81,20 @@ export function ChoiceList({ options, selected, onToggle, multi = false }: Props
 
 const styles = StyleSheet.create({
 	row: {
-		minHeight: 56,
+		minHeight: 58,
 		flexDirection: "row",
 		alignItems: "center",
-		gap: 10,
+		gap: 12,
 		paddingHorizontal: 18,
 		paddingVertical: 12,
-		borderWidth: StyleSheet.hairlineWidth,
 	},
+	mark: {
+		width: 24,
+		height: 24,
+		alignItems: "center",
+		justifyContent: "center",
+		borderWidth: 1.5,
+	},
+	markRound: { borderRadius: 999 },
+	markSquare: { borderRadius: 8 },
 });

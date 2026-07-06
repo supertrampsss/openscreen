@@ -27,6 +27,7 @@ import {
 	softDelete as softDeleteMeal,
 } from "@/repositories/mealRepo";
 import { listAll, restore, softDelete } from "@/repositories/symptomRepo";
+import type { DataColorKey } from "@/theme";
 import { useTheme } from "@/theme";
 
 /** Élément unifié du journal : entrée symptôme/selle OU repas. */
@@ -173,6 +174,7 @@ export default function JournalScreen() {
 
 	const header = (
 		<View style={styles.header}>
+			<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("title")}</Text>
 			<FlareBanner />
 			<FlareToggle />
 		</View>
@@ -195,7 +197,10 @@ export default function JournalScreen() {
 				ListHeaderComponent={header}
 				ListEmptyComponent={
 					<View style={styles.emptyInline}>
-						<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+						<View style={[styles.emptyIcon, { backgroundColor: theme.colors.brandSoft }]}>
+							<Icon name="journal" size={30} color={theme.colors.brand} strokeWidth={1.7} />
+						</View>
+						<Text style={[theme.typography.heading, styles.center, { color: theme.colors.text }]}>
 							{t("empty")}
 						</Text>
 						<Text style={[theme.typography.body, styles.center, { color: theme.colors.textMuted }]}>
@@ -207,24 +212,18 @@ export default function JournalScreen() {
 					const s = section as Section;
 					return (
 						<View style={[styles.sectionHeader, { backgroundColor: theme.colors.background }]}>
-							<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+							<Text style={[theme.typography.overline, { color: theme.colors.textFaint }]}>
 								{s.title}
 							</Text>
 							<View style={styles.badges}>
 								{s.stools > 0 ? (
-									<Badge
-										text={t("badges.stools", { count: s.stools })}
-										color={theme.colors.stool}
-									/>
+									<Badge text={t("badges.stools", { count: s.stools })} tint="stool" />
 								) : null}
 								{s.meals > 0 ? (
-									<Badge text={t("badges.meals", { count: s.meals })} color={theme.colors.meal} />
+									<Badge text={t("badges.meals", { count: s.meals })} tint="meal" />
 								) : null}
 								{s.worstPain && s.worstPain > 0 ? (
-									<Badge
-										text={t("badges.pain", { level: s.worstPain })}
-										color={theme.colors.pain}
-									/>
+									<Badge text={t("badges.pain", { level: s.worstPain })} tint="pain" />
 								) : null}
 							</View>
 						</View>
@@ -269,11 +268,22 @@ export default function JournalScreen() {
 	);
 }
 
-function Badge({ text, color }: { text: string; color: string }) {
+/** Soft-fill de chaque teinte de donnée (pastille discrète du jour). */
+const BADGE_SOFT: Record<"stool" | "meal" | "pain", "stoolSoft" | "mealSoft" | "painSoft"> = {
+	stool: "stoolSoft",
+	meal: "mealSoft",
+	pain: "painSoft",
+};
+
+function Badge({ text, tint }: { text: string; tint: "stool" | "meal" | "pain" }) {
 	const theme = useTheme();
+	const color = theme.colors[tint as DataColorKey];
 	return (
-		<View style={[styles.badge, { borderColor: color }]}>
-			<Text style={[theme.typography.caption, { color }]}>{text}</Text>
+		<View style={[styles.badge, { backgroundColor: theme.colors[BADGE_SOFT[tint]] }]}>
+			<View style={[styles.badgeDot, { backgroundColor: color }]} />
+			<Text style={[theme.typography.caption, { color, fontWeight: theme.fontWeight.medium }]}>
+				{text}
+			</Text>
 		</View>
 	);
 }
@@ -291,6 +301,10 @@ function JournalRow({
 	const theme = useTheme();
 	const isStool = entry.kind === "stool";
 
+	const sub = [entry.blood ? t("entry.blood") : null, entry.isDraft ? t("entry.draft") : null]
+		.filter(Boolean)
+		.join(" · ");
+
 	return (
 		<Card padding="md" style={styles.row} testID="journal-entry">
 			<Pressable style={styles.rowMain} accessibilityRole="button" onPress={onPress}>
@@ -301,7 +315,7 @@ function JournalRow({
 					]}
 				>
 					<Icon
-						name={isStool ? "stool" : "thermometer"}
+						name={isStool ? "stool" : "pulse"}
 						size={20}
 						color={isStool ? theme.colors.stool : theme.colors.pain}
 						strokeWidth={1.8}
@@ -312,14 +326,17 @@ function JournalRow({
 						{isStool ? t("kinds.stool") : t("kinds.symptom")}
 						{isStool && entry.bristol ? ` · ${t("entry.bristol", { value: entry.bristol })}` : ""}
 					</Text>
-					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-						{formatClock(entry.occurredAt, entry.tz)}
-						{entry.blood ? ` · ${t("entry.blood")}` : ""}
-						{entry.isDraft ? ` · ${t("entry.draft")}` : ""}
-					</Text>
+					{sub ? (
+						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>{sub}</Text>
+					) : null}
 				</View>
 			</Pressable>
-			<DeleteButton onDelete={onDelete} />
+			<View style={styles.rowRight}>
+				<Text style={[theme.typography.caption, styles.time, { color: theme.colors.textFaint }]}>
+					{formatClock(entry.occurredAt, entry.tz)}
+				</Text>
+				<DeleteButton onDelete={onDelete} />
+			</View>
 		</Card>
 	);
 }
@@ -346,13 +363,19 @@ function MealRow({
 						{meal.meal.name ?? t("kinds.meal")}
 					</Text>
 					<MealTriggerChips items={meal.items} max={3} />
-					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-						{formatClock(meal.meal.occurredAt, meal.meal.tz)}
-						{meal.meal.isDraft ? ` · ${t("entry.draft")}` : ""}
-					</Text>
+					{meal.meal.isDraft ? (
+						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+							{t("entry.draft")}
+						</Text>
+					) : null}
 				</View>
 			</Pressable>
-			<DeleteButton onDelete={onDelete} />
+			<View style={styles.rowRight}>
+				<Text style={[theme.typography.caption, styles.time, { color: theme.colors.textFaint }]}>
+					{formatClock(meal.meal.occurredAt, meal.meal.tz)}
+				</Text>
+				<DeleteButton onDelete={onDelete} />
+			</View>
 		</Card>
 	);
 }
@@ -368,7 +391,7 @@ function DeleteButton({ onDelete }: { onDelete: () => void }) {
 			hitSlop={8}
 			style={styles.delete}
 		>
-			<Text style={{ color: theme.colors.textFaint, fontSize: 20 }}>×</Text>
+			<Icon name="x" size={16} color={theme.colors.textFaint} strokeWidth={1.8} />
 		</Pressable>
 	);
 }
@@ -387,12 +410,20 @@ const styles = StyleSheet.create({
 	},
 	emptyInline: {
 		alignItems: "center",
-		paddingVertical: 48,
-		gap: 8,
+		paddingVertical: 56,
+		gap: 12,
+	},
+	emptyIcon: {
+		width: 64,
+		height: 64,
+		borderRadius: 20,
+		alignItems: "center",
+		justifyContent: "center",
+		marginBottom: 4,
 	},
 	center: { textAlign: "center" },
 	sectionHeader: {
-		paddingTop: 12,
+		paddingTop: 16,
 		paddingBottom: 8,
 		gap: 8,
 	},
@@ -402,10 +433,17 @@ const styles = StyleSheet.create({
 		gap: 8,
 	},
 	badge: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 6,
 		paddingHorizontal: 10,
-		paddingVertical: 3,
+		paddingVertical: 4,
 		borderRadius: 999,
-		borderWidth: StyleSheet.hairlineWidth,
+	},
+	badgeDot: {
+		width: 6,
+		height: 6,
+		borderRadius: 999,
 	},
 	row: {
 		flexDirection: "row",
@@ -419,7 +457,7 @@ const styles = StyleSheet.create({
 	},
 	rowBody: {
 		flex: 1,
-		gap: 2,
+		gap: 3,
 	},
 	avatar: {
 		width: 42,
@@ -429,8 +467,14 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	rowTitle: { fontSize: 15, fontWeight: "600", letterSpacing: -0.1 },
+	rowRight: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 4,
+		paddingLeft: 8,
+	},
+	time: { fontVariant: ["tabular-nums"] },
 	delete: {
-		paddingLeft: 12,
-		paddingVertical: 8,
+		padding: 6,
 	},
 });

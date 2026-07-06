@@ -5,6 +5,7 @@ export { DraftSheet } from "./DraftSheet";
 export { type ChartBand, LineChart } from "./LineChart";
 export { PillButton } from "./PillButton";
 export { RingCard } from "./RingCard";
+export { Segmented, type SegmentedOption } from "./Segmented";
 export { Sparkline } from "./Sparkline";
 export { type TapOption, TapRow } from "./TapRow";
 export { type WeekDay, WeekStrip } from "./WeekStrip";

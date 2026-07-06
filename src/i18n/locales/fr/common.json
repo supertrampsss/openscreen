@@ -125,6 +125,10 @@
 	},
 	"settings": {
 		"title": "Réglages",
+		"sections": {
+			"care": "Suivi",
+			"about": "À propos"
+		},
 		"dataSection": "Vos données",
 		"backup": "Exporter une sauvegarde",
 		"restore": "Restaurer une sauvegarde",

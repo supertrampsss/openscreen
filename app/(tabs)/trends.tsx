@@ -12,7 +12,14 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
-import { Card, type ChartBand, ChipTrigger, LineChart } from "@/components/ui";
+import {
+	Card,
+	type ChartBand,
+	ChipTrigger,
+	LineChart,
+	Segmented,
+	type SegmentedOption,
+} from "@/components/ui";
 import { localDateDaysAgo, nowEntryTimestamp } from "@/domain/dates";
 import type { InsightAggregatesInput } from "@/domain/insightAggregates";
 import {
@@ -242,6 +249,11 @@ export default function TrendsScreen() {
 
 	const hasScore = data.scoreSeries.some((v) => v != null);
 
+	const periodOptions: SegmentedOption[] = [
+		{ value: "30", label: t("period.30"), testID: "period-30" },
+		{ value: "90", label: t("period.90"), testID: "period-90" },
+	];
+
 	return (
 		<View style={[styles.flex, { backgroundColor: theme.colors.background }]}>
 			<ScrollView
@@ -279,36 +291,15 @@ export default function TrendsScreen() {
 				</Pressable>
 
 				{/* Sélecteur de période 30 / 90 j. */}
-				<View style={styles.segment}>
-					{([30, 90] as const).map((p) => {
-						const active = period === p;
-						return (
-							<Pressable
-								key={p}
-								testID={`period-${p}`}
-								accessibilityRole="button"
-								accessibilityState={{ selected: active }}
-								onPress={() => setPeriod(p)}
-								style={[
-									styles.segmentCell,
-									{
-										backgroundColor: active ? theme.colors.text : theme.colors.surface,
-										borderRadius: theme.radii.pill,
-									},
-								]}
-							>
-								<Text
-									style={[
-										theme.typography.label,
-										{ color: active ? theme.colors.background : theme.colors.textMuted },
-									]}
-								>
-									{t(`period.${p}`)}
-								</Text>
-							</Pressable>
-						);
-					})}
-				</View>
+				<Segmented
+					options={periodOptions}
+					value={String(period)}
+					onChange={(v) => setPeriod(v === "90" ? 90 : 30)}
+					accessibilityLabel={t("title")}
+				/>
+
+				{/* --- Résumé de la semaine. --- */}
+				<SectionHeader label={t("sections.summary")} />
 
 				{/* Bilan « Votre semaine ». */}
 				<Card testID="trends-week" style={{ gap: theme.spacing.sm }}>
@@ -328,6 +319,9 @@ export default function TrendsScreen() {
 
 				{/* Insight IA de la semaine (§7) — Premium (sinon teaser discret). */}
 				<WeeklyInsightCard input={data.insightInput} />
+
+				{/* --- Courbes. --- */}
+				<SectionHeader label={t("sections.charts")} />
 
 				{/* Score HBI / SCCAI. */}
 				<Card style={{ gap: theme.spacing.sm }}>
@@ -383,6 +377,9 @@ export default function TrendsScreen() {
 					max={3}
 				/>
 
+				{/* --- Analyse. --- */}
+				<SectionHeader label={t("sections.analysis")} />
+
 				{/* Associations alimentaires — corrélations réelles + garde-fous (§5.7). */}
 				<Card testID="trends-correlations" style={{ gap: theme.spacing.sm }}>
 					<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
@@ -399,7 +396,11 @@ export default function TrendsScreen() {
 					) : (
 						<View style={{ gap: theme.spacing.md }}>
 							{data.associations.map((a) => (
-								<AssociationRow key={`${a.kind}-${a.key}-${a.signal}`} assoc={a} />
+								<AssociationRow
+									key={`${a.kind}-${a.key}-${a.signal}`}
+									assoc={a}
+									maxLift={Math.max(...data.associations.map((x) => x.lift), 1)}
+								/>
 							))}
 						</View>
 					)}
@@ -468,12 +469,27 @@ function ChartCard({
 	);
 }
 
+/** En-tête de section discret en `overline` (§3). */
+function SectionHeader({ label }: { label: string }) {
+	const theme = useTheme();
+	return (
+		<Text
+			style={[theme.typography.overline, styles.sectionHeader, { color: theme.colors.textFaint }]}
+		>
+			{label}
+		</Text>
+	);
+}
+
 /** Une ligne d'association observée : « Lactose associé à selles liquides · … ». */
-function AssociationRow({ assoc }: { assoc: DisplayAssociation }) {
+function AssociationRow({ assoc, maxLift }: { assoc: DisplayAssociation; maxLift: number }) {
 	const { t } = useTranslation(["trends", "log"]);
 	const theme = useTheme();
 	const label = assoc.kind === "trigger" ? t(`log:triggers.${assoc.key}`) : assoc.displayName;
 	const signal = t(`correlations.signals.${assoc.signal}`, { defaultValue: assoc.signal });
+	// Barre de « lift » relative — force de l'association observée, jamais < 12 %
+	// pour rester lisible. Purement indicatif (garde-fou « pas une preuve »).
+	const fill = Math.max(0.12, Math.min(1, assoc.lift / maxLift));
 	return (
 		<View testID="association-row" style={styles.assocRow}>
 			<ChipTrigger label={label} tint="meal" />
@@ -481,6 +497,14 @@ function AssociationRow({ assoc }: { assoc: DisplayAssociation }) {
 				<Text style={[theme.typography.body, { color: theme.colors.text }]}>
 					{t("correlations.associatedWith")} {signal}
 				</Text>
+				<View style={[styles.liftTrack, { backgroundColor: theme.colors.surface }]}>
+					<View
+						style={[
+							styles.liftFill,
+							{ backgroundColor: theme.colors.meal, width: `${Math.round(fill * 100)}%` },
+						]}
+					/>
+				</View>
 				<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
 					{t("correlations.observed", { count: assoc.n })}
 				</Text>
@@ -517,16 +541,12 @@ function BandLegend({ kind }: { kind: ScoreKind }) {
 
 const styles = StyleSheet.create({
 	flex: { flex: 1 },
-	segment: { flexDirection: "row", gap: 8 },
-	segmentCell: {
-		flex: 1,
-		minHeight: 44,
-		alignItems: "center",
-		justifyContent: "center",
-	},
+	sectionHeader: { marginBottom: -4 },
 	chipWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
 	assocRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-	assocText: { flex: 1, gap: 2 },
+	assocText: { flex: 1, gap: 4 },
+	liftTrack: { height: 4, borderRadius: 999, overflow: "hidden" },
+	liftFill: { height: 4, borderRadius: 999 },
 	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
 	exportIcon: {
 		width: 42,

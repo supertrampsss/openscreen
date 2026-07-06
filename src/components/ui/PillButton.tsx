@@ -1,4 +1,5 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, type ViewStyle } from "react-native";
+import { useReducedMotion } from "react-native-reanimated";
 import { useTheme } from "@/theme";
 
 interface PillButtonProps {
@@ -29,6 +30,7 @@ export function PillButton({
 	testID,
 }: PillButtonProps) {
 	const theme = useTheme();
+	const reduceMotion = useReducedMotion();
 	const isPrimary = variant === "primary";
 	const isDisabled = disabled || loading;
 
@@ -48,9 +50,10 @@ export function PillButton({
 				{
 					backgroundColor,
 					borderRadius: theme.radii.pill,
-					opacity: isDisabled ? 0.4 : pressed ? 0.85 : 1,
+					opacity: isDisabled ? 0.4 : pressed ? 0.9 : 1,
 					alignSelf: fullWidth ? "stretch" : "center",
 					paddingHorizontal: fullWidth ? theme.spacing.xl : theme.spacing.xxl,
+					transform: pressed && !reduceMotion ? [{ scale: 0.98 }] : undefined,
 				},
 				style,
 			]}

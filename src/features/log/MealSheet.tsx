@@ -19,6 +19,7 @@ import {
 	upsertDraft,
 } from "@/repositories/mealRepo";
 import { useTheme } from "@/theme";
+import { Eyebrow, PortionButton, RemoveButton } from "./sheetKit";
 import { TimeChips, type TimeMode } from "./TimeChips";
 
 interface MealSheetProps {
@@ -229,13 +230,15 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 			{/* Récents : 1 tap = re-log (items pré-remplis). */}
 			{recents.length > 0 ? (
 				<View style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-						{t("meal.recents")}
-					</Text>
+					<Eyebrow>{t("meal.recents")}</Eyebrow>
 					<ScrollView
 						horizontal
 						showsHorizontalScrollIndicator={false}
-						contentContainerStyle={{ gap: theme.spacing.sm, paddingVertical: 2 }}
+						contentContainerStyle={{
+							gap: theme.spacing.sm,
+							paddingVertical: 2,
+							paddingHorizontal: 1,
+						}}
 					>
 						{recents.map((r) => (
 							<Pressable
@@ -244,11 +247,11 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 								accessibilityLabel={r.meal.name ?? t("meal.title")}
 								testID={`meal-recent-${r.meal.id}`}
 								onPress={() => relog(r)}
-								style={[
+								style={({ pressed }) => [
 									styles.recentChip,
 									{
 										borderRadius: theme.radii.pill,
-										backgroundColor: theme.colors.surface,
+										backgroundColor: pressed ? theme.colors.mealSoft : theme.colors.surface,
 										borderColor: theme.colors.border,
 									},
 								]}
@@ -268,9 +271,7 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 
 			{/* Recherche d'aliments. */}
 			<View style={{ gap: theme.spacing.sm }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("meal.searchLabel")}
-				</Text>
+				<Eyebrow>{t("meal.searchLabel")}</Eyebrow>
 				<TextInput
 					accessibilityLabel={t("meal.searchLabel")}
 					testID="meal-search"
@@ -298,15 +299,22 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 								accessibilityLabel={food.displayFr}
 								testID={`meal-result-${food.id}`}
 								onPress={() => addFood(food)}
-								style={[
+								style={({ pressed }) => [
 									styles.resultRow,
-									{ borderRadius: theme.radii.sm, backgroundColor: theme.colors.surface },
+									{
+										borderRadius: theme.radii.md,
+										backgroundColor: pressed ? theme.colors.border : theme.colors.surface,
+									},
 								]}
 							>
-								<Text style={[theme.typography.body, { color: theme.colors.text }]}>
+								<Text
+									numberOfLines={1}
+									style={[theme.typography.body, styles.resultLabel, { color: theme.colors.text }]}
+								>
 									{food.displayFr}
 								</Text>
 								<TriggerMini keys={activeTriggerKeys(food.triggers)} />
+								<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
 							</Pressable>
 						))}
 					</View>
@@ -316,12 +324,18 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 						accessibilityRole="button"
 						testID="meal-create-custom"
 						onPress={createCustom}
-						style={[
+						style={({ pressed }) => [
 							styles.resultRow,
-							{ borderRadius: theme.radii.sm, backgroundColor: theme.colors.surface },
+							{
+								borderRadius: theme.radii.md,
+								backgroundColor: pressed ? theme.colors.border : theme.colors.surface,
+							},
 						]}
 					>
-						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
+						<Icon name="plus" size={16} color={theme.colors.meal} strokeWidth={1.8} />
+						<Text
+							style={[theme.typography.label, styles.resultLabel, { color: theme.colors.meal }]}
+						>
 							{t("meal.createCustom", { name: query.trim() })}
 						</Text>
 					</Pressable>
@@ -330,9 +344,7 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 
 			{/* Items sélectionnés. */}
 			<View style={{ gap: theme.spacing.sm }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("meal.items")}
-				</Text>
+				<Eyebrow>{t("meal.items")}</Eyebrow>
 				{items.length === 0 ? (
 					<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 						{t("meal.noItems")}
@@ -354,32 +366,19 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 									</Text>
 									<TriggerMini keys={activeTriggerKeys(item.triggers)} />
 								</View>
-								<Pressable
-									accessibilityRole="button"
+								<PortionButton
+									label={t(`meal.portion.${item.portion}`)}
 									accessibilityLabel={t("meal.cyclePortion", {
 										size: t(`meal.portion.${item.portion}`),
 									})}
 									testID={`meal-portion-${item.foodId}`}
 									onPress={() => cyclePortion(item.foodId)}
-									style={[
-										styles.portion,
-										{ borderRadius: theme.radii.pill, borderColor: theme.colors.meal },
-									]}
-								>
-									<Text style={[theme.typography.label, { color: theme.colors.meal }]}>
-										{t(`meal.portion.${item.portion}`)}
-									</Text>
-								</Pressable>
-								<Pressable
-									accessibilityRole="button"
+								/>
+								<RemoveButton
 									accessibilityLabel={t("meal.remove", { name: item.displayFr })}
 									testID={`meal-remove-${item.foodId}`}
 									onPress={() => removeItem(item.foodId)}
-									hitSlop={8}
-									style={styles.remove}
-								>
-									<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>×</Text>
-								</Pressable>
+								/>
 							</View>
 						))}
 					</View>
@@ -387,10 +386,8 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 			</View>
 
 			{/* Nom du repas (auto, modifiable). */}
-			<View style={{ gap: theme.spacing.xs }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("meal.nameLabel")}
-				</Text>
+			<View style={{ gap: theme.spacing.sm }}>
+				<Eyebrow>{t("meal.nameLabel")}</Eyebrow>
 				<TextInput
 					accessibilityLabel={t("meal.nameLabel")}
 					testID="meal-name"
@@ -411,10 +408,8 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 			</View>
 
 			{/* Heure. */}
-			<View style={{ gap: theme.spacing.xs }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-					{t("meal.time")}
-				</Text>
+			<View style={{ gap: theme.spacing.sm }}>
+				<Eyebrow>{t("meal.time")}</Eyebrow>
 				<TimeChips base={base} mode={timeMode} value={occurred} onChange={chooseTime} />
 			</View>
 		</DraftSheet>
@@ -458,14 +453,14 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 	},
 	resultRow: {
-		minHeight: 44,
+		minHeight: 46,
 		paddingHorizontal: 12,
 		paddingVertical: 8,
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-between",
 		gap: 8,
 	},
+	resultLabel: { flex: 1 },
 	itemRow: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -475,12 +470,4 @@ const styles = StyleSheet.create({
 	},
 	itemMain: { flex: 1, gap: 4 },
 	miniWrap: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 6 },
-	portion: {
-		minWidth: 36,
-		minHeight: 36,
-		alignItems: "center",
-		justifyContent: "center",
-		borderWidth: StyleSheet.hairlineWidth,
-	},
-	remove: { paddingHorizontal: 4, paddingVertical: 8 },
 });

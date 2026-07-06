@@ -23,6 +23,7 @@ export type IconName =
 	| "utensils"
 	| "capsule"
 	| "thermometer"
+	| "pulse"
 	| "stool"
 	| "flame"
 	| "snowflake"
@@ -33,6 +34,8 @@ export type IconName =
 	| "lifebuoy"
 	| "plus"
 	| "chevronRight"
+	| "chevronLeft"
+	| "x"
 	| "check"
 	| "refresh";
 
@@ -158,6 +161,8 @@ function glyph(name: IconName, s: StrokeProps, color: string) {
 					<Circle cx={12} cy={6} r={1.2} fill={color} stroke="none" />
 				</>
 			);
+		case "pulse":
+			return <Path d="M3 12h4l3 8 4-16 3 8h4" {...s} />;
 		case "stool":
 			return <Path d="M3 12c0-1.9 2-2.9 9-2.9s9 1 9 2.9-2 2.9-9 2.9-9-1-9-2.9Z" {...s} />;
 		case "flame":
@@ -213,6 +218,10 @@ function glyph(name: IconName, s: StrokeProps, color: string) {
 			return <Path d="M12 5v14M5 12h14" {...s} strokeWidth={s.strokeWidth + 0.3} />;
 		case "chevronRight":
 			return <Path d="M9 6l6 6-6 6" {...s} />;
+		case "chevronLeft":
+			return <Path d="M15 6l-6 6 6 6" {...s} />;
+		case "x":
+			return <Path d="M6 6l12 12M18 6L6 18" {...s} />;
 		case "check":
 			return <Path d="M4 12.5 9 17.5 20 6.5" {...s} strokeWidth={s.strokeWidth + 0.2} />;
 		case "refresh":

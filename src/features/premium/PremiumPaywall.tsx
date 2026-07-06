@@ -12,6 +12,9 @@
  *  - En mode onboarding : « Continuer gratuitement » a EXACTEMENT la même taille
  *    que « Essayer Premium » (§4.16).
  *
+ * Direction « Clinique calme » : un seul accent (brand), zéro couleur d'alerte,
+ * hairlines discrètes. Un moment d'achat qui doit inspirer confiance et calme.
+ *
  * Réutilisé par l'écran modal `app/premium.tsx` et par l'écran 16 de l'onboarding.
  */
 
@@ -127,26 +130,42 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 
 	return (
 		<View style={styles.flex}>
-			{/* Bandeau d'engagement — TOUT EN HAUT, mis en avant (§8). */}
+			{/* Croix de fermeture : vrai bouton icône, en haut à droite, seul sur sa
+			    rangée pour ne chevaucher aucun texte (§8, modal uniquement). */}
+			{mode === "modal" ? (
+				<View style={styles.headerRow}>
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel={t("close")}
+						testID="premium-close"
+						onPress={onClose}
+						hitSlop={12}
+						style={[
+							styles.closeBtn,
+							{ backgroundColor: theme.colors.surface, borderRadius: theme.radii.pill },
+						]}
+					>
+						<Icon name="x" size={18} color={theme.colors.textMuted} strokeWidth={2} />
+					</Pressable>
+				</View>
+			) : null}
+
+			{/* Bandeau d'engagement — TOUT EN HAUT (§8). Ton CALME : c'est une promesse
+			    rassurante, pas une alerte. Fond doux `brandSoft`, un seul accent. */}
 			<View
 				testID="premium-commitment"
-				style={[styles.commitment, { backgroundColor: theme.colors.energy }]}
+				style={[
+					styles.commitment,
+					{ backgroundColor: theme.colors.brandSoft, borderRadius: theme.radii.md },
+				]}
 			>
-				<Text style={[theme.typography.label, styles.commitmentText]}>{t("commitment")}</Text>
-			</View>
-
-			{mode === "modal" ? (
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={t("close")}
-					testID="premium-close"
-					onPress={onClose}
-					hitSlop={12}
-					style={styles.closeBtn}
+				<Icon name="sparkles" size={18} color={theme.colors.brand} strokeWidth={1.8} />
+				<Text
+					style={[theme.typography.caption, styles.commitmentText, { color: theme.colors.text }]}
 				>
-					<Text style={[theme.typography.heading, { color: theme.colors.textMuted }]}>×</Text>
-				</Pressable>
-			) : null}
+					{t("commitment")}
+				</Text>
+			</View>
 
 			{/* Héro sobre. */}
 			<View style={styles.hero}>
@@ -158,21 +177,33 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				</Text>
 			</View>
 
-			{/* Liste métier. */}
-			<Card style={{ gap: theme.spacing.sm }}>
-				<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
+			{/* Liste métier — cases `check` en accent unique, items alignés. */}
+			<Card style={{ gap: theme.spacing.md }}>
+				<Text style={[theme.typography.overline, { color: theme.colors.textFaint }]}>
 					{t("features.title")}
 				</Text>
 				{FEATURE_ROWS.map((row) => (
 					<View key={row.key} style={styles.featureRow}>
-						<Icon name="check" size={17} color={theme.colors.energy} strokeWidth={2.2} />
+						<View
+							style={[
+								styles.featureCheck,
+								{ backgroundColor: theme.colors.brandSoft, borderRadius: theme.radii.pill },
+							]}
+						>
+							<Icon name="check" size={14} color={theme.colors.brand} strokeWidth={2.4} />
+						</View>
 						<Text
 							style={[theme.typography.body, styles.featureLabel, { color: theme.colors.text }]}
 						>
 							{t(`features.${row.key}`)}
 						</Text>
 						{row.soon ? (
-							<View style={[styles.soonBadge, { backgroundColor: theme.colors.surface }]}>
+							<View
+								style={[
+									styles.soonBadge,
+									{ backgroundColor: theme.colors.surface, borderRadius: theme.radii.pill },
+								]}
+							>
 								<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
 									{t("features.soon")}
 								</Text>
@@ -182,9 +213,27 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				))}
 			</Card>
 
-			{/* Essai offert — sans CB. */}
-			<View style={[styles.trial, { backgroundColor: theme.colors.surface }]}>
-				<Text style={[theme.typography.label, { color: theme.colors.text, textAlign: "center" }]}>
+			{/* Essai offert — sans CB. Argument clé « essaie sans risque » : carte douce,
+			    picto caméra en accent, hiérarchie claire. */}
+			<View
+				style={[
+					styles.trial,
+					{
+						backgroundColor: theme.colors.surface,
+						borderRadius: theme.radii.lg,
+						borderColor: theme.colors.border,
+					},
+				]}
+			>
+				<View
+					style={[
+						styles.trialIcon,
+						{ backgroundColor: theme.colors.brandSoft, borderRadius: theme.radii.md },
+					]}
+				>
+					<Icon name="camera" size={20} color={theme.colors.brand} strokeWidth={1.8} />
+				</View>
+				<Text style={[theme.typography.label, styles.trialText, { color: theme.colors.text }]}>
 					{t("trial")}
 				</Text>
 			</View>
@@ -214,26 +263,6 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 			<Text style={[theme.typography.caption, styles.centered, { color: theme.colors.textMuted }]}>
 				{t("noCommitment")}
 			</Text>
-
-			{/* Divulgation légale (§3.1.2) : abonnement auto-renouvelable, adjacente à
-			    l'achat. Petit corps gris, jamais un piège. */}
-			<Text
-				testID="premium-autorenew"
-				style={[theme.typography.caption, styles.disclosure, { color: theme.colors.textMuted }]}
-			>
-				{t("autoRenewDisclosure")}
-			</Text>
-			<Pressable
-				accessibilityRole="link"
-				accessibilityLabel={t("manageSubscription")}
-				testID="premium-manage-sub"
-				onPress={openManageSubscription}
-				style={styles.textBtn}
-			>
-				<Text style={[theme.typography.label, styles.centered, { color: theme.colors.meal }]}>
-					{t("manageSubscription")}
-				</Text>
-			</Pressable>
 
 			{/* CTA — dépend du mode. */}
 			{mode === "onboarding" ? (
@@ -267,17 +296,42 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				</View>
 			)}
 
-			{/* Restaurer — bouton texte discret. */}
-			<Pressable
-				accessibilityRole="button"
-				accessibilityLabel={t("restore")}
-				testID="premium-restore"
-				onPress={doRestore}
-				disabled={busy}
-				style={styles.textBtn}
+			{/* Divulgation légale (§3.1.2) : abonnement auto-renouvelable, adjacente à
+			    l'achat. Petit corps discret, lisible, jamais un piège. */}
+			<Text
+				testID="premium-autorenew"
+				style={[theme.typography.caption, styles.disclosure, { color: theme.colors.textFaint }]}
 			>
-				<Text style={[theme.typography.label, { color: theme.colors.meal }]}>{t("restore")}</Text>
-			</Pressable>
+				{t("autoRenewDisclosure")}
+			</Text>
+
+			{/* Rangée de liens de compte : accent unique, hiérarchie discrète. */}
+			<View style={styles.linkRow}>
+				<Pressable
+					accessibilityRole="link"
+					accessibilityLabel={t("manageSubscription")}
+					testID="premium-manage-sub"
+					onPress={openManageSubscription}
+					hitSlop={8}
+				>
+					<Text style={[theme.typography.label, { color: theme.colors.brand }]}>
+						{t("manageSubscription")}
+					</Text>
+				</Pressable>
+				<Text style={[theme.typography.label, { color: theme.colors.border }]}>·</Text>
+				<Pressable
+					accessibilityRole="button"
+					accessibilityLabel={t("restore")}
+					testID="premium-restore"
+					onPress={doRestore}
+					disabled={busy}
+					hitSlop={8}
+				>
+					<Text style={[theme.typography.label, { color: theme.colors.brand }]}>
+						{t("restore")}
+					</Text>
+				</Pressable>
+			</View>
 
 			{/* Footer : remboursement humain par mail. */}
 			<Pressable
@@ -294,7 +348,7 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				</Text>
 			</Pressable>
 
-			{/* Liens légaux discrets : confidentialité · conditions (EULA). */}
+			{/* Liens légaux : confidentialité · conditions (EULA), accent discret. */}
 			<View style={styles.legalRow}>
 				<Pressable
 					accessibilityRole="link"
@@ -303,11 +357,11 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 					onPress={() => Linking.openURL(PRIVACY_URL).catch(() => undefined)}
 					hitSlop={8}
 				>
-					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+					<Text style={[theme.typography.caption, { color: theme.colors.brand }]}>
 						{t("links.privacy")}
 					</Text>
 				</Pressable>
-				<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>·</Text>
+				<Text style={[theme.typography.caption, { color: theme.colors.border }]}>·</Text>
 				<Pressable
 					accessibilityRole="link"
 					accessibilityLabel={t("links.terms")}
@@ -315,7 +369,7 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 					onPress={() => Linking.openURL(TERMS_URL).catch(() => undefined)}
 					hitSlop={8}
 				>
-					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+					<Text style={[theme.typography.caption, { color: theme.colors.brand }]}>
 						{t("links.terms")}
 					</Text>
 				</Pressable>
@@ -351,26 +405,35 @@ function PlanCard({
 			accessibilityLabel={`${label} ${price}`}
 			testID={testID}
 			onPress={onPress}
-			style={[
+			style={({ pressed }) => [
 				styles.planCard,
 				{
-					borderRadius: theme.radii.lg,
-					backgroundColor: theme.colors.card,
-					borderColor: selected ? theme.colors.text : theme.colors.border,
-					borderWidth: selected ? 2 : StyleSheet.hairlineWidth,
+					borderRadius: theme.radii.xl,
+					// Sélection = teinte + bordure `brand` (jamais noir pur), feedback au tap.
+					backgroundColor: selected ? theme.colors.brandSoft : theme.colors.card,
+					borderColor: selected ? theme.colors.brand : theme.colors.border,
+					borderWidth: selected ? 1.5 : StyleSheet.hairlineWidth,
+					opacity: pressed ? 0.92 : 1,
 				},
 			]}
 		>
 			{badge ? (
-				<View style={[styles.planBadge, { backgroundColor: theme.colors.energy }]}>
-					<Text style={styles.planBadgeText}>{badge}</Text>
+				<View
+					style={[
+						styles.planBadge,
+						{ backgroundColor: theme.colors.brand, borderRadius: theme.radii.pill },
+					]}
+				>
+					<Text style={[styles.planBadgeText, { color: theme.colors.ctaText }]}>{badge}</Text>
 				</View>
 			) : null}
-			<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>{label}</Text>
-			<Text style={[theme.typography.dataLg, { color: theme.colors.text }]}>{price}</Text>
+			<Text style={[theme.typography.overline, { color: theme.colors.textMuted }]}>{label}</Text>
+			<Text style={[theme.typography.dataLg, styles.planPrice, { color: theme.colors.text }]}>
+				{price}
+			</Text>
 			<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>{per}</Text>
 			{sub ? (
-				<Text style={[theme.typography.caption, { color: theme.colors.energy, marginTop: 2 }]}>
+				<Text style={[theme.typography.caption, styles.planSub, { color: theme.colors.textMuted }]}>
 					{sub}
 				</Text>
 			) : null}
@@ -380,33 +443,53 @@ function PlanCard({
 
 const styles = StyleSheet.create({
 	flex: { gap: 16 },
+	headerRow: { flexDirection: "row", justifyContent: "flex-end", marginBottom: -8 },
+	closeBtn: { padding: 9 },
 	commitment: {
-		borderRadius: 14,
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 10,
 		paddingHorizontal: 14,
 		paddingVertical: 12,
 	},
-	commitmentText: { color: "#052E1B", textAlign: "center", fontWeight: "600" },
-	closeBtn: { position: "absolute", top: 0, right: 0, padding: 8, zIndex: 2 },
+	commitmentText: { flex: 1, lineHeight: 18 },
 	hero: { gap: 6 },
-	featureRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+	featureRow: { flexDirection: "row", alignItems: "center", gap: 12 },
+	featureCheck: { width: 24, height: 24, alignItems: "center", justifyContent: "center" },
 	featureLabel: { flex: 1 },
-	soonBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 },
-	trial: { borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12 },
+	soonBadge: { paddingHorizontal: 9, paddingVertical: 3 },
+	trial: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 14,
+		paddingHorizontal: 14,
+		paddingVertical: 14,
+		borderWidth: StyleSheet.hairlineWidth,
+	},
+	trialIcon: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
+	trialText: { flex: 1, lineHeight: 20 },
 	plans: { flexDirection: "row", gap: 12 },
-	planCard: { flex: 1, padding: 14, gap: 2, minHeight: 120, justifyContent: "center" },
+	planCard: { flex: 1, padding: 14, gap: 3, minHeight: 132, justifyContent: "center" },
+	planPrice: { marginTop: 2 },
+	planSub: { marginTop: 3 },
 	planBadge: {
 		position: "absolute",
-		top: -8,
+		top: -9,
 		right: 10,
-		paddingHorizontal: 8,
-		paddingVertical: 2,
-		borderRadius: 999,
+		paddingHorizontal: 9,
+		paddingVertical: 3,
 	},
-	planBadgeText: { color: "#052E1B", fontSize: 12, fontWeight: "700" },
+	planBadgeText: { fontSize: 12, fontWeight: "700" },
 	centered: { textAlign: "center" },
-	disclosure: { textAlign: "center", paddingHorizontal: 4 },
+	disclosure: { textAlign: "center", paddingHorizontal: 4, lineHeight: 18 },
 	ctaStack: { gap: 10 },
-	textBtn: { alignItems: "center", paddingVertical: 8 },
+	linkRow: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		gap: 10,
+		paddingVertical: 2,
+	},
 	footer: { paddingVertical: 4, paddingHorizontal: 8 },
 	legalRow: {
 		flexDirection: "row",

@@ -22,6 +22,7 @@ import {
 	type ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon } from "@/components/Icon";
 import { Card, ChipTrigger, DraftSheet, PillButton, TapRow } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { Treatment, TreatmentEvent, TreatmentKind } from "@/db/schema";
@@ -244,7 +245,7 @@ export default function TreatmentsScreen() {
 						hitSlop={12}
 						style={[styles.close, { backgroundColor: theme.colors.surface }]}
 					>
-						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>×</Text>
+						<Icon name="x" size={18} color={theme.colors.text} strokeWidth={1.9} />
 					</Pressable>
 				</View>
 
@@ -254,9 +255,20 @@ export default function TreatmentsScreen() {
 						testID="treatment-seed"
 						style={{ gap: theme.spacing.md, backgroundColor: theme.colors.flareBackground }}
 					>
-						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-							{t("seed.title")}
-						</Text>
+						<View style={styles.seedHead}>
+							<View style={[styles.avatar, { backgroundColor: theme.colors.card }]}>
+								<Icon name="sparkles" size={20} color={theme.colors.brand} strokeWidth={1.7} />
+							</View>
+							<Text
+								style={[
+									theme.typography.subheading,
+									styles.seedTitle,
+									{ color: theme.colors.text },
+								]}
+							>
+								{t("seed.title")}
+							</Text>
+						</View>
 						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
 							{t("seed.body")}
 						</Text>
@@ -302,6 +314,19 @@ export default function TreatmentsScreen() {
 								onPress={() => openEdit(it.treatment)}
 								style={styles.itemHead}
 							>
+								<View
+									style={[
+										styles.avatar,
+										{ backgroundColor: highlight ? theme.colors.painSoft : theme.colors.brandSoft },
+									]}
+								>
+									<Icon
+										name="capsule"
+										size={22}
+										color={highlight ? theme.colors.pain : theme.colors.brand}
+										strokeWidth={1.8}
+									/>
+								</View>
 								<View style={styles.itemHeadText}>
 									<Text
 										testID="treatment-name"
@@ -314,14 +339,33 @@ export default function TreatmentsScreen() {
 										{cadenceLabel(it.treatment)}
 									</Text>
 								</View>
-								<Text style={[theme.typography.subheading, { color: theme.colors.textFaint }]}>
-									›
-								</Text>
+								<Icon
+									name="chevronRight"
+									size={20}
+									color={theme.colors.textFaint}
+									strokeWidth={1.8}
+								/>
 							</Pressable>
 
 							<View style={styles.metaRow}>
-								<View style={[styles.badge, { backgroundColor: theme.colors.surface }]}>
-									<Text style={[theme.typography.caption, { color: theme.colors.text }]}>
+								<View
+									style={[
+										styles.badge,
+										{ backgroundColor: highlight ? theme.colors.painSoft : theme.colors.surface },
+									]}
+								>
+									<Icon
+										name="bell"
+										size={13}
+										color={highlight ? theme.colors.pain : theme.colors.textMuted}
+										strokeWidth={1.8}
+									/>
+									<Text
+										style={[
+											theme.typography.caption,
+											{ color: highlight ? theme.colors.pain : theme.colors.text },
+										]}
+									>
 										{dueLabel(it.treatment)}
 									</Text>
 								</View>
@@ -549,10 +593,26 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		marginLeft: 12,
 	},
-	itemHead: { flexDirection: "row", alignItems: "center", gap: 8 },
+	itemHead: { flexDirection: "row", alignItems: "center", gap: 12 },
 	itemHeadText: { flex: 1, gap: 2 },
+	avatar: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	seedHead: { flexDirection: "row", alignItems: "center", gap: 12 },
+	seedTitle: { flex: 1 },
 	metaRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-	badge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 999 },
+	badge: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 6,
+		paddingHorizontal: 12,
+		paddingVertical: 6,
+		borderRadius: 999,
+	},
 	actionRow: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
 	input: { minHeight: 48, paddingHorizontal: 14 },
 	chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },

@@ -101,6 +101,7 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 	return (
 		<Card testID="insight-card" style={{ gap: theme.spacing.sm }}>
 			<View style={styles.headerRow}>
+				<Icon name="sparkles" size={20} color={theme.colors.brand} strokeWidth={1.7} />
 				<Text style={[theme.typography.heading, { color: theme.colors.text, flex: 1 }]}>
 					{t("insight.title")}
 				</Text>

@@ -113,19 +113,33 @@ export default function ToiletsTab() {
 					accessibilityLabel={t("card.openButton")}
 					testID="urgence-open"
 					onPress={() => router.push("/urgence")}
-					style={[styles.bigButton, { backgroundColor: theme.colors.text }]}
+					style={({ pressed }) => [
+						styles.bigButton,
+						{
+							backgroundColor: theme.colors.text,
+							borderRadius: theme.radii.xl,
+							opacity: pressed ? 0.92 : 1,
+						},
+						theme.shadows.card,
+					]}
 				>
-					<Icon name="lifebuoy" size={38} color={theme.colors.background} strokeWidth={1.8} />
+					<View style={[styles.bigRing, { borderColor: theme.colors.textFaint }]}>
+						<Icon name="lifebuoy" size={38} color={theme.colors.background} strokeWidth={1.8} />
+					</View>
 					<Text style={[styles.bigLabel, { color: theme.colors.background }]}>
 						{t("card.openButton")}
 					</Text>
-					<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
+					<Text
+						style={[theme.typography.caption, styles.bigHint, { color: theme.colors.textFaint }]}
+					>
 						{t("card.openHint")}
 					</Text>
 				</Pressable>
 
 				{/* Toilettes à proximité. */}
-				<Text style={[theme.typography.heading, { color: theme.colors.text }]}>
+				<Text
+					style={[theme.typography.overline, styles.groupLabel, { color: theme.colors.textFaint }]}
+				>
 					{t("toilets.title")}
 				</Text>
 
@@ -227,9 +241,20 @@ export default function ToiletsTab() {
 
 				{/* Note France : afa + compléments communautaires. */}
 				<Card style={{ gap: theme.spacing.sm }}>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
-						{t("france.title")}
-					</Text>
+					<View style={styles.franceHead}>
+						<View style={[styles.avatar, { backgroundColor: theme.colors.brandSoft }]}>
+							<Icon name="lifebuoy" size={20} color={theme.colors.brand} strokeWidth={1.8} />
+						</View>
+						<Text
+							style={[
+								theme.typography.subheading,
+								styles.franceTitle,
+								{ color: theme.colors.text },
+							]}
+						>
+							{t("france.title")}
+						</Text>
+					</View>
 					<Pressable
 						accessibilityRole="link"
 						testID="afa-link"
@@ -269,12 +294,23 @@ export default function ToiletsTab() {
 const styles = StyleSheet.create({
 	flex: { flex: 1 },
 	bigButton: {
-		borderRadius: 20,
-		paddingVertical: 28,
+		paddingVertical: 32,
+		paddingHorizontal: 20,
 		alignItems: "center",
-		gap: 8,
+		gap: 10,
 	},
-	bigLabel: { fontSize: 22, fontWeight: "800", letterSpacing: 0.5 },
+	bigRing: {
+		width: 72,
+		height: 72,
+		borderRadius: 999,
+		borderWidth: StyleSheet.hairlineWidth,
+		alignItems: "center",
+		justifyContent: "center",
+		marginBottom: 2,
+	},
+	bigLabel: { fontSize: 22, fontWeight: "800", letterSpacing: 0.5, textAlign: "center" },
+	bigHint: { textAlign: "center" },
+	groupLabel: { paddingHorizontal: 4, marginTop: 4 },
 	row: { flexDirection: "row", alignItems: "center", gap: 12 },
 	avatar: {
 		width: 42,
@@ -284,5 +320,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	rowBody: { flex: 1, gap: 2 },
+	franceHead: { flexDirection: "row", alignItems: "center", gap: 12 },
+	franceTitle: { flex: 1 },
 	complements: { flexDirection: "row", flexWrap: "wrap", gap: 16, marginTop: 4 },
 });

@@ -81,6 +81,7 @@
 	},
 	"symptom": {
 		"title": "Symptômes",
+		"subtitle": "Bilan de fin de journée, en quelques touches.",
 		"pain": "Douleur",
 		"painZone": "Localisation",
 		"fatigue": "Fatigue",

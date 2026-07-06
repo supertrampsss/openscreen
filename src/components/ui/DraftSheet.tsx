@@ -10,6 +10,7 @@ import {
 	Text,
 	View,
 } from "react-native";
+import { useReducedMotion } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/theme";
 import { PillButton } from "./PillButton";
@@ -45,16 +46,17 @@ export function DraftSheet({
 }: DraftSheetProps) {
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
+	const reduceMotion = useReducedMotion();
 	const translateY = useRef(new Animated.Value(1)).current;
 
 	useEffect(() => {
 		Animated.timing(translateY, {
 			toValue: visible ? 0 : 1,
-			duration: visible ? 260 : 200,
+			duration: reduceMotion ? 0 : visible ? 280 : 200,
 			easing: visible ? Easing.out(Easing.cubic) : Easing.in(Easing.cubic),
 			useNativeDriver: true,
 		}).start();
-	}, [visible, translateY]);
+	}, [visible, translateY, reduceMotion]);
 
 	useEffect(() => {
 		if (!visible) return;
@@ -84,8 +86,8 @@ export function DraftSheet({
 						styles.sheet,
 						{
 							backgroundColor: theme.colors.card,
-							borderTopLeftRadius: theme.radii.lg,
-							borderTopRightRadius: theme.radii.lg,
+							borderTopLeftRadius: theme.radii.xl,
+							borderTopRightRadius: theme.radii.xl,
 							paddingBottom: insets.bottom + theme.spacing.lg,
 							transform: [{ translateY: sheetTranslate }],
 						},
@@ -140,8 +142,8 @@ const styles = StyleSheet.create({
 		maxHeight: "88%",
 	},
 	handle: {
-		width: 40,
-		height: 5,
+		width: 36,
+		height: 4,
 		borderRadius: 999,
 		alignSelf: "center",
 		marginBottom: 12,
