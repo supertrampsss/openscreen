@@ -1,57 +1,80 @@
 /*
  * Crohnicle — vitrine publique.
- * Design system §3 : base monochrome, cartes blanches rayon 20px, CTA pilules
- * noires, la couleur ne code que la donnée. Dark mode via prefers-color-scheme.
- * Zéro ressource externe (privacy structurelle jusque sur le site) : typo système,
- * pas de CDN, pas de fonts distantes, pas d'analytics.
+ * Identité « Clinique calme » : neutres à biais violet froid, accent brand unique,
+ * la couleur ne code que la donnée. Typo système, hairlines, coins 20-22px,
+ * ombres douces, iconographie au trait (zéro emoji). Dark mode via prefers-color-scheme.
+ * Zéro ressource externe (privacy structurelle jusque sur le site) : pas de CDN,
+ * pas de fonts distantes, pas d'analytics.
  */
 
 :root {
-	/* Base monochrome (thème clair). */
-	--bg: #f7f7f8;
+	/* Neutres à biais violet froid (thème clair). */
+	--bg: #f4f4f7;
 	--card: #ffffff;
-	--surface: #f0f0f2;
-	--border: #e5e5ea;
-	--text: #0a0a0a;
-	--text-muted: #6b6b70;
-	--text-faint: #a1a1a6;
-	--cta-bg: #0a0a0a;
+	--surface: #ececf3;
+	--border: #e3e2ec;
+	--hairline: #ecebf2;
+	--text: #16161c;
+	--text-muted: #5c5c68;
+	--text-faint: #9a9aa6;
+
+	/* Accent unique de marque. */
+	--brand: #6e63e6;
+	--brand-soft: color-mix(in srgb, #6e63e6 12%, transparent);
+
+	/* CTA « ink » — comme les boutons pleins de l'app. */
+	--cta-bg: #16161c;
 	--cta-text: #ffffff;
-	--flare-bg: #fdf3e3;
-	--flare-border: #f5d9a8;
 
-	/* La couleur ne code QUE la donnée (§3). */
-	--stool: #8b5cf6; /* violet — selles / teinte primaire de marque */
-	--pain: #f59e0b; /* ambre — douleur */
-	--energy: #10b981; /* vert — énergie */
-	--meal: #3b82f6; /* bleu — repas / triggers */
-	--blood: #e11d48; /* réservé, jamais en aplat alarmiste */
+	/* Bloc d'avertissement, teinte chaude discrète. */
+	--flare-bg: #fbf2e2;
+	--flare-border: #efdcb6;
 
-	--shadow-card: 0 4px 12px rgba(0, 0, 0, 0.06);
-	--shadow-float: 0 6px 20px rgba(0, 0, 0, 0.14);
-	--radius-card: 20px;
+	/* La couleur ne code QUE la donnée. */
+	--stool: #7a70e6; /* selles */
+	--pain: #d68a2e; /* douleur */
+	--energy: #35a883; /* énergie */
+	--meal: #4a7fe0; /* repas / déclencheurs */
+
+	--shadow-card: 0 2px 10px rgba(22, 22, 40, 0.05);
+	--shadow-float: 0 10px 34px rgba(22, 22, 40, 0.14);
+	--radius-card: 22px;
+	--radius-sm: 14px;
 	--radius-pill: 999px;
 	--maxw: 1100px;
 
 	--font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-		sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+		sans-serif;
+	--mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg: #0f0f10;
-		--card: #1c1c1e;
-		--surface: #2c2c2e;
-		--border: #38383a;
-		--text: #f5f5f5;
-		--text-muted: #a1a1a6;
-		--text-faint: #6b6b70;
-		--cta-bg: #f5f5f5;
-		--cta-text: #0a0a0a;
-		--flare-bg: #3a2e19;
-		--flare-border: #5c4a26;
-		--shadow-card: 0 4px 14px rgba(0, 0, 0, 0.4);
-		--shadow-float: 0 6px 22px rgba(0, 0, 0, 0.5);
+		--bg: #0e0e12;
+		--card: #1a1a20;
+		--surface: #24242e;
+		--border: #2e2e39;
+		--hairline: #26262f;
+		--text: #f4f4f7;
+		--text-muted: #a3a3b0;
+		--text-faint: #6c6c7a;
+
+		--brand: #8b82f2;
+		--brand-soft: color-mix(in srgb, #8b82f2 20%, transparent);
+
+		--cta-bg: #f4f4f7;
+		--cta-text: #16161c;
+
+		--flare-bg: #2c2517;
+		--flare-border: #4a3d22;
+
+		--stool: #9188f0;
+		--pain: #e0a24f;
+		--energy: #4cc79c;
+		--meal: #6e9bf0;
+
+		--shadow-card: 0 2px 12px rgba(0, 0, 0, 0.4);
+		--shadow-float: 0 12px 36px rgba(0, 0, 0, 0.55);
 	}
 }
 
@@ -71,6 +94,7 @@ body {
 	line-height: 1.55;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
+	overflow-x: hidden;
 }
 
 a {
@@ -82,6 +106,13 @@ img {
 	display: block;
 }
 
+/* Focus visible cohérent partout. */
+:focus-visible {
+	outline: 2px solid var(--brand);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
 .wrap {
 	width: 100%;
 	max-width: var(--maxw);
@@ -89,35 +120,52 @@ img {
 	padding: 0 20px;
 }
 
+/* Marque « anneau ouvert ». */
+.mark {
+	color: var(--brand);
+	flex: none;
+}
+
+/* Icônes au trait génériques. */
+.ico {
+	width: 1em;
+	height: 1em;
+	flex: none;
+	stroke: currentColor;
+	fill: none;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
 /* ---------- Header ---------- */
 .site-header {
 	position: sticky;
 	top: 0;
 	z-index: 20;
-	background: color-mix(in srgb, var(--bg) 86%, transparent);
-	backdrop-filter: saturate(180%) blur(12px);
-	border-bottom: 1px solid var(--border);
+	background: color-mix(in srgb, var(--bg) 82%, transparent);
+	backdrop-filter: saturate(160%) blur(14px);
+	border-bottom: 1px solid var(--hairline);
 }
 .site-header .wrap {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	height: 60px;
+	height: 62px;
 	gap: 16px;
 }
 .brand {
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	font-weight: 800;
+	font-weight: 700;
 	font-size: 18px;
 	letter-spacing: -0.02em;
 	text-decoration: none;
 }
-.brand img {
-	width: 28px;
-	height: 28px;
-	border-radius: 8px;
+.brand .mark {
+	width: 26px;
+	height: 26px;
 }
 .nav-links {
 	display: flex;
@@ -158,7 +206,7 @@ img {
 	padding: 14px 26px;
 	border: 1px solid transparent;
 	cursor: pointer;
-	transition: transform 0.12s ease, opacity 0.12s ease;
+	transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
 }
 .btn:active {
 	transform: scale(0.98);
@@ -175,7 +223,7 @@ img {
 .btn-secondary:hover {
 	background: var(--surface);
 }
-/* Pilules stores « bientôt » — grisées, non cliquables (§4). */
+/* Pilules stores « bientôt » — grisées, non cliquables. */
 .btn-store {
 	background: var(--surface);
 	color: var(--text-faint);
@@ -184,6 +232,7 @@ img {
 	gap: 0;
 	line-height: 1.2;
 	padding: 10px 22px;
+	border: 1px solid var(--border);
 }
 .btn-store .small {
 	font-size: 11px;
@@ -198,14 +247,14 @@ img {
 .btn-store .badge-soon {
 	font-size: 11px;
 	font-weight: 700;
-	color: var(--stool);
+	color: var(--brand);
 	text-transform: none;
 	letter-spacing: 0;
 }
 
 /* ---------- Hero ---------- */
 .hero {
-	padding: 56px 0 40px;
+	padding: 56px 0 44px;
 }
 .hero .wrap {
 	display: grid;
@@ -215,8 +264,8 @@ img {
 }
 .hero h1 {
 	font-size: clamp(34px, 5vw, 52px);
-	line-height: 1.05;
-	letter-spacing: -0.03em;
+	line-height: 1.04;
+	letter-spacing: -0.035em;
 	margin: 0 0 18px;
 	font-weight: 800;
 }
@@ -224,7 +273,7 @@ img {
 	font-size: clamp(17px, 2.2vw, 21px);
 	color: var(--text-muted);
 	margin: 0 0 28px;
-	max-width: 32ch;
+	max-width: 34ch;
 }
 .hero .cta-row {
 	display: flex;
@@ -236,14 +285,21 @@ img {
 	margin: 16px 0 0;
 	font-size: 13px;
 	color: var(--text-faint);
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+}
+.hero .cta-note .ico {
+	font-size: 15px;
+	color: var(--energy);
 }
 .eyebrow {
 	display: inline-block;
 	font-size: 13px;
 	font-weight: 700;
-	letter-spacing: 0.02em;
-	color: var(--stool);
-	background: color-mix(in srgb, var(--stool) 12%, transparent);
+	letter-spacing: 0.01em;
+	color: var(--brand);
+	background: var(--brand-soft);
 	padding: 5px 12px;
 	border-radius: var(--radius-pill);
 	margin-bottom: 18px;
@@ -255,16 +311,16 @@ img {
 	width: 100%;
 	max-width: 290px;
 	aspect-ratio: 390 / 844;
-	background: #0a0a0a;
-	border-radius: 44px;
-	padding: 10px;
+	background: #0a0a0e;
+	border-radius: 46px;
+	padding: 9px;
 	box-shadow: var(--shadow-float);
 	border: 1px solid var(--border);
 }
 .phone-screen {
 	width: 100%;
 	height: 100%;
-	border-radius: 36px;
+	border-radius: 38px;
 	overflow: hidden;
 	background: var(--bg);
 }
@@ -287,6 +343,9 @@ img {
 	.hero .cta-row {
 		justify-content: center;
 	}
+	.hero .cta-note {
+		justify-content: center;
+	}
 	.eyebrow {
 		margin-top: 8px;
 	}
@@ -294,7 +353,7 @@ img {
 
 /* ---------- Sections ---------- */
 section {
-	padding: 40px 0;
+	padding: 44px 0;
 }
 .section-head {
 	max-width: 640px;
@@ -302,15 +361,16 @@ section {
 	text-align: center;
 }
 .section-head .kicker {
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 700;
-	letter-spacing: 0.04em;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	margin: 0 0 10px;
+	color: var(--brand);
 }
 .section-head h2 {
 	font-size: clamp(26px, 4vw, 36px);
-	letter-spacing: -0.02em;
+	letter-spacing: -0.025em;
 	line-height: 1.1;
 	margin: 0 0 12px;
 	font-weight: 800;
@@ -340,6 +400,20 @@ section {
 .feature-media .phone {
 	max-width: 250px;
 }
+.feature-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 13px;
+	background: color-mix(in srgb, var(--accent, var(--brand)) 14%, transparent);
+	color: var(--accent, var(--brand));
+	margin-bottom: 16px;
+}
+.feature-icon .ico {
+	font-size: 22px;
+}
 .feature-body h3 {
 	font-size: clamp(22px, 3vw, 28px);
 	letter-spacing: -0.02em;
@@ -368,10 +442,10 @@ section {
 	position: absolute;
 	left: 0;
 	top: 8px;
-	width: 10px;
-	height: 10px;
+	width: 9px;
+	height: 9px;
 	border-radius: 3px;
-	background: var(--accent, var(--stool));
+	background: var(--accent, var(--brand));
 }
 .privacy-note {
 	display: inline-flex;
@@ -385,6 +459,9 @@ section {
 	padding: 8px 14px;
 	border-radius: var(--radius-pill);
 }
+.privacy-note .ico {
+	font-size: 16px;
+}
 @media (max-width: 780px) {
 	.feature {
 		grid-template-columns: 1fr;
@@ -393,6 +470,10 @@ section {
 	}
 	.feature.reverse .feature-media {
 		order: 0;
+	}
+	.feature-icon {
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.feature-list {
 		text-align: left;
@@ -420,15 +501,15 @@ section {
 	padding: 24px 20px;
 }
 .law-card.privacy {
-	border-color: color-mix(in srgb, var(--energy) 45%, var(--border));
+	border-color: color-mix(in srgb, var(--brand) 45%, var(--border));
 }
 .law-num {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 34px;
-	height: 34px;
-	border-radius: 10px;
+	width: 36px;
+	height: 36px;
+	border-radius: 11px;
 	font-weight: 800;
 	font-size: 15px;
 	background: var(--surface);
@@ -436,8 +517,11 @@ section {
 	margin-bottom: 14px;
 }
 .law-card.privacy .law-num {
-	background: color-mix(in srgb, var(--energy) 16%, transparent);
-	color: var(--energy);
+	background: var(--brand-soft);
+	color: var(--brand);
+}
+.law-card.privacy .law-num .ico {
+	font-size: 18px;
 }
 .law-card h3 {
 	font-size: 18px;
@@ -479,7 +563,7 @@ section {
 	flex-direction: column;
 }
 .price-card.highlight {
-	border: 2px solid var(--text);
+	border: 2px solid var(--brand);
 }
 .price-head {
 	display: flex;
@@ -496,13 +580,14 @@ section {
 .price-amount {
 	font-size: 40px;
 	font-weight: 800;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.035em;
 	margin: 6px 0 2px;
 }
 .price-amount .per {
 	font-size: 16px;
 	font-weight: 600;
 	color: var(--text-muted);
+	letter-spacing: -0.01em;
 }
 .price-sub {
 	color: var(--energy);
@@ -518,7 +603,7 @@ section {
 	font-size: 12px;
 	font-weight: 800;
 	color: #fff;
-	background: var(--energy);
+	background: var(--brand);
 	padding: 4px 10px;
 	border-radius: var(--radius-pill);
 }
@@ -533,14 +618,15 @@ section {
 	position: relative;
 	padding-left: 28px;
 	font-size: 15.5px;
+	min-height: 20px;
 }
-.plan-list li::before {
-	content: "✓";
+.plan-list li .ico {
 	position: absolute;
 	left: 0;
-	top: 0;
+	top: 3px;
+	font-size: 16px;
 	color: var(--energy);
-	font-weight: 800;
+	stroke-width: 2.2;
 }
 .plan-list li .soon {
 	font-size: 12px;
@@ -555,24 +641,38 @@ section {
 	margin-top: auto;
 }
 .free-trial {
-	background: var(--surface);
-	border-radius: 14px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: var(--brand-soft);
+	border-radius: var(--radius-sm);
 	padding: 12px 16px;
 	font-size: 14.5px;
 	font-weight: 600;
 	margin: 0 0 16px;
-	text-align: center;
+}
+.free-trial .ico {
+	font-size: 20px;
+	color: var(--brand);
 }
 .pledge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
 	max-width: 620px;
 	margin: 26px auto 0;
 	text-align: center;
 	font-size: 15px;
-	color: var(--energy);
+	color: var(--brand);
 	font-weight: 600;
-	background: color-mix(in srgb, var(--energy) 10%, transparent);
+	background: var(--brand-soft);
 	border-radius: var(--radius-card);
 	padding: 16px 22px;
+}
+.pledge .ico {
+	font-size: 18px;
+	flex: none;
 }
 @media (max-width: 700px) {
 	.pricing {
@@ -601,7 +701,7 @@ section {
 }
 .demo-box code {
 	display: inline-block;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-family: var(--mono);
 	background: var(--surface);
 	border-radius: 8px;
 	padding: 3px 8px;
@@ -618,7 +718,7 @@ section {
 .faq details {
 	background: var(--card);
 	border: 1px solid var(--border);
-	border-radius: 16px;
+	border-radius: var(--radius-sm);
 	box-shadow: var(--shadow-card);
 	padding: 4px 20px;
 }
@@ -655,7 +755,7 @@ section {
 /* ---------- Footer ---------- */
 .site-footer {
 	margin-top: 24px;
-	border-top: 1px solid var(--border);
+	border-top: 1px solid var(--hairline);
 	background: var(--card);
 	padding: 40px 0;
 }
@@ -664,12 +764,21 @@ section {
 	gap: 20px;
 }
 .footer-disclaimer {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
 	background: var(--flare-bg);
 	border: 1px solid var(--flare-border);
-	border-radius: 14px;
+	border-radius: var(--radius-sm);
 	padding: 14px 18px;
 	font-size: 14.5px;
 	color: var(--text);
+}
+.footer-disclaimer .ico {
+	font-size: 20px;
+	flex: none;
+	margin-top: 1px;
+	color: var(--pain);
 }
 .footer-links {
 	display: flex;
@@ -691,10 +800,34 @@ section {
 	font-size: 13px;
 }
 
+/* Article (privacy / terms). */
+.doc {
+	max-width: 720px;
+	margin: 0 auto;
+}
+.doc p,
+.doc li {
+	color: var(--text-muted);
+}
+.doc h3 {
+	margin-top: 32px;
+	color: var(--text);
+}
+.doc .lead {
+	font-size: 17px;
+}
+.doc a.inline {
+	color: var(--brand);
+	font-weight: 500;
+}
+
 /* Réduire les animations si demandé. */
 @media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
 	* {
-		scroll-behavior: auto !important;
 		transition: none !important;
+		animation: none !important;
 	}
 }

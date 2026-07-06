@@ -17,6 +17,7 @@ import {
 	upsertDraft,
 } from "@/repositories/mealRepo";
 import { currentEntitlementToken } from "@/services/entitlements";
+import { haptics } from "@/services/haptics";
 import {
 	analyzeMeal,
 	dishName,
@@ -189,6 +190,8 @@ export function MealScanResultSheet({
 			});
 			await replaceItems(meal.id, toSave);
 			await commitDraft(meal.id);
+			// Commit OK → petit succès haptique (jamais sur échec).
+			haptics.success();
 			snackbar.show({ message: t("log:meal.saved") });
 			onSaved();
 			onClose();

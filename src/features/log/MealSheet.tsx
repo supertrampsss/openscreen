@@ -18,6 +18,7 @@ import {
 	searchFoods,
 	upsertDraft,
 } from "@/repositories/mealRepo";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 import { Eyebrow, PortionButton, RemoveButton } from "./sheetKit";
 import { TimeChips, type TimeMode } from "./TimeChips";
@@ -204,6 +205,8 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 		try {
 			await persist(items, name, occurred);
 			await commitDraft(mealId);
+			// Loi 2 : commit OK → petit succès haptique (jamais sur échec).
+			haptics.success();
 			snackbar.show({ message: t("meal.saved") });
 			onSaved();
 			onClose();

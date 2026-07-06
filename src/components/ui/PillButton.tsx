@@ -1,5 +1,6 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, type ViewStyle } from "react-native";
 import { useReducedMotion } from "react-native-reanimated";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 
 interface PillButtonProps {
@@ -44,7 +45,10 @@ export function PillButton({
 			accessibilityState={{ disabled: isDisabled, busy: loading }}
 			testID={testID}
 			disabled={isDisabled}
-			onPress={onPress}
+			onPress={() => {
+				haptics.impact("light");
+				onPress();
+			}}
 			style={({ pressed }) => [
 				styles.base,
 				{

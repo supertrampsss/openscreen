@@ -7,6 +7,7 @@ import { useSnackbar } from "@/components/ui/Snackbar";
 import type { VoiceDraft } from "@/domain/voiceEntries";
 import { voiceEntriesToDrafts } from "@/domain/voiceEntries";
 import { useEntitlements } from "@/services/entitlements";
+import { haptics } from "@/services/haptics";
 import {
 	commitVoiceDrafts,
 	createSpeechRecognizer,
@@ -148,6 +149,8 @@ export function VoiceNoteSheet({ visible, onClose, onSaved, onEditEntry, onSeePr
 		setBusy(true);
 		try {
 			const saved = await commitVoiceDrafts(drafts);
+			// Commit OK → petit succès haptique (jamais sur échec).
+			haptics.success();
 			snackbar.show({ message: t("saved", { count: saved }) });
 			onSaved();
 			onClose();

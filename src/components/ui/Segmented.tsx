@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 
 export interface SegmentedOption {
@@ -44,7 +45,10 @@ export function Segmented({ options, value, onChange, accessibilityLabel }: Segm
 						accessibilityState={{ selected }}
 						accessibilityLabel={opt.label}
 						testID={opt.testID}
-						onPress={() => onChange(opt.value)}
+						onPress={() => {
+							haptics.selection();
+							onChange(opt.value);
+						}}
 						style={({ pressed }) => [
 							styles.segment,
 							{

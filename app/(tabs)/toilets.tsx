@@ -17,13 +17,14 @@ import { useTranslation } from "react-i18next";
 import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
-import { Card, PillButton } from "@/components/ui";
+import { Card, FadeInView, PillButton } from "@/components/ui";
 import {
 	AFA_URGENCY_CARD_URL,
 	ICI_TOILETTES_URL,
 	OU_SONT_LES_TOILETTES_URL,
 } from "@/constants/branding";
 import { formatDistance } from "@/domain/geo";
+import { haptics } from "@/services/haptics";
 import {
 	directionsUrl,
 	fetchNearbyToilets,
@@ -31,6 +32,10 @@ import {
 	type ToiletWithDistance,
 } from "@/services/toiletsService";
 import { useTheme } from "@/theme";
+
+/** Décalage d'apparition en cascade (§3, plafonné pour rester calme). */
+const STAGGER = 40;
+const staggerDelay = (i: number) => Math.min(i, 7) * STAGGER;
 
 type Status = "idle" | "loading" | "ready" | "denied" | "error";
 
@@ -79,6 +84,7 @@ export default function ToiletsTab() {
 		const pos = await getPosition();
 		if (pos === "denied") {
 			setStatus("denied");
+			haptics.warning();
 			return;
 		}
 		try {
@@ -86,14 +92,24 @@ export default function ToiletsTab() {
 			setToilets(res);
 			setCachedAgeMin(0);
 			setStatus("ready");
+			haptics.success();
 		} catch {
 			setStatus("error");
+			haptics.warning();
 		}
 	}, []);
 
 	const openDirections = (t2: ToiletWithDistance) => {
+		haptics.selection();
 		void Linking.openURL(directionsUrl(t2, Platform.OS));
 	};
+
+	// Label bilingue (fr + en) : la carte d'urgence peut être montrée à un tiers
+	// qui parle l'une ou l'autre langue (§5.10, accessibilité).
+	const emergencyLabel = `${i18n.getFixedT("fr", "urgence")("card.openButton")} · ${i18n.getFixedT(
+		"en",
+		"urgence",
+	)("card.openButton")}`;
 
 	return (
 		<View style={[styles.flex, { backgroundColor: theme.colors.background }]}>
@@ -105,56 +121,74 @@ export default function ToiletsTab() {
 					gap: theme.spacing.lg,
 				}}
 			>
-				<Text style={[theme.typography.title, { color: theme.colors.text }]}>{t("tabTitle")}</Text>
+				<FadeInView delay={staggerDelay(0)}>
+					<Text style={[theme.typography.title, { color: theme.colors.text }]}>
+						{t("tabTitle")}
+					</Text>
+				</FadeInView>
 
 				{/* Gros bouton carte d'urgence (1 tap → plein écran, offline). */}
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={t("card.openButton")}
-					testID="urgence-open"
-					onPress={() => router.push("/urgence")}
-					style={({ pressed }) => [
-						styles.bigButton,
-						{
-							backgroundColor: theme.colors.text,
-							borderRadius: theme.radii.xl,
-							opacity: pressed ? 0.92 : 1,
-						},
-						theme.shadows.card,
-					]}
-				>
-					<View style={[styles.bigRing, { borderColor: theme.colors.textFaint }]}>
-						<Icon name="lifebuoy" size={38} color={theme.colors.background} strokeWidth={1.8} />
-					</View>
-					<Text style={[styles.bigLabel, { color: theme.colors.background }]}>
-						{t("card.openButton")}
-					</Text>
-					<Text
-						style={[theme.typography.caption, styles.bigHint, { color: theme.colors.textFaint }]}
+				<FadeInView delay={staggerDelay(1)}>
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel={emergencyLabel}
+						accessibilityHint={t("card.openHint")}
+						testID="urgence-open"
+						onPress={() => {
+							haptics.impact("medium");
+							router.push("/urgence");
+						}}
+						style={({ pressed }) => [
+							styles.bigButton,
+							{
+								backgroundColor: theme.colors.text,
+								borderRadius: theme.radii.xl,
+								opacity: pressed ? 0.92 : 1,
+							},
+							theme.shadows.card,
+						]}
 					>
-						{t("card.openHint")}
-					</Text>
-				</Pressable>
+						<View style={[styles.bigRing, { borderColor: theme.colors.background }]}>
+							<Icon name="lifebuoy" size={38} color={theme.colors.background} strokeWidth={1.8} />
+						</View>
+						<Text style={[styles.bigLabel, { color: theme.colors.background }]}>
+							{t("card.openButton")}
+						</Text>
+						<Text
+							style={[theme.typography.caption, styles.bigHint, { color: theme.colors.background }]}
+						>
+							{t("card.openHint")}
+						</Text>
+					</Pressable>
+				</FadeInView>
 
 				{/* Toilettes à proximité. */}
-				<Text
-					style={[theme.typography.overline, styles.groupLabel, { color: theme.colors.textFaint }]}
-				>
-					{t("toilets.title")}
-				</Text>
+				<FadeInView delay={staggerDelay(2)}>
+					<Text
+						style={[
+							theme.typography.overline,
+							styles.groupLabel,
+							{ color: theme.colors.textFaint },
+						]}
+					>
+						{t("toilets.title")}
+					</Text>
+				</FadeInView>
 
 				{status !== "ready" && status !== "loading" && toilets.length === 0 ? (
-					<Card style={{ gap: theme.spacing.md }}>
-						<PillButton
-							label={t("toilets.enable")}
-							testID="toilets-enable"
-							onPress={() => void search()}
-							accessibilityLabel={t("toilets.enable")}
-						/>
-						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-							{t("toilets.privacy")}
-						</Text>
-					</Card>
+					<FadeInView delay={staggerDelay(3)}>
+						<Card style={{ gap: theme.spacing.md }}>
+							<PillButton
+								label={t("toilets.enable")}
+								testID="toilets-enable"
+								onPress={() => void search()}
+								accessibilityLabel={t("toilets.enable")}
+							/>
+							<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+								{t("toilets.privacy")}
+							</Text>
+						</Card>
+					</FadeInView>
 				) : null}
 
 				{status === "loading" ? (
@@ -209,7 +243,14 @@ export default function ToiletsTab() {
 								key={item.id}
 								accessibilityRole="button"
 								testID="toilet-row"
-								accessibilityLabel={item.name ?? t("toilets.unnamed")}
+								accessibilityLabel={[
+									item.name ?? t("toilets.unnamed"),
+									formatDistance(item.distanceM, lang),
+									item.wheelchair ? t("toilets.wheelchair") : null,
+									item.fee ? t("toilets.fee") : null,
+								]
+									.filter(Boolean)
+									.join(" · ")}
 								onPress={() => openDirections(item)}
 							>
 								<Card padding="md" style={styles.row}>
@@ -240,52 +281,72 @@ export default function ToiletsTab() {
 				) : null}
 
 				{/* Note France : afa + compléments communautaires. */}
-				<Card style={{ gap: theme.spacing.sm }}>
-					<View style={styles.franceHead}>
-						<View style={[styles.avatar, { backgroundColor: theme.colors.brandSoft }]}>
-							<Icon name="lifebuoy" size={20} color={theme.colors.brand} strokeWidth={1.8} />
+				<FadeInView delay={staggerDelay(4)}>
+					<Card style={{ gap: theme.spacing.sm }}>
+						<View style={styles.franceHead}>
+							<View style={[styles.avatar, { backgroundColor: theme.colors.brandSoft }]}>
+								<Icon name="lifebuoy" size={20} color={theme.colors.brand} strokeWidth={1.8} />
+							</View>
+							<Text
+								style={[
+									theme.typography.subheading,
+									styles.franceTitle,
+									{ color: theme.colors.text },
+								]}
+							>
+								{t("france.title")}
+							</Text>
 						</View>
-						<Text
-							style={[
-								theme.typography.subheading,
-								styles.franceTitle,
-								{ color: theme.colors.text },
-							]}
-						>
-							{t("france.title")}
-						</Text>
-					</View>
-					<Pressable
-						accessibilityRole="link"
-						testID="afa-link"
-						onPress={() => void Linking.openURL(AFA_URGENCY_CARD_URL)}
-					>
-						<Text style={[theme.typography.body, { color: theme.colors.meal }]}>
-							{t("france.afa")}
-						</Text>
-					</Pressable>
-					<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
-						{t("france.afaBody")}
-					</Text>
-					<View style={styles.complements}>
 						<Pressable
 							accessibilityRole="link"
-							onPress={() => void Linking.openURL(ICI_TOILETTES_URL)}
+							accessibilityLabel={t("france.afa")}
+							testID="afa-link"
+							hitSlop={8}
+							style={styles.franceLink}
+							onPress={() => {
+								haptics.selection();
+								void Linking.openURL(AFA_URGENCY_CARD_URL);
+							}}
 						>
-							<Text style={[theme.typography.caption, { color: theme.colors.meal }]}>
-								{t("france.iciToilettes")}
+							<Text style={[theme.typography.body, { color: theme.colors.meal }]}>
+								{t("france.afa")}
 							</Text>
 						</Pressable>
-						<Pressable
-							accessibilityRole="link"
-							onPress={() => void Linking.openURL(OU_SONT_LES_TOILETTES_URL)}
-						>
-							<Text style={[theme.typography.caption, { color: theme.colors.meal }]}>
-								{t("france.ouSontLesToilettes")}
-							</Text>
-						</Pressable>
-					</View>
-				</Card>
+						<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+							{t("france.afaBody")}
+						</Text>
+						<View style={styles.complements}>
+							<Pressable
+								accessibilityRole="link"
+								accessibilityLabel={t("france.iciToilettes")}
+								hitSlop={8}
+								style={styles.franceLink}
+								onPress={() => {
+									haptics.selection();
+									void Linking.openURL(ICI_TOILETTES_URL);
+								}}
+							>
+								<Text style={[theme.typography.caption, { color: theme.colors.meal }]}>
+									{t("france.iciToilettes")}
+								</Text>
+							</Pressable>
+							<Pressable
+								accessibilityRole="link"
+								accessibilityLabel={t("france.ouSontLesToilettes")}
+								hitSlop={8}
+								style={styles.franceLink}
+								onPress={() => {
+									haptics.selection();
+									void Linking.openURL(OU_SONT_LES_TOILETTES_URL);
+								}}
+							>
+								<Text style={[theme.typography.caption, { color: theme.colors.meal }]}>
+									{t("france.ouSontLesToilettes")}
+								</Text>
+							</Pressable>
+						</View>
+					</Card>
+				</FadeInView>
 			</ScrollView>
 		</View>
 	);
@@ -322,5 +383,6 @@ const styles = StyleSheet.create({
 	rowBody: { flex: 1, gap: 2 },
 	franceHead: { flexDirection: "row", alignItems: "center", gap: 12 },
 	franceTitle: { flex: 1 },
+	franceLink: { paddingVertical: 8 },
 	complements: { flexDirection: "row", flexWrap: "wrap", gap: 16, marginTop: 4 },
 });

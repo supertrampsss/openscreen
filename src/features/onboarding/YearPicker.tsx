@@ -5,6 +5,7 @@
 
 import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 
 interface Props {
@@ -36,7 +37,10 @@ export function YearPicker({ value, onChange }: Props) {
 						accessibilityState={{ selected }}
 						accessibilityLabel={String(year)}
 						testID={`year-${year}`}
-						onPress={() => onChange(year)}
+						onPress={() => {
+							haptics.selection();
+							onChange(year);
+						}}
 						style={[
 							styles.row,
 							{

@@ -3,6 +3,7 @@ export { ChipTrigger } from "./ChipTrigger";
 export { Confetti } from "./Confetti";
 export { DraftSheet } from "./DraftSheet";
 export { type ChartBand, LineChart } from "./LineChart";
+export { FadeInView } from "./Motion";
 export { PillButton } from "./PillButton";
 export { RingCard } from "./RingCard";
 export { Segmented, type SegmentedOption } from "./Segmented";

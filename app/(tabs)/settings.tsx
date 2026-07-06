@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
-import { Card, PillButton } from "@/components/ui";
+import { Card, FadeInView, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { PRIVACY_URL, TERMS_URL } from "@/constants/branding";
 import { BackupError } from "@/domain/backup";
@@ -15,10 +15,15 @@ import { NotificationsSettings } from "@/features/notifications/NotificationsSet
 import { useOnboarding } from "@/features/onboarding/OnboardingGate";
 import { exportBackup, importBackup } from "@/services/backupService";
 import { devToggleMockPremium, useEntitlements } from "@/services/entitlements";
+import { haptics } from "@/services/haptics";
 import { useTheme } from "@/theme";
 
 /** Nombre de long-press sur la version qui bascule le Premium simulé (dev). */
 const DEV_TOGGLE_TAPS = 5;
+
+/** Décalage d'apparition en cascade (§3, plafonné pour rester calme). */
+const STAGGER = 40;
+const staggerDelay = (i: number) => Math.min(i, 7) * STAGGER;
 
 /** En-tête de section discret (overline capitale, « Clinique calme »). */
 function SectionLabel({ children }: { children: string }) {
@@ -56,6 +61,7 @@ export default function SettingsScreen() {
 		if (devTaps.current < DEV_TOGGLE_TAPS) return;
 		devTaps.current = 0;
 		const on = await devToggleMockPremium();
+		haptics.selection();
 		reloadEntitlement();
 		snackbar.show({ message: on ? tp("toasts.mockOn") : tp("toasts.mockOff") });
 	};
@@ -64,8 +70,10 @@ export default function SettingsScreen() {
 		setBusy(true);
 		try {
 			await exportBackup();
+			haptics.success();
 			snackbar.show({ message: t("settings.backupDone") });
 		} catch {
+			haptics.warning();
 			snackbar.show({ message: t("settings.backupError") });
 		} finally {
 			setBusy(false);
@@ -83,9 +91,11 @@ export default function SettingsScreen() {
 					try {
 						const res = await importBackup();
 						if (res.imported) {
+							haptics.success();
 							snackbar.show({ message: t("settings.restoreDone") });
 						}
 					} catch (err) {
+						haptics.warning();
 						snackbar.show({
 							message: err instanceof BackupError ? err.message : t("settings.restoreError"),
 						});
@@ -107,42 +117,54 @@ export default function SettingsScreen() {
 					gap: theme.spacing.lg,
 				}}
 			>
-				<Text style={[theme.typography.title, { color: theme.colors.text }]}>
-					{t("settings.title")}
-				</Text>
+				<FadeInView delay={staggerDelay(0)}>
+					<Text style={[theme.typography.title, { color: theme.colors.text }]}>
+						{t("settings.title")}
+					</Text>
+				</FadeInView>
 
 				{/* Carte mise en avant : export médecin (§5.8, gratuit à vie). */}
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={tx("card.settingsTitle")}
-					testID="settings-export"
-					onPress={() => router.push("/export")}
-				>
-					<Card style={[styles.exportCard, { backgroundColor: theme.colors.text }]}>
-						<View style={[styles.exportIcon, { backgroundColor: theme.colors.ctaText }]}>
-							<Icon name="stethoscope" size={24} color={theme.colors.text} strokeWidth={1.8} />
-						</View>
-						<View style={styles.rowBody}>
-							<Text style={[theme.typography.subheading, { color: theme.colors.background }]}>
-								{tx("card.settingsTitle")}
-							</Text>
-							<Text style={[theme.typography.caption, { color: theme.colors.textFaint }]}>
-								{tx("card.settingsBody")}
-							</Text>
-						</View>
-						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
-					</Card>
-				</Pressable>
+				<FadeInView delay={staggerDelay(1)}>
+					<Pressable
+						accessibilityRole="button"
+						accessibilityLabel={tx("card.settingsTitle")}
+						accessibilityHint={tx("card.settingsBody")}
+						testID="settings-export"
+						onPress={() => {
+							haptics.selection();
+							router.push("/export");
+						}}
+					>
+						<Card style={[styles.exportCard, { backgroundColor: theme.colors.text }]}>
+							<View style={[styles.exportIcon, { backgroundColor: theme.colors.ctaText }]}>
+								<Icon name="stethoscope" size={24} color={theme.colors.text} strokeWidth={1.8} />
+							</View>
+							<View style={styles.rowBody}>
+								<Text style={[theme.typography.subheading, { color: theme.colors.background }]}>
+									{tx("card.settingsTitle")}
+								</Text>
+								<Text style={[theme.typography.caption, { color: theme.colors.ctaText }]}>
+									{tx("card.settingsBody")}
+								</Text>
+							</View>
+							<Icon name="chevronRight" size={20} color={theme.colors.ctaText} />
+						</Card>
+					</Pressable>
+				</FadeInView>
 
-				<View style={styles.section}>
+				<FadeInView delay={staggerDelay(2)} style={styles.section}>
 					<SectionLabel>{t("settings.sections.care")}</SectionLabel>
 
 					{/* Traitements (§5.9) : rappels biothérapie, observance, effets secondaires. */}
 					<Pressable
 						accessibilityRole="button"
 						accessibilityLabel={ttr("settingsCard.title")}
+						accessibilityHint={ttr("settingsCard.body")}
 						testID="settings-treatments"
-						onPress={() => router.push("/treatments")}
+						onPress={() => {
+							haptics.selection();
+							router.push("/treatments");
+						}}
 					>
 						<Card style={styles.row}>
 							<View style={[styles.rowIcon, { backgroundColor: theme.colors.brandSoft }]}>
@@ -164,8 +186,14 @@ export default function SettingsScreen() {
 					<Pressable
 						accessibilityRole="button"
 						accessibilityLabel={tp("settingsRow")}
+						accessibilityValue={{
+							text: entitlement.premium ? tp("status.premium") : tp("status.free"),
+						}}
 						testID="settings-premium"
-						onPress={() => router.push("/premium")}
+						onPress={() => {
+							haptics.selection();
+							router.push("/premium");
+						}}
 					>
 						<Card
 							style={[
@@ -193,11 +221,13 @@ export default function SettingsScreen() {
 							<Icon name="chevronRight" size={20} color={theme.colors.brand} />
 						</Card>
 					</Pressable>
-				</View>
+				</FadeInView>
 
-				<NotificationsSettings />
+				<FadeInView delay={staggerDelay(3)}>
+					<NotificationsSettings />
+				</FadeInView>
 
-				<View style={styles.section}>
+				<FadeInView delay={staggerDelay(4)} style={styles.section}>
 					<SectionLabel>{t("flare.sectionTitle")}</SectionLabel>
 					<Card style={{ gap: theme.spacing.md }}>
 						<Text style={[theme.typography.body, { color: theme.colors.textMuted }]}>
@@ -210,9 +240,9 @@ export default function SettingsScreen() {
 						) : null}
 						<FlareToggle />
 					</Card>
-				</View>
+				</FadeInView>
 
-				<View style={styles.section}>
+				<FadeInView delay={staggerDelay(5)} style={styles.section}>
 					<SectionLabel>{t("settings.dataSection")}</SectionLabel>
 					<Card style={{ gap: theme.spacing.md }}>
 						<PillButton
@@ -236,9 +266,9 @@ export default function SettingsScreen() {
 							testID="settings-replay-onboarding"
 						/>
 					</Card>
-				</View>
+				</FadeInView>
 
-				<View style={styles.section}>
+				<FadeInView delay={staggerDelay(6)} style={styles.section}>
 					<SectionLabel>{t("settings.sections.about")}</SectionLabel>
 					<Card style={{ gap: theme.spacing.sm }}>
 						<View style={styles.privacyHead}>
@@ -301,7 +331,7 @@ export default function SettingsScreen() {
 							{t("settings.version", { version: appVersion })}
 						</Text>
 					</Pressable>
-				</View>
+				</FadeInView>
 			</ScrollView>
 		</View>
 	);
