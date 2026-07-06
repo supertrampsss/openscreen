@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, SectionList, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { BristolIcon, type BristolType } from "@/components/BristolIcon";
+import { Icon } from "@/components/Icon";
 import { Card } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import type { SymptomEntry } from "@/db/schema";
@@ -294,13 +294,21 @@ function JournalRow({
 	return (
 		<Card padding="md" style={styles.row} testID="journal-entry">
 			<Pressable style={styles.rowMain} accessibilityRole="button" onPress={onPress}>
-				{isStool && entry.bristol ? (
-					<BristolIcon type={entry.bristol as BristolType} selected size={28} />
-				) : (
-					<Text style={styles.emoji}>{isStool ? "💩" : "🤕"}</Text>
-				)}
+				<View
+					style={[
+						styles.avatar,
+						{ backgroundColor: isStool ? theme.colors.stoolSoft : theme.colors.painSoft },
+					]}
+				>
+					<Icon
+						name={isStool ? "stool" : "thermometer"}
+						size={20}
+						color={isStool ? theme.colors.stool : theme.colors.pain}
+						strokeWidth={1.8}
+					/>
+				</View>
 				<View style={styles.rowBody}>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+					<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
 						{isStool ? t("kinds.stool") : t("kinds.symptom")}
 						{isStool && entry.bristol ? ` · ${t("entry.bristol", { value: entry.bristol })}` : ""}
 					</Text>
@@ -330,9 +338,11 @@ function MealRow({
 	return (
 		<Card padding="md" style={styles.row} testID="journal-meal">
 			<Pressable style={styles.rowMain} accessibilityRole="button" onPress={onPress}>
-				<Text style={styles.emoji}>🍽️</Text>
+				<View style={[styles.avatar, { backgroundColor: theme.colors.mealSoft }]}>
+					<Icon name="utensils" size={20} color={theme.colors.meal} strokeWidth={1.8} />
+				</View>
 				<View style={styles.rowBody}>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+					<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
 						{meal.meal.name ?? t("kinds.meal")}
 					</Text>
 					<MealTriggerChips items={meal.items} max={3} />
@@ -358,7 +368,7 @@ function DeleteButton({ onDelete }: { onDelete: () => void }) {
 			hitSlop={8}
 			style={styles.delete}
 		>
-			<Text style={{ color: theme.colors.textFaint, fontSize: 20 }}>✕</Text>
+			<Text style={{ color: theme.colors.textFaint, fontSize: 20 }}>×</Text>
 		</Pressable>
 	);
 }
@@ -411,7 +421,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		gap: 2,
 	},
-	emoji: { fontSize: 22 },
+	avatar: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	rowTitle: { fontSize: 15, fontWeight: "600", letterSpacing: -0.1 },
 	delete: {
 		paddingLeft: 12,
 		paddingVertical: 8,

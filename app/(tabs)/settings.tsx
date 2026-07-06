@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon } from "@/components/Icon";
 import { Card, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { PRIVACY_URL, TERMS_URL } from "@/constants/branding";
@@ -105,7 +106,9 @@ export default function SettingsScreen() {
 					onPress={() => router.push("/treatments")}
 				>
 					<Card style={styles.premiumRow}>
-						<Text style={styles.premiumEmoji}>💊</Text>
+						<View style={[styles.rowIcon, { backgroundColor: theme.colors.brandSoft }]}>
+							<Icon name="capsule" size={22} color={theme.colors.brand} strokeWidth={1.8} />
+						</View>
 						<View style={styles.premiumBody}>
 							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
 								{ttr("settingsCard.title")}
@@ -114,7 +117,7 @@ export default function SettingsScreen() {
 								{ttr("settingsCard.body")}
 							</Text>
 						</View>
-						<Text style={[theme.typography.heading, { color: theme.colors.textFaint }]}>›</Text>
+						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 					</Card>
 				</Pressable>
 
@@ -126,7 +129,7 @@ export default function SettingsScreen() {
 					onPress={() => router.push("/export")}
 				>
 					<Card style={[styles.exportCard, { backgroundColor: theme.colors.text }]}>
-						<Text style={styles.exportEmoji}>🩺</Text>
+						<Icon name="stethoscope" size={26} color={theme.colors.background} strokeWidth={1.8} />
 						<View style={styles.exportBody}>
 							<Text style={[theme.typography.subheading, { color: theme.colors.background }]}>
 								{tx("card.settingsTitle")}
@@ -135,7 +138,7 @@ export default function SettingsScreen() {
 								{tx("card.settingsBody")}
 							</Text>
 						</View>
-						<Text style={[theme.typography.heading, { color: theme.colors.background }]}>›</Text>
+						<Icon name="chevronRight" size={20} color={theme.colors.background} />
 					</Card>
 				</Pressable>
 
@@ -147,7 +150,9 @@ export default function SettingsScreen() {
 					onPress={() => router.push("/premium")}
 				>
 					<Card style={styles.premiumRow}>
-						<Text style={styles.premiumEmoji}>✨</Text>
+						<View style={[styles.rowIcon, { backgroundColor: theme.colors.brandSoft }]}>
+							<Icon name="sparkles" size={22} color={theme.colors.brand} strokeWidth={1.7} />
+						</View>
 						<View style={styles.premiumBody}>
 							<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
 								{tp("settingsRow")}
@@ -162,7 +167,7 @@ export default function SettingsScreen() {
 								{entitlement.premium ? tp("status.premium") : tp("status.free")}
 							</Text>
 						</View>
-						<Text style={[theme.typography.heading, { color: theme.colors.textFaint }]}>›</Text>
+						<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 					</Card>
 				</Pressable>
 
@@ -268,10 +273,15 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
 	flex: { flex: 1 },
 	exportCard: { flexDirection: "row", alignItems: "center", gap: 14 },
-	exportEmoji: { fontSize: 26 },
 	exportBody: { flex: 1, gap: 2 },
 	premiumRow: { flexDirection: "row", alignItems: "center", gap: 14 },
-	premiumEmoji: { fontSize: 24 },
+	rowIcon: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
 	premiumBody: { flex: 1, gap: 2 },
 	legalLink: { paddingVertical: 8 },
 });

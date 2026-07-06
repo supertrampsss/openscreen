@@ -4,6 +4,7 @@
  */
 
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { useTheme } from "@/theme";
 
 export interface Choice {
@@ -53,7 +54,7 @@ export function ChoiceList({ options, selected, onToggle, multi = false }: Props
 							{opt.label}
 						</Text>
 						{isSel ? (
-							<Text style={[theme.typography.subheading, { color: theme.colors.ctaText }]}>✓</Text>
+							<Icon name="check" size={20} color={theme.colors.ctaText} strokeWidth={2.2} />
 						) : null}
 					</Pressable>
 				);

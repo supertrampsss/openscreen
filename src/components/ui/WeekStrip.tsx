@@ -30,7 +30,7 @@ export function WeekStrip({ days, onSelectDay, selectedDate }: WeekStripProps) {
 				const selected = selectedDate === day.date;
 				const filled = day.isToday || day.documented;
 				const bg = day.isToday
-					? theme.colors.stool
+					? theme.colors.brand
 					: day.documented
 						? theme.colors.surface
 						: "transparent";
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 	dot: {
 		width: 38,
 		height: 38,
-		borderRadius: 999,
+		borderRadius: 12,
 		alignItems: "center",
 		justifyContent: "center",
 	},

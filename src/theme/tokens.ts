@@ -8,65 +8,83 @@
  * Fichier PUR (zéro import React Native) pour rester testable.
  */
 
-/** Couleurs sémantiques de la donnée — identiques en clair et sombre. */
+/** Couleurs sémantiques de la donnée — identiques en clair et sombre.
+ * Direction « Clinique calme » : teintes muettes (désaturées) qui restent
+ * lisibles sur fond clair ET sombre. La couleur ne vit QUE dans la donnée. */
 export const dataColors = {
 	/** Selles (Bristol, fréquence). */
-	stool: "#8B5CF6",
+	stool: "#7A70E6",
 	/** Douleur. */
-	pain: "#F59E0B",
+	pain: "#D68A2E",
 	/** Énergie / fatigue. */
-	energy: "#10B981",
+	energy: "#35A883",
 	/** Repas / triggers alimentaires. */
-	meal: "#3B82F6",
+	meal: "#4A7FE0",
 	/** Sang — réservé, jamais en aplat, uniquement pastille discrète. */
-	blood: "#E11D48",
+	blood: "#CE4668",
 } as const;
 
 export type DataColorKey = keyof typeof dataColors;
 
-/** Palette du thème clair (§3). */
+/** Palette du thème clair — neutres à léger biais violet froid (choisis, pas
+ * hérités) + un accent unique `brand` et des fonds `*Soft` pour pastilles/chips. */
 const lightColors = {
 	/** Fond de l'app. */
-	background: "#F7F7F8",
+	background: "#F4F4F7",
 	/** Surface des cartes. */
 	card: "#FFFFFF",
-	/** Surface légèrement contrastée (rangées, chips inactifs). */
-	surface: "#F0F0F2",
-	/** Bordure discrète. */
-	border: "#E5E5EA",
+	/** Surface légèrement contrastée (rangées, chips inactifs, piste d'anneau). */
+	surface: "#F1F1F5",
+	/** Bordure discrète (hairline). */
+	border: "#E6E6EC",
 	/** Texte principal. */
-	text: "#0A0A0A",
+	text: "#16161C",
 	/** Texte secondaire. */
-	textMuted: "#6B6B70",
+	textMuted: "#5C5C68",
 	/** Texte tertiaire / désactivé. */
-	textFaint: "#A1A1A6",
-	/** Fond du CTA principal (pilule noire). */
-	ctaBackground: "#0A0A0A",
+	textFaint: "#9A9AA6",
+	/** Fond du CTA principal (pilule sombre). */
+	ctaBackground: "#16161C",
 	/** Texte du CTA principal. */
 	ctaText: "#FFFFFF",
+	/** Accent unique de marque (navigation active, progression, liens). */
+	brand: "#6E63E6",
+	/** Fond doux de l'accent (pastille/chip actif). */
+	brandSoft: "#EEEBFC",
+	/** Fonds doux des couleurs de donnée (pastilles d'avatar, chips). */
+	stoolSoft: "#ECEAFB",
+	painSoft: "#FBF0DE",
+	energySoft: "#E2F3EC",
+	mealSoft: "#E6EDFB",
 	/** Fond de carte en mode poussée (ambre pâle, jamais rouge). */
-	flareBackground: "#FDF3E3",
+	flareBackground: "#FBF1E1",
 	/** Bordure de carte en mode poussée. */
-	flareBorder: "#F5D9A8",
+	flareBorder: "#F0DEB8",
 	/** Scrim des bottom-sheets / modales. */
-	scrim: "rgba(0, 0, 0, 0.35)",
+	scrim: "rgba(16, 16, 24, 0.38)",
 	...dataColors,
 } as const;
 
 /** Palette du thème sombre (§3 : usage nocturne / salle de bain). */
 const darkColors = {
-	background: "#0F0F10",
-	card: "#1C1C1E",
-	surface: "#2C2C2E",
-	border: "#38383A",
-	text: "#F5F5F5",
-	textMuted: "#A1A1A6",
-	textFaint: "#6B6B70",
-	ctaBackground: "#F5F5F5",
-	ctaText: "#0A0A0A",
-	flareBackground: "#3A2E19",
-	flareBorder: "#5C4A26",
-	scrim: "rgba(0, 0, 0, 0.6)",
+	background: "#0A0B0E",
+	card: "#16171D",
+	surface: "#1E1F26",
+	border: "#26272F",
+	text: "#F3F3F6",
+	textMuted: "#A6A7B2",
+	textFaint: "#6B6C78",
+	ctaBackground: "#F3F3F6",
+	ctaText: "#16161C",
+	brand: "#8B82F2",
+	brandSoft: "#211F3A",
+	stoolSoft: "#211F3A",
+	painSoft: "#322718",
+	energySoft: "#16281F",
+	mealSoft: "#172236",
+	flareBackground: "#322718",
+	flareBorder: "#4A3A1E",
+	scrim: "rgba(0, 0, 0, 0.62)",
 	...dataColors,
 } as const;
 
@@ -87,31 +105,33 @@ export const spacing = {
 	xxl: 24,
 } as const;
 
-/** Rayons de coin. Cartes = 20 px (§3). */
+/** Rayons de coin. Cartes = 22 px (« Clinique calme »), pastilles = 13-14 px. */
 export const radii = {
 	sm: 10,
-	md: 14,
+	md: 13,
 	lg: 20,
+	xl: 22,
 	pill: 999,
 } as const;
 
 /** Cible tactile minimale (accessibilité §3). */
 export const hitTarget = 48;
 
-/** Ombres douces. Clé plate car les valeurs diffèrent iOS/Android/web. */
+/** Ombres douces (« Clinique calme » : discrètes, jamais dures). Clé plate car
+ * les valeurs diffèrent iOS/Android/web. */
 export const shadows = {
 	card: {
-		shadowColor: "#000000",
-		shadowOpacity: 0.06,
-		shadowRadius: 12,
-		shadowOffset: { width: 0, height: 4 },
+		shadowColor: "#141420",
+		shadowOpacity: 0.05,
+		shadowRadius: 14,
+		shadowOffset: { width: 0, height: 6 },
 		elevation: 2,
 	},
 	floating: {
-		shadowColor: "#000000",
-		shadowOpacity: 0.18,
-		shadowRadius: 16,
-		shadowOffset: { width: 0, height: 6 },
+		shadowColor: "#141420",
+		shadowOpacity: 0.16,
+		shadowRadius: 18,
+		shadowOffset: { width: 0, height: 8 },
 		elevation: 8,
 	},
 } as const;

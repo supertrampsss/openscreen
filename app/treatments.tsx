@@ -2,7 +2,7 @@
  * Écran Traitements (§5.9) — poussé plein écran depuis Réglages / carte Home.
  *
  * Liste des traitements actifs (nom, cadence, prochaine échéance, observance 90 j),
- * bouton « Fait ✓ » un-tap (undo snackbar, recalcule l'échéance + re-programme les
+ * bouton « Fait » un-tap (undo snackbar, recalcule l'échéance + re-programme les
  * rappels), ajout/édition (nom + type + cadence), effets secondaires en 2 taps,
  * historique replié. Au premier passage, propose de créer les traitements saisis
  * à l'onboarding (pré-remplis).
@@ -171,7 +171,7 @@ export default function TreatmentsScreen() {
 		]);
 	};
 
-	// --- Prise (Fait ✓) avec undo -----------------------------------------
+	// --- Prise (Fait) avec undo -----------------------------------------
 	const markTaken = async (tr: Treatment) => {
 		const res = await repo.markTaken(tr.id);
 		await syncTreatmentReminders();
@@ -244,7 +244,7 @@ export default function TreatmentsScreen() {
 						hitSlop={12}
 						style={[styles.close, { backgroundColor: theme.colors.surface }]}
 					>
-						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>✕</Text>
+						<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>×</Text>
 					</Pressable>
 				</View>
 

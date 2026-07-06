@@ -16,8 +16,9 @@ import {
 	View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { BristolIcon, type BristolType } from "@/components/BristolIcon";
-import { Card, RingCard, Sparkline, type WeekDay, WeekStrip } from "@/components/ui";
+import Svg, { Circle } from "react-native-svg";
+import { Icon, type IconName } from "@/components/Icon";
+import { Card, Sparkline, type WeekDay, WeekStrip } from "@/components/ui";
 import { PillButton } from "@/components/ui/PillButton";
 import type { Meal, SymptomEntry } from "@/db/schema";
 import {
@@ -522,9 +523,11 @@ export default function HomeScreen() {
 								},
 							]}
 						>
-							<Text style={styles.recentEmoji}>💊</Text>
+							<View style={[styles.avatar, { backgroundColor: theme.colors.painSoft }]}>
+								<Icon name="capsule" size={20} color={theme.colors.pain} strokeWidth={1.8} />
+							</View>
 							<View style={styles.recentBody}>
-								<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+								<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
 									{data.dueTreatment.days <= 0
 										? ttr("homeCard.dueToday", { name: data.dueTreatment.name })
 										: ttr("homeCard.dueInDays", {
@@ -533,9 +536,7 @@ export default function HomeScreen() {
 											})}
 								</Text>
 							</View>
-							<Text style={[theme.typography.subheading, { color: theme.colors.textFaint }]}>
-								›
-							</Text>
+							<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 						</Card>
 					</Pressable>
 				) : null}
@@ -550,45 +551,51 @@ export default function HomeScreen() {
 						scrollEventThrottle={16}
 					>
 						<View style={{ width: heroWidth }} testID="hero-page-1">
-							<RingCard
-								title={t("home.ringTitle")}
-								progress={data.ringProgress}
-								tint="stool"
-								value={
-									<View style={styles.ringCenter}>
-										<Text
-											testID="ring-stools"
-											style={[theme.typography.dataXL, { color: theme.colors.text }]}
-										>
-											{data.stoolsToday}
+							<Card style={styles.heroCard}>
+								<View style={styles.heroTop}>
+									<Text style={[theme.typography.overline, { color: theme.colors.textFaint }]}>
+										{t("home.ringTitle")}
+									</Text>
+									<HeroPager page={heroPage} />
+								</View>
+								<View style={styles.heroBody}>
+									<CompactRing progress={data.ringProgress} value={data.stoolsToday} unit={unit} />
+									<View style={styles.heroCopy}>
+										<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+											{stateText}
 										</Text>
-										<Text
-											style={[
-												theme.typography.caption,
-												styles.ringUnit,
-												{ color: theme.colors.textMuted },
-											]}
-										>
-											{unit}
-											{normalText ? ` · ${t("home.normalRange", { range: normalText })}` : ""}
-										</Text>
+										{normalText ? (
+											<View style={styles.heroNorm}>
+												<Icon
+													name="activity"
+													size={15}
+													color={theme.colors.textFaint}
+													strokeWidth={1.9}
+												/>
+												<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>
+													{t("home.normalRange", { range: normalText })}
+												</Text>
+											</View>
+										) : null}
 									</View>
-								}
-								subtitle={stateText}
-							/>
+								</View>
+							</Card>
 						</View>
 
 						<View style={{ width: heroWidth }} testID="hero-page-2">
 							<Card style={styles.scoreCard}>
-								<Text style={[theme.typography.label, { color: theme.colors.textMuted }]}>
-									{data.scoreKind === "sccai" ? t("home.scoreSccai") : t("home.scoreHbi")}
-								</Text>
+								<View style={styles.heroTop}>
+									<Text style={[theme.typography.overline, { color: theme.colors.textFaint }]}>
+										{data.scoreKind === "sccai" ? t("home.scoreSccai") : t("home.scoreHbi")}
+									</Text>
+									<HeroPager page={heroPage} />
+								</View>
 								{data.scoreSeries.some((v) => v != null) ? (
 									<Sparkline
 										data={data.scoreSeries}
 										color={theme.colors.text}
 										width={heroWidth - theme.spacing.xl * 2}
-										height={96}
+										height={84}
 										min={0}
 									/>
 								) : (
@@ -613,19 +620,6 @@ export default function HomeScreen() {
 							</Card>
 						</View>
 					</ScrollView>
-					<View style={styles.dots}>
-						{[0, 1].map((i) => (
-							<View
-								key={i}
-								style={[
-									styles.dot,
-									{
-										backgroundColor: heroPage === i ? theme.colors.text : theme.colors.border,
-									},
-								]}
-							/>
-						))}
-					</View>
 				</View>
 
 				<View style={styles.miniRow}>
@@ -633,19 +627,25 @@ export default function HomeScreen() {
 						testID="mini-pain"
 						label={t("home.miniPain")}
 						value={data.painToday != null ? String(data.painToday) : "—"}
-						color={theme.colors.pain}
+						icon="activity"
+						tint={theme.colors.pain}
+						soft={theme.colors.painSoft}
 					/>
 					<MiniCard
 						testID="mini-energy"
 						label={t("home.miniEnergy")}
 						value={data.energyToday != null ? String(data.energyToday) : "—"}
-						color={theme.colors.energy}
+						icon="activity"
+						tint={theme.colors.energy}
+						soft={theme.colors.energySoft}
 					/>
 					<MiniCard
 						testID="mini-meals"
 						label={t("home.miniMeals")}
 						value={String(data.mealsToday)}
-						color={theme.colors.meal}
+						icon="utensils"
+						tint={theme.colors.meal}
+						soft={theme.colors.mealSoft}
 					/>
 				</View>
 
@@ -700,7 +700,7 @@ export default function HomeScreen() {
 					{ backgroundColor: theme.colors.ctaBackground, bottom: insets.bottom + 16 },
 				]}
 			>
-				<Text style={[styles.fabPlus, { color: theme.colors.ctaText }]}>+</Text>
+				<Icon name="plus" size={26} color={theme.colors.ctaText} strokeWidth={2.2} />
 			</Pressable>
 
 			<AddSheet visible={addOpen} onClose={() => setAddOpen(false)} onPick={pickAction} />
@@ -788,7 +788,9 @@ function ScanRecentCard({
 					contentFit="cover"
 				/>
 			) : (
-				<Text style={styles.recentEmoji}>📸</Text>
+				<View style={[styles.avatar, { backgroundColor: theme.colors.mealSoft }]}>
+					<Icon name="camera" size={20} color={theme.colors.meal} strokeWidth={1.8} />
+				</View>
 			)}
 			<View style={styles.recentBody}>
 				{analyzing ? (
@@ -834,9 +836,11 @@ function MealRecentRow({ meal, onPress }: { meal: MealWithItems; onPress: () => 
 	return (
 		<Pressable accessibilityRole="button" onPress={onPress}>
 			<Card padding="md" style={styles.recentCard}>
-				<Text style={styles.recentEmoji}>🍽️</Text>
+				<View style={[styles.avatar, { backgroundColor: theme.colors.mealSoft }]}>
+					<Icon name="utensils" size={20} color={theme.colors.meal} strokeWidth={1.8} />
+				</View>
 				<View style={styles.recentBody}>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+					<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
 						{meal.meal.name ?? t("journal:kinds.meal")}
 					</Text>
 					<MealTriggerChips items={meal.items} max={3} />
@@ -844,6 +848,7 @@ function MealRecentRow({ meal, onPress }: { meal: MealWithItems; onPress: () => 
 						{formatClock(meal.meal.occurredAt, meal.meal.tz)}
 					</Text>
 				</View>
+				<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
 			</Card>
 		</Pressable>
 	);
@@ -858,19 +863,31 @@ function formatNormal(n: StoolNormal): string {
 const MiniCard = memo(function MiniCard({
 	label,
 	value,
-	color,
+	icon,
+	tint,
+	soft,
 	testID,
 }: {
 	label: string;
 	value: string;
-	color: string;
+	icon: IconName;
+	/** Couleur pleine de la pastille. */
+	tint: string;
+	/** Fond doux de la pastille. */
+	soft: string;
 	testID?: string;
 }) {
 	const theme = useTheme();
 	return (
 		<Card padding="md" style={styles.miniCard} testID={testID}>
-			<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>{label}</Text>
-			<Text style={[theme.typography.dataLg, { color }]}>{value}</Text>
+			<View style={styles.miniLab}>
+				<View style={[styles.miniChip, { backgroundColor: soft }]}>
+					<Icon name={icon} size={13} color={tint} strokeWidth={1.9} />
+				</View>
+				<Text style={[theme.typography.caption, { color: theme.colors.textMuted }]}>{label}</Text>
+			</View>
+			<Text style={[theme.typography.dataLg, { color: theme.colors.text }]}>{value}</Text>
+			<View style={[styles.miniFlat, { backgroundColor: theme.colors.border }]} />
 		</Card>
 	);
 });
@@ -907,13 +924,21 @@ function RecentRow({ entry, onPress }: { entry: SymptomEntry; onPress: () => voi
 	return (
 		<Pressable accessibilityRole="button" onPress={onPress}>
 			<Card padding="md" style={styles.recentCard}>
-				{isStool && entry.bristol ? (
-					<BristolIcon type={entry.bristol as BristolType} selected size={30} />
-				) : (
-					<Text style={styles.recentEmoji}>{isStool ? "💩" : "🤕"}</Text>
-				)}
+				<View
+					style={[
+						styles.avatar,
+						{ backgroundColor: isStool ? theme.colors.stoolSoft : theme.colors.painSoft },
+					]}
+				>
+					<Icon
+						name={isStool ? "stool" : "thermometer"}
+						size={20}
+						color={isStool ? theme.colors.stool : theme.colors.pain}
+						strokeWidth={1.8}
+					/>
+				</View>
 				<View style={styles.recentBody}>
-					<Text style={[theme.typography.subheading, { color: theme.colors.text }]}>
+					<Text style={[styles.rowTitle, { color: theme.colors.text }]}>
 						{isStool ? t("journal:kinds.stool") : t("journal:kinds.symptom")}
 						{isStool && entry.bristol
 							? ` · ${t("journal:entry.bristol", { value: entry.bristol })}`
@@ -929,9 +954,74 @@ function RecentRow({ entry, onPress }: { entry: SymptomEntry; onPress: () => voi
 							{t("common:draft")}
 						</Text>
 					</View>
-				) : null}
+				) : (
+					<Icon name="chevronRight" size={20} color={theme.colors.textFaint} />
+				)}
 			</Card>
 		</Pressable>
+	);
+}
+
+/** Anneau compact (maquette Accueil) : piste + arc `brand`, chiffre + unité centrés. */
+function CompactRing({ progress, value, unit }: { progress: number; value: number; unit: string }) {
+	const theme = useTheme();
+	const size = 104;
+	const strokeWidth = 10;
+	const clamped = Math.max(0, Math.min(1, progress));
+	const radius = (size - strokeWidth) / 2;
+	const circumference = 2 * Math.PI * radius;
+	const center = size / 2;
+	return (
+		<View style={{ width: size, height: size }}>
+			<Svg width={size} height={size}>
+				<Circle
+					cx={center}
+					cy={center}
+					r={radius}
+					stroke={theme.colors.surface}
+					strokeWidth={strokeWidth}
+					fill="none"
+				/>
+				<Circle
+					cx={center}
+					cy={center}
+					r={radius}
+					stroke={theme.colors.brand}
+					strokeWidth={strokeWidth}
+					strokeLinecap="round"
+					fill="none"
+					strokeDasharray={circumference}
+					strokeDashoffset={circumference * (1 - clamped)}
+					transform={`rotate(-90 ${center} ${center})`}
+				/>
+			</Svg>
+			<View style={styles.ringCenterAbs} pointerEvents="none">
+				<Text testID="ring-stools" style={[theme.typography.dataXL, { color: theme.colors.text }]}>
+					{value}
+				</Text>
+				<Text style={[theme.typography.overline, { color: theme.colors.textFaint }]}>{unit}</Text>
+			</View>
+		</View>
+	);
+}
+
+/** Points de pagination du héros (2 pages), point actif allongé. */
+function HeroPager({ page }: { page: number }) {
+	const theme = useTheme();
+	return (
+		<View style={styles.pager}>
+			{[0, 1].map((i) => (
+				<View
+					key={i}
+					style={[
+						styles.pagerDot,
+						page === i
+							? { width: 16, backgroundColor: theme.colors.textFaint }
+							: { width: 6, backgroundColor: theme.colors.border },
+					]}
+				/>
+			))}
+		</View>
 	);
 }
 
@@ -942,10 +1032,31 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
-	ringCenter: { alignItems: "center" },
-	ringUnit: { marginTop: 2, textAlign: "center" },
-	scoreCard: { gap: 12, minHeight: 190, justifyContent: "center" },
-	scoreEmpty: { minHeight: 96, alignItems: "center", justifyContent: "center" },
+	heroCard: { gap: 14 },
+	heroTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+	heroBody: {
+		flex: 1,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		gap: 18,
+	},
+	heroCopy: { flex: 1, gap: 4 },
+	heroNorm: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 6 },
+	pager: { flexDirection: "row", alignItems: "center", gap: 5 },
+	pagerDot: { height: 6, borderRadius: 999 },
+	ringCenterAbs: {
+		position: "absolute",
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		alignItems: "center",
+		justifyContent: "center",
+		gap: 2,
+	},
+	scoreCard: { gap: 12, minHeight: 150 },
+	scoreEmpty: { minHeight: 84, alignItems: "center", justifyContent: "center" },
 	pillRow: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
 	statPill: {
 		flexDirection: "row",
@@ -955,27 +1066,35 @@ const styles = StyleSheet.create({
 		paddingVertical: 6,
 	},
 	statDot: { width: 8, height: 8, borderRadius: 999 },
-	dots: {
-		flexDirection: "row",
-		justifyContent: "center",
-		gap: 6,
-		marginTop: 10,
-	},
-	dot: { width: 7, height: 7, borderRadius: 999 },
-	miniRow: { flexDirection: "row", gap: 12 },
-	miniCard: { flex: 1, gap: 4 },
-	fab: {
-		position: "absolute",
-		right: 20,
-		width: 60,
-		height: 60,
-		borderRadius: 999,
+	miniRow: { flexDirection: "row", gap: 10 },
+	miniCard: { flex: 1, gap: 8 },
+	miniLab: { flexDirection: "row", alignItems: "center", gap: 7 },
+	miniChip: {
+		width: 24,
+		height: 24,
+		borderRadius: 8,
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	fabPlus: { fontSize: 32, lineHeight: 36, fontWeight: "300" },
+	miniFlat: { height: 3, borderRadius: 999, marginTop: 2 },
+	fab: {
+		position: "absolute",
+		right: 20,
+		width: 58,
+		height: 58,
+		borderRadius: 20,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	avatar: {
+		width: 42,
+		height: 42,
+		borderRadius: 13,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	rowTitle: { fontSize: 15, fontWeight: "600", letterSpacing: -0.1 },
 	recentCard: { flexDirection: "row", alignItems: "center", gap: 12 },
-	recentEmoji: { fontSize: 24 },
 	recentBody: { flex: 1, gap: 2 },
 	draftBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
 	scanThumb: { width: 44, height: 44 },

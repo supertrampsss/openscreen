@@ -7,6 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Animated, StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { useTheme } from "@/theme";
 
 const ITEMS = ["symptoms", "plan", "baseline"] as const;
@@ -62,7 +63,7 @@ function CalcRow({ label, done }: { label: string; done: boolean }) {
 				<Animated.View
 					style={[styles.check, { backgroundColor: theme.colors.energy, transform: [{ scale }] }]}
 				>
-					<Text style={styles.checkMark}>✓</Text>
+					<Icon name="check" size={14} color="#FFFFFF" strokeWidth={2.4} />
 				</Animated.View>
 			) : (
 				<ActivityIndicator color={theme.colors.textFaint} />
@@ -90,5 +91,4 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	checkMark: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
 });

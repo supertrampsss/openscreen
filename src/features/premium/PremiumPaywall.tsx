@@ -18,6 +18,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Linking, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { Card, PillButton } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { PRIVACY_URL, SUPPORT_EMAIL, TERMS_URL } from "@/constants/branding";
@@ -143,7 +144,7 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 					hitSlop={12}
 					style={styles.closeBtn}
 				>
-					<Text style={[theme.typography.heading, { color: theme.colors.textMuted }]}>✕</Text>
+					<Text style={[theme.typography.heading, { color: theme.colors.textMuted }]}>×</Text>
 				</Pressable>
 			) : null}
 
@@ -164,7 +165,7 @@ export function PremiumPaywall({ mode, onClose, onContinueFree, onPurchased }: P
 				</Text>
 				{FEATURE_ROWS.map((row) => (
 					<View key={row.key} style={styles.featureRow}>
-						<Text style={[styles.featureCheck, { color: theme.colors.energy }]}>✓</Text>
+						<Icon name="check" size={17} color={theme.colors.energy} strokeWidth={2.2} />
 						<Text
 							style={[theme.typography.body, styles.featureLabel, { color: theme.colors.text }]}
 						>
@@ -388,7 +389,6 @@ const styles = StyleSheet.create({
 	closeBtn: { position: "absolute", top: 0, right: 0, padding: 8, zIndex: 2 },
 	hero: { gap: 6 },
 	featureRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-	featureCheck: { fontSize: 16, fontWeight: "700" },
 	featureLabel: { flex: 1 },
 	soonBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 },
 	trial: { borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12 },

@@ -2,6 +2,7 @@ import { useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { Card, PillButton } from "@/components/ui";
 import { buildInsightAggregates, type InsightAggregatesInput } from "@/domain/insightAggregates";
 import { AiConsentSheet } from "@/features/log/AiConsentSheet";
@@ -87,11 +88,11 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 				onPress={() => router.push("/premium")}
 			>
 				<Card padding="md" style={styles.teaser}>
-					<Text style={styles.emoji}>✨</Text>
+					<Icon name="sparkles" size={18} color={theme.colors.brand} strokeWidth={1.7} />
 					<Text style={[theme.typography.caption, { color: theme.colors.textMuted, flex: 1 }]}>
 						{t("insight.teaser")}
 					</Text>
-					<Text style={[theme.typography.subheading, { color: theme.colors.textFaint }]}>›</Text>
+					<Icon name="chevronRight" size={18} color={theme.colors.textFaint} />
 				</Card>
 			</Pressable>
 		);
@@ -111,7 +112,7 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 						onPress={() => run(true)}
 						hitSlop={8}
 					>
-						<Text style={[theme.typography.label, { color: theme.colors.meal }]}>↻</Text>
+						<Icon name="refresh" size={18} color={theme.colors.brand} />
 					</Pressable>
 				) : null}
 			</View>
@@ -171,7 +172,6 @@ export function WeeklyInsightCard({ input }: { input: InsightAggregatesInput }) 
 
 const styles = StyleSheet.create({
 	teaser: { flexDirection: "row", alignItems: "center", gap: 10 },
-	emoji: { fontSize: 18 },
 	headerRow: { flexDirection: "row", alignItems: "center", gap: 8 },
 	loadingRow: { flexDirection: "row", alignItems: "center", gap: 10 },
 });

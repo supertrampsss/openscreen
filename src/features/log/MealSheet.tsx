@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Icon } from "@/components/Icon";
 import { ChipTrigger, DraftSheet } from "@/components/ui";
 import { useSnackbar } from "@/components/ui/Snackbar";
 import { type EntryTimestamp, localHourInTz, nowEntryTimestamp } from "@/domain/dates";
@@ -252,7 +253,7 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 									},
 								]}
 							>
-								<Text style={styles.recentEmoji}>🍽️</Text>
+								<Icon name="utensils" size={16} color={theme.colors.meal} strokeWidth={1.8} />
 								<Text
 									numberOfLines={1}
 									style={[theme.typography.label, { color: theme.colors.text }]}
@@ -377,7 +378,7 @@ export function MealSheet({ visible, onClose, onSaved, resume }: MealSheetProps)
 									hitSlop={8}
 									style={styles.remove}
 								>
-									<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>✕</Text>
+									<Text style={{ color: theme.colors.textFaint, fontSize: 18 }}>×</Text>
 								</Pressable>
 							</View>
 						))}
@@ -451,7 +452,6 @@ const styles = StyleSheet.create({
 		minHeight: 40,
 		borderWidth: StyleSheet.hairlineWidth,
 	},
-	recentEmoji: { fontSize: 16 },
 	input: {
 		minHeight: 48,
 		paddingHorizontal: 14,
